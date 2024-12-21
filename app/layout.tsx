@@ -6,8 +6,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Meme Generator",
-  description: "Create and share memes with the community",
+  title: "Gen Walls",
+  description: "Create and share wallpapers with the community",
 };
 
 export default function RootLayout({

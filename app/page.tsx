@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
+import { generateImage } from "./actions/generateImage";
 
 const wallpaperFeed = [
   {
@@ -53,9 +54,29 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     console.log("Wallpaper prompt submitted:", { prompt, image });
+
+    const getImageUrl = await generateImage(prompt);
+
+    if (!getImageUrl.success) {
+      console.log("Error generating image:", getImageUrl.error);
+    } else {
+      console.log(getImageUrl.imageUrl);
+    }
+
+    wallpaperFeed.push({
+      id: wallpaperFeed.length + 1,
+      imageUrl: getImageUrl.imageUrl,
+      caption: prompt,
+      creator: "Wallpapi",
+      createdAt: new Date().toISOString(),
+      likes: 0,
+      comments: 0,
+    });
+
+    console.log("Image URL:", getImageUrl.imageUrl);
     setPrompt("");
     setImage(null);
     setIsWidgetOpen(false);
@@ -70,6 +91,7 @@ export default function Home() {
             creatorAvatar={wallpaperFeed[0].imageUrl}
             key={wallpaper.id}
             {...wallpaper}
+            imageUrl={wallpaper.imageUrl}
           />
         ))}
       </div>
