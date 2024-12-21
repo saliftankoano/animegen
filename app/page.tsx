@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { MemeCard } from "@/components/MemeCard";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Upload, X } from "lucide-react";
+import { X } from "lucide-react";
 import { generateImage } from "./actions/generateImage";
 import { getImages } from "./actions/getimages";
 
@@ -27,12 +26,12 @@ export default function Home() {
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   const [wallpaperFeed, setWallpaperFeed] = useState<Wallpaper[]>([]);
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setImage(file);
-    }
-  };
+  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     setImage(file);
+  //   }
+  // };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -88,7 +87,7 @@ export default function Home() {
         ))}
       </div>
       <Button
-        className="fixed bottom-4 right-4 bg-black hover:bg-accent/90 text-white"
+        className="fixed bottom-12 right-12 bg-black hover:bg-yellow-500 text-white"
         onClick={() => setIsWidgetOpen(true)}
       >
         Generate
@@ -112,15 +111,15 @@ export default function Home() {
                   onChange={(e) => setPrompt(e.target.value)}
                   className="min-h-[100px] bg-muted"
                 />
-                <div className="flex items-center space-x-2">
-                  <Input
+                <div className="flex justify-end items-center space-x-2">
+                  {/* <Input
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
                     className="hidden"
                     id="image-upload"
-                  />
-                  <label htmlFor="image-upload" className="cursor-pointer">
+                  /> */}
+                  {/* <label htmlFor="image-upload" className="cursor-pointer">
                     <Button
                       type="button"
                       variant="outline"
@@ -133,10 +132,10 @@ export default function Home() {
                     <span className="text-sm text-muted-foreground">
                       {image.name}
                     </span>
-                  )}
+                  )} */}
                   <Button
                     type="submit"
-                    className="ml-auto bg-primary text-primary-foreground hover:bg-primary/90"
+                    className="bg-primary text-primary-foreground hover:bg-yellow-500"
                   >
                     Generate Wallpaper
                   </Button>
