@@ -6,15 +6,13 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { prompt } = body;
-    console.log(prompt);
     const url = new URL(
       "https://saliftankoano--genwalls-inference-generate.modal.run"
     );
+
     url.searchParams.set("prompt", encodeURIComponent(prompt));
-    console.log(url.toString());
     url.searchParams.set("api_key", process.env.API_KEY || "");
 
-    // Set a timeout duration (e.g., 60 seconds)
     const timeoutDuration = 60000; // 60 seconds
     const fetchPromise = fetch(url.toString(), {
       method: "GET",
@@ -36,7 +34,7 @@ export async function POST(req: NextRequest) {
     ])) as Response;
 
     if (!response.ok) {
-      const errorText = await response.text(); // Await the text to get the error message
+      const errorText = await response.text();
       console.error("API response: ", errorText);
       throw new Error(
         `HTTP error! status: ${response.status}, error: ${errorText}`
