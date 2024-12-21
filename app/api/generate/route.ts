@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     try {
       // S3 storage
       const s3Client = new S3Client({
-        region: "us-east-1",
+        region: process.env.S3_REGION || "",
         credentials: {
           accessKeyId: accessKeyId || "",
           secretAccessKey: secretAccessKey || "",
@@ -62,6 +62,8 @@ export async function POST(req: NextRequest) {
         ContentType: "image/png",
         Metadata: {
           prompt: prompt,
+          createdAt: new Date().toISOString(),
+          creator: "Wallpapi",
         },
       });
       await s3Client.send(command);

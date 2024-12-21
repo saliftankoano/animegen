@@ -51,7 +51,7 @@ export function MemeCard({
       <CardContent className="p-0 relative">
         <Image
           src={imageUrl}
-          alt={caption}
+          alt={caption || "Wallpaper"}
           width={500}
           height={500}
           className="w-full h-auto"
@@ -65,7 +65,11 @@ export function MemeCard({
         <div className="flex items-center space-x-2">
           <Avatar className="w-8 h-8">
             <AvatarImage src={creatorAvatar} alt={creator} />
-            <AvatarFallback>{creator.slice(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>
+              {typeof creator === "string"
+                ? creator.slice(0, 2).toUpperCase()
+                : "Wallpapi"}
+            </AvatarFallback>
           </Avatar>
           <div>
             <p className="text-sm font-medium text-foreground">{creator}</p>

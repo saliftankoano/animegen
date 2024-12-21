@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MemeCard } from "@/components/MemeCard";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,44 +8,24 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
 import { generateImage } from "./actions/generateImage";
+import { getImages } from "./actions/getimages";
 
-const wallpaperFeed = [
-  {
-    id: 1,
-    imageUrl:
-      "https://ik.imagekit.io/engineerbf24/dragon.png?updatedAt=1734708472086",
-    caption: "When the wallpaper finally works",
-    creator: "WallpaperNinja",
-    createdAt: "2023-06-15",
-    likes: 1337,
-    comments: 42,
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://ik.imagekit.io/engineerbf24/dragon.png?updatedAt=1734708472086",
-    caption: "Wallpapering at 3 AM",
-    creator: "NightOwlWallpaper",
-    createdAt: "2023-06-14",
-    likes: 2048,
-    comments: 128,
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://ik.imagekit.io/engineerbf24/dragon.png?updatedAt=1734708472086",
-    caption: 'When the client says "small change" to the wallpaper',
-    creator: "ProjectManagerWallpaper",
-    createdAt: "2023-06-13",
-    likes: 4096,
-    comments: 256,
-  },
-];
+// Define the type for wallpaper
+interface Wallpaper {
+  key: string;
+  url: string;
+  metadata: {
+    prompt: string;
+    createdAt: string;
+    creator: string;
+  };
+}
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
+  const [wallpaperFeed, setWallpaperFeed] = useState<Wallpaper[]>([]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -66,32 +46,44 @@ export default function Home() {
       console.log(getImageUrl.imageUrl);
     }
 
-    wallpaperFeed.push({
-      id: wallpaperFeed.length + 1,
-      imageUrl: getImageUrl.imageUrl,
-      caption: prompt,
-      creator: "Wallpapi",
-      createdAt: new Date().toISOString(),
-      likes: 0,
-      comments: 0,
-    });
-
     console.log("Image URL:", getImageUrl.imageUrl);
     setPrompt("");
     setImage(null);
     setIsWidgetOpen(false);
   };
 
+  const fetchImages = async () => {
+    try {
+      const data = await getImages();
+      if (data.success) {
+        setWallpaperFeed(data.images);
+      } else {
+        console.log(data.error || "Failed to fetch images.");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  useEffect(() => {
+    fetchImages();
+    const interval = setInterval(fetchImages, 6000); // every 6 seconds
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="space-y-8 relative">
       <h1 className="mt-4 text-4xl font-bold text-primary">Wall of fame 🤩</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {wallpaperFeed.map((wallpaper) => (
+        {wallpaperFeed.map((wallpaper, index) => (
           <MemeCard
-            creatorAvatar={wallpaperFeed[0].imageUrl}
-            key={wallpaper.id}
-            {...wallpaper}
-            imageUrl={wallpaper.imageUrl}
+            key={index}
+            creatorAvatar={wallpaper.metadata.creator}
+            imageUrl={wallpaper.url}
+            caption={wallpaper.metadata.prompt}
+            createdAt={wallpaper.metadata.createdAt}
+            creator={wallpaper.metadata.creator}
+            id={index}
+            likes={3200}
+            comments={3}
           />
         ))}
       </div>
