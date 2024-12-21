@@ -2,7 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
-
+import { ClerkProvider } from "@clerk/nextjs";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -19,12 +19,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="min-h-screen bg-background text-foreground">
-            <Navbar />
-            <main className="container mx-auto px-4 py-8 pt-20">
-              {children}
-            </main>
-          </div>
+          <ClerkProvider>
+            <div className="min-h-screen bg-background text-foreground">
+              <Navbar />
+              <main className="container mx-auto px-4 py-8 pt-20">
+                {children}
+              </main>
+            </div>
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>
