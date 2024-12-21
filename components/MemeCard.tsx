@@ -68,7 +68,7 @@ export function MemeCard({
             <AvatarFallback>
               {typeof creator === "string"
                 ? creator.slice(0, 2).toUpperCase()
-                : "Wallpapi"}
+                : "Gino432"}
             </AvatarFallback>
           </Avatar>
           <div>

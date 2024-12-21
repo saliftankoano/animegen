@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { prompt } = body;
+    const { prompt, username, profileimage } = body;
     const url = new URL(
       "https://saliftankoano--genwalls-inference-generate.modal.run"
     );
@@ -40,7 +40,6 @@ export async function POST(req: NextRequest) {
         `HTTP error! status: ${response.status}, error: ${errorText}`
       );
     }
-
     const imagebuffer = await response.arrayBuffer();
     const filename = `${crypto.randomUUID()}.png`;
     const accessKeyId = process.env.S3_ACCESS_KEY;
@@ -62,7 +61,8 @@ export async function POST(req: NextRequest) {
         Metadata: {
           prompt: prompt,
           createdAt: new Date().toISOString(),
-          creator: "Wallpapi",
+          creator: username || "Gino432",
+          profileimage: profileimage,
         },
       });
       await s3Client.send(command);
@@ -75,6 +75,7 @@ export async function POST(req: NextRequest) {
         success: true,
         message: `Recieved: ${prompt}`,
         imageUrl: imageUrl,
+        profileimage: profileimage,
       });
     } catch (error) {
       console.log(error);

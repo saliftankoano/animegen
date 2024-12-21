@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { X } from "lucide-react";
 import { generateImage } from "../actions/generateImage";
 import { getImages } from "../actions/getimages";
+import { SignedIn } from "@clerk/nextjs";
 
 // Define the type for wallpaper
 interface Wallpaper {
@@ -17,6 +18,7 @@ interface Wallpaper {
     prompt: string;
     createdAt: string;
     creator: string;
+    profileimage: string;
   };
 }
 
@@ -75,7 +77,7 @@ export default function Home() {
         {wallpaperFeed.map((wallpaper, index) => (
           <MemeCard
             key={index}
-            creatorAvatar={wallpaper.metadata.creator}
+            creatorAvatar={wallpaper.metadata.profileimage}
             imageUrl={wallpaper.url}
             caption={wallpaper.metadata.prompt}
             createdAt={wallpaper.metadata.createdAt}
@@ -86,12 +88,15 @@ export default function Home() {
           />
         ))}
       </div>
-      <Button
-        className="fixed bottom-12 right-12 bg-black hover:bg-yellow-500 text-white"
-        onClick={() => setIsWidgetOpen(true)}
-      >
-        Generate
-      </Button>
+      <SignedIn>
+        <Button
+          className="fixed bottom-12 right-12 bg-black hover:bg-yellow-500 text-white"
+          onClick={() => setIsWidgetOpen(true)}
+        >
+          Generate
+        </Button>
+      </SignedIn>
+
       {isWidgetOpen && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
           <Card className="w-full max-w-md bg-card">

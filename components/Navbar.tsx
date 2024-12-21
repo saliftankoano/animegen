@@ -1,6 +1,6 @@
 "use client";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { UserButton } from "@clerk/nextjs";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitch } from "./ThemeSwitch";
@@ -22,22 +22,24 @@ export function Navbar() {
                 Feed
               </Button>
             </Link>
-            <Link href="/create">
-              <Button
-                variant="ghost"
-                className="text-primary hover:text-primary/80"
-              >
-                Create
-              </Button>
-            </Link>
-            <Link href="/profile">
+            <SignedIn>
+              <Link href="/create">
+                <Button
+                  variant="ghost"
+                  className="text-primary hover:text-primary/80"
+                >
+                  Create
+                </Button>
+              </Link>
+            </SignedIn>
+            {/* <Link href="/profile">
               <Button
                 variant="ghost"
                 className="text-primary hover:text-primary/80"
               >
                 Profile
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
         <div className="flex items-center space-x-4">
