@@ -1,5 +1,6 @@
 "use client";
-
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitch } from "./ThemeSwitch";
@@ -13,12 +14,12 @@ export function Navbar() {
             <span className="font-bold text-2xl text-primary">GenWalls</span>
           </Link>
           <div className="flex items-center space-x-4">
-            <Link href="/">
+            <Link href="/feed">
               <Button
                 variant="ghost"
                 className="text-primary hover:text-primary/80"
               >
-                Home
+                Feed
               </Button>
             </Link>
             <Link href="/create">
@@ -39,7 +40,10 @@ export function Navbar() {
             </Link>
           </div>
         </div>
-        <ThemeSwitch />
+        <div className="flex items-center space-x-4">
+          <ThemeSwitch />
+          <UserButton />
+        </div>
       </div>
     </nav>
   );
