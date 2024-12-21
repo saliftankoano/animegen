@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
     );
     url.searchParams.set("prompt", encodeURIComponent(prompt));
     console.log(url.toString());
+    url.searchParams.set("api_key", process.env.API_KEY || "");
 
     // Set a timeout duration (e.g., 60 seconds)
     const timeoutDuration = 60000; // 60 seconds
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
 
       // Generate the public URL
       const imageUrl = `https://${process.env.BUCKET_NAME}.s3.us-east-1.amazonaws.com/${filename}`;
-      console.log(imageUrl);
+      // console.log(imageUrl);
 
       return NextResponse.json({
         success: true,
