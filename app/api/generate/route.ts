@@ -1,10 +1,9 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { getAuth } from "@clerk/nextjs/server";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = (jwttoken: unknown) =>
+const supabase = (jwttoken: string) =>
   createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
     global: {
       headers: {
@@ -19,7 +18,7 @@ const insertImage = async (
   profile_url: string,
   prompt: string,
   url: string,
-  jwttoken: unknown
+  jwttoken: string
 ) => {
   const client = supabase(jwttoken);
   const { data, error } = await client.from("image").insert([
@@ -40,24 +39,9 @@ const insertImage = async (
 };
 
 export async function POST(req: NextRequest) {
-  const { userId, sessionId, getToken } = getAuth(req);
-  const authData = getAuth(req);
-  console.log("Auth Data:", authData); // Log the entire auth object
   // Ensure the user is authenticated
-  if (!userId || !sessionId) {
-    console.log("user if or session unfound");
-    return NextResponse.json(
-      { error: "Unauthorized user if or session unfound" },
-      { status: 401 }
-    );
-  }
-
-  // Retrieve Clerk's JWT
-  const jwttoken = await getToken();
-  if (!jwttoken) {
-    return NextResponse.json({ error: "Token not found" }, { status: 401 });
-  }
-
+  const jwttoken = req.headers.get("X-Clerk-JWT") || "";
+  console.log("JWT Token Found in Generate: " + jwttoken);
   try {
     const body = await req.json();
     const { prompt, username, profileimage } = body;

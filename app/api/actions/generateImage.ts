@@ -1,7 +1,23 @@
 "use server";
 import { currentUser } from "@clerk/nextjs/server";
+import { useAuth } from "@clerk/nextjs";
+
+function UseClerkAuth() {
+  const { getToken } = useAuth();
+  return getToken;
+}
 
 export async function generateImage(prompt: string) {
+  const getToken = UseClerkAuth();
+  const token = await getToken();
+  console.log("JWT Token:", token); // Show Token
+
+  // Retrieve Clerk's JWT
+  const jwttoken = await getToken();
+  if (!jwttoken) {
+    return { error: "Token not found", status: 401 };
+  }
+
   try {
     const user = await currentUser();
     const username = user?.username || "Gino432";
@@ -12,6 +28,7 @@ export async function generateImage(prompt: string) {
       headers: {
         "X-API-KEY": process.env.API_KEY || "",
         "Content-Type": "application/json",
+        "X-Clerk-JWT": jwttoken,
       },
       body: JSON.stringify({ prompt, username, profileimage }),
     });
