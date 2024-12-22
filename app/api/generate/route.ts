@@ -41,7 +41,7 @@ const insertImage = async (
 export async function POST(req: NextRequest) {
   // Ensure the user is authenticated
   const jwttoken = req.headers.get("X-Clerk-JWT") || "";
-  console.log("JWT Token Found in Generate: " + jwttoken);
+
   try {
     const body = await req.json();
     const { prompt, username, profileimage } = body;
@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
       if (result == "success") {
         console.log(`Successfully added the image to Supabase`);
       } else {
-        console.log("Unsuccessful attempt of image additon to Supabase");
+        console.log("Unsuccessful additon to Supabase" + result);
       }
       return NextResponse.json({
         success: true,
