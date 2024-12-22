@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MemeCard } from "@/components/MemeCard";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,6 +10,7 @@ import { getImages } from "../actions/getimages";
 import { SignedIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
+import { ImageCard } from "@/components/ImageCard";
 
 // Define the type for wallpaper
 interface Wallpaper {
@@ -91,7 +91,7 @@ export default function Home() {
       <h1 className="mt-4 text-4xl font-bold text-primary">Wall of fame 🤩</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {wallpaperFeed.map((wallpaper, index) => (
-          <MemeCard
+          <ImageCard
             key={index}
             creatorAvatar={wallpaper.metadata.profileimage}
             imageUrl={wallpaper.url}

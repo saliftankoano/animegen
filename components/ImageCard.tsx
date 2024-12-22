@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle } from "lucide-react";
 
-interface MemeCardProps {
+interface ImageCardProps {
   id: number;
   imageUrl: string;
   caption: string;
@@ -19,7 +19,7 @@ interface MemeCardProps {
   comments: number;
 }
 
-export function MemeCard({
+export function ImageCard({
   id,
   imageUrl,
   caption,
@@ -28,7 +28,7 @@ export function MemeCard({
   createdAt,
   likes,
   comments,
-}: MemeCardProps) {
+}: ImageCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
   const router = useRouter();
