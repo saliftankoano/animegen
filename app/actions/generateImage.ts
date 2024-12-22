@@ -7,7 +7,7 @@ export async function generateImage(prompt: string) {
     const username = user?.username || "Gino432";
     const profileimage = user?.imageUrl || username || "rando";
     console.log(profileimage + " in generateImage");
-    const response = await fetch("http://localhost:3000/api/generate", {
+    const response = await fetch("https://www.genwalls.com/api/generate", {
       method: "POST",
       headers: {
         "X-API-KEY": process.env.API_KEY || "",
