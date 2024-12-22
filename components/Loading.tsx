@@ -12,9 +12,9 @@ export function Loading() {
           clearInterval(timer);
           return 100;
         }
-        return prevProgress + 10;
+        return prevProgress + 2.77777778;
       });
-    }, 3600); // Every 3 seconds increment the progress by 10%
+    }, 1000); // Every second increment the progress by 2.77777778%
 
     return () => clearInterval(timer);
   }, []);
