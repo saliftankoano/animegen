@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { neobrutalism } from "@clerk/themes";
+import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -32,6 +33,7 @@ export default function RootLayout({
               <Navbar />
               <main className="container mx-auto px-4 py-8 pt-20">
                 {children}
+                <Analytics />
               </main>
             </div>
           </ThemeProvider>
