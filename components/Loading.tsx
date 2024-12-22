@@ -14,7 +14,7 @@ export function Loading() {
         }
         return prevProgress + 10;
       });
-    }, 3000); // Every 3 seconds increment the progress by 10%
+    }, 3600); // Every 3 seconds increment the progress by 10%
 
     return () => clearInterval(timer);
   }, []);
