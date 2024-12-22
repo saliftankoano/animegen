@@ -74,7 +74,7 @@ export default function Home() {
 
   useEffect(() => {
     if (generationComplete) {
-      router.push("/feed");
+      router.push("https://www.genwalls.com/feed");
     }
   }, [generationComplete, router]);
 

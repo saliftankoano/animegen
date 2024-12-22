@@ -30,7 +30,7 @@ export default function CreateMeme() {
 
   useEffect(() => {
     if (generationComplete) {
-      router.push("/feed");
+      router.push("https://www.genwalls.com/feed");
     }
   }, [generationComplete, router]);
 
