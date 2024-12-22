@@ -8,30 +8,11 @@ import Image from "next/image";
 import { generateImage } from "../api/actions/generateImage";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
-import { useAuth } from "@clerk/nextjs";
 
 export default function CreateImage() {
   const [caption, setCaption] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationComplete, setGenerationComplete] = useState(false);
-  const { getToken } = useAuth();
-  const [jwtToken, setJwtToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const retrieveToken = async () => {
-      const token = await getToken();
-      setJwtToken(token);
-    };
-
-    const fetchToken = async () => {
-      await retrieveToken();
-    };
-
-    fetchToken();
-  }, [getToken]);
-
-  console.log("JWT Token from create:", jwtToken);
-
   const router = useRouter();
   // const [imageUrl, setImageUrl] = useState(
   //   process.env.DEFAULT_IMAGE_URL || null
