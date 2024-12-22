@@ -1,7 +1,7 @@
 "use server";
 import { currentUser } from "@clerk/nextjs/server";
 
-export async function generateImage(prompt: string, jwttoken: string) {
+export async function generateImage(prompt: string) {
   try {
     const user = await currentUser();
     const username = user?.username || "Gino432";
@@ -12,7 +12,6 @@ export async function generateImage(prompt: string, jwttoken: string) {
       headers: {
         "X-API-KEY": process.env.API_KEY || "",
         "Content-Type": "application/json",
-        "X-Clerk-JWT": jwttoken,
       },
       body: JSON.stringify({ prompt, username, profileimage }),
     });

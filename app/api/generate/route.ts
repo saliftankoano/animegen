@@ -3,25 +3,19 @@ import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = (jwttoken: string) =>
-  createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
-    global: {
-      headers: {
-        Authorization: `Bearer ${jwttoken}`,
-      },
-    },
-  });
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 // SUPABASE INSERTION
 const insertImage = async (
   username: string,
   profile_url: string,
   prompt: string,
-  url: string,
-  jwttoken: string
+  url: string
 ) => {
-  const client = supabase(jwttoken);
-  const { data, error } = await client.from("image").insert([
+  const { data, error } = await supabase.from("image").insert([
     {
       username: username,
       profile_url: profile_url,
@@ -40,7 +34,6 @@ const insertImage = async (
 
 export async function POST(req: NextRequest) {
   // Ensure the user is authenticated
-  const jwttoken = req.headers.get("X-Clerk-JWT") || "";
 
   try {
     const body = await req.json();
@@ -113,8 +106,7 @@ export async function POST(req: NextRequest) {
         username,
         profileimage,
         prompt,
-        imageUrl,
-        jwttoken
+        imageUrl
       );
       if (result == "success") {
         console.log(`Successfully added the image to Supabase`);

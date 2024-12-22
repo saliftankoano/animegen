@@ -56,12 +56,10 @@ export default function CreateImage() {
     event.preventDefault();
     setIsGenerating(true);
 
-    if (jwtToken) {
-      const imageGenerated = await generateImage(caption, jwtToken);
-      if (imageGenerated) {
-        setIsGenerating(false);
-        setGenerationComplete(true);
-      }
+    const imageGenerated = await generateImage(caption);
+    if (imageGenerated) {
+      setIsGenerating(false);
+      setGenerationComplete(true);
     } else {
       setIsGenerating(false);
       console.error("JWT Token is null");
