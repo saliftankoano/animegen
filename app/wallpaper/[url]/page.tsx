@@ -8,11 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, ThumbsUp, ThumbsDown } from "lucide-react";
-
 // This would typically come from an API call
-const getMemeById = (id: string) => ({
-  id: parseInt(id),
-  imageUrl: "/placeholder.svg?height=500&width=500",
+const getImageByUrl = (url: string) => ({
+  imageUrl: url,
   caption: "When the code finally works",
   creator: "CodeNinja",
   creatorAvatar: "/placeholder.svg?height=40&width=40",
@@ -42,11 +40,11 @@ const getMemeById = (id: string) => ({
 
 export default function MemePage() {
   const params = useParams();
-  const meme = getMemeById(params.id as string);
+  const image = getImageByUrl(params.url as string);
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(meme.likes);
+  const [likeCount, setLikeCount] = useState(image.likes);
   const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState(meme.comments);
+  const [comments, setComments] = useState(image.comments);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -77,31 +75,31 @@ export default function MemePage() {
       <Card className="overflow-hidden border-2 border-primary">
         <CardContent className="p-0 relative">
           <Image
-            src={meme.imageUrl}
-            alt={meme.caption}
+            src={image.imageUrl}
+            alt={image.caption}
             width={500}
             height={500}
             className="w-full h-auto"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-primary/80 backdrop-blur-sm p-4">
             <p className="text-lg font-bold text-primary-foreground">
-              {meme.caption}
+              {image.caption}
             </p>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between items-center p-4 bg-card">
           <div className="flex items-center space-x-2">
             <Avatar className="w-8 h-8">
-              <AvatarImage src={meme.creatorAvatar} alt={meme.creator} />
+              <AvatarImage src={image.creatorAvatar} alt={image.creator} />
               <AvatarFallback>
-                {meme.creator.slice(0, 2).toUpperCase()}
+                {image.creator.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div>
               <p className="text-sm font-medium text-foreground">
-                {meme.creator}
+                {image.creator}
               </p>
-              <p className="text-xs text-muted-foreground">{meme.createdAt}</p>
+              <p className="text-xs text-muted-foreground">{image.createdAt}</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">

@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle } from "lucide-react";
 
 interface ImageCardProps {
-  id: number;
   imageUrl: string;
   caption: string;
   creator: string;
@@ -20,7 +19,6 @@ interface ImageCardProps {
 }
 
 export function ImageCard({
-  id,
   imageUrl,
   caption,
   creator,
@@ -31,7 +29,7 @@ export function ImageCard({
 }: ImageCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes);
-  const router = useRouter();
+  //const router = useRouter();
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -39,14 +37,14 @@ export function ImageCard({
     setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
   };
 
-  const handleCardClick = () => {
-    router.push(`/wallpaper/${id}`);
-  };
+  // const handleCardClick = () => {
+  //   router.push(`/wallpaper/${imageUrl}`);
+  // };
 
   return (
     <Card
       className="overflow-hidden border-2 border-primary cursor-pointer transition-shadow hover:shadow-lg"
-      onClick={handleCardClick}
+      // onClick={handleCardClick}
     >
       <CardContent className="p-0 relative">
         <Image

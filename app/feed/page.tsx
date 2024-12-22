@@ -98,7 +98,6 @@ export default function Home() {
             caption={wallpaper.metadata.prompt}
             createdAt={wallpaper.metadata.createdAt}
             creator={wallpaper.metadata.creator}
-            id={index}
             likes={3200}
             comments={3}
           />
