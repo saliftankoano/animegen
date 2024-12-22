@@ -1,11 +1,54 @@
-export const maxDuration = 60;
-export const dynamic = "force-dynamic";
-
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
+import { useAuth } from "@clerk/nextjs";
+import { createClient } from "@supabase/supabase-js";
 
+const supabase = (jwttoken: unknown) =>
+  createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
+    global: {
+      headers: {
+        Authorization: `Bearer ${jwttoken}`,
+      },
+    },
+  });
+
+// Attach Clerk token to Supabase requests
+const insertImage = async (
+  username: string,
+  profile_url: string,
+  prompt: string,
+  url: string,
+  jwttoken: unknown
+) => {
+  const client = supabase(jwttoken);
+  const { data, error } = await client.from("image").insert([
+    {
+      username: username,
+      profile_url: profile_url,
+      prompt: prompt,
+      url: url,
+    },
+  ]);
+
+  if (error) {
+    return error;
+  } else {
+    console.log("Image inserted:", data);
+    return "success";
+  }
+};
+
+function RetrieveToken() {
+  const { getToken } = useAuth();
+  if (!getToken) {
+    return null;
+  }
+  return getToken;
+}
 export async function POST(req: NextRequest) {
+  const token = RetrieveToken();
+
   try {
     const body = await req.json();
     const { prompt, username, profileimage } = body;
@@ -72,8 +115,21 @@ export async function POST(req: NextRequest) {
 
       // Generate the public URL
       const imageUrl = `https://${process.env.BUCKET_NAME}.s3.us-east-1.amazonaws.com/${filename}`;
-      // console.log(imageUrl);
-
+      // Add to Supabase
+      if (token) {
+        const result = await insertImage(
+          username,
+          profileimage,
+          prompt,
+          imageUrl,
+          token
+        );
+        if (result == "success") {
+          console.log(`Successfully added the image to Supabase`);
+        } else {
+          console.log("Unsuccessful attempt of image additon to Supabase");
+        }
+      }
       return NextResponse.json({
         success: true,
         message: `Recieved: ${prompt}`,
