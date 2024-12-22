@@ -1,23 +1,7 @@
 "use server";
 import { currentUser } from "@clerk/nextjs/server";
-import { useAuth } from "@clerk/nextjs";
 
-function UseClerkAuth() {
-  const { getToken } = useAuth();
-  return getToken;
-}
-
-export async function generateImage(prompt: string) {
-  const getToken = UseClerkAuth();
-  const token = await getToken();
-  console.log("JWT Token:", token); // Show Token
-
-  // Retrieve Clerk's JWT
-  const jwttoken = await getToken();
-  if (!jwttoken) {
-    return { error: "Token not found", status: 401 };
-  }
-
+export async function generateImage(prompt: string, jwttoken: string) {
   try {
     const user = await currentUser();
     const username = user?.username || "Gino432";

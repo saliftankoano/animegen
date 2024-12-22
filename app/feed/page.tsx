@@ -11,6 +11,7 @@ import { SignedIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { ImageCard } from "@/components/ImageCard";
+import { useAuth } from "@clerk/nextjs";
 
 // Define the type for wallpaper
 interface Wallpaper {
@@ -31,18 +32,31 @@ export default function Home() {
   const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationComplete, setGenerationComplete] = useState(false);
+  const { getToken } = useAuth();
+  const [jwtToken, setJwtToken] = useState<string | null>(null);
   // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   const file = event.target.files?.[0];
   //   if (file) {
   //     setImage(file);
   //   }
   // };
-
+  useEffect(() => {
+    const fetchToken = async () => {
+      const token = await getToken();
+      setJwtToken(token);
+    };
+    fetchToken();
+  }, [getToken]);
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsWidgetOpen(false);
     setIsGenerating(true);
-    const getImageUrl = await generateImage(prompt);
+    let getImageUrl;
+    if (jwtToken) {
+      getImageUrl = await generateImage(prompt, jwtToken);
+    } else {
+      console.error("JWT Token is null");
+    }
 
     if (!getImageUrl.success) {
       console.log("Error generating image:", getImageUrl.error);
