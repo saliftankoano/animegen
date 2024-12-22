@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
+import { neobrutalism } from "@clerk/themes";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -21,16 +22,23 @@ export default function RootLayout({
         <link rel="icon" href="/gw.png" />
       </head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ClerkProvider>
+        <ClerkProvider
+          appearance={{
+            baseTheme: neobrutalism,
+            elements: {
+              formButtonPrimary: "bg-black hover:bg-yellow-500",
+            },
+          }}
+        >
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="min-h-screen bg-background text-foreground">
               <Navbar />
               <main className="container mx-auto px-4 py-8 pt-20">
                 {children}
               </main>
             </div>
-          </ClerkProvider>
-        </ThemeProvider>
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

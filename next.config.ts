@@ -13,10 +13,9 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "genwalls-generate.s3.us-east-1.amazonaws.com",
+        hostname: "genwalls.s3.us-east-1.amazonaws.com",
       },
     ],
-    domains: ["genwalls.s3.us-east-1.amazonaws.com"],
   },
 };
 
