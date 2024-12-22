@@ -41,10 +41,13 @@ const insertImage = async (
 
 export async function POST(req: NextRequest) {
   const { userId, sessionId, getToken } = getAuth(req);
-
   // Ensure the user is authenticated
   if (!userId || !sessionId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    console.log("user if or session unfound");
+    return NextResponse.json(
+      { error: "Unauthorized user if or session unfound" },
+      { status: 401 }
+    );
   }
 
   // Retrieve Clerk's JWT
