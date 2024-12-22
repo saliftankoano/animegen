@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { MemeCard } from "@/components/MemeCard";
+import { ImageCard } from "@/components/ImageCard";
 
 // This would typically come from an API call
 const userProfile = {
@@ -142,7 +142,7 @@ export default function ProfilePage() {
       <h2 className="text-2xl font-bold text-primary text-center">My Memes</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {userMemes.map((meme) => (
-          <MemeCard key={meme.id} {...meme} />
+          <ImageCard key={meme.id} {...meme} />
         ))}
       </div>
     </div>
