@@ -15,7 +15,7 @@ const insertImage = async (
   prompt: string,
   url: string
 ) => {
-  const { data, error } = await supabase.from("image").insert([
+  const { error } = await supabase.from("image").insert([
     {
       username: username,
       profile_url: profile_url,
@@ -27,7 +27,7 @@ const insertImage = async (
   if (error) {
     return error;
   } else {
-    console.log("Image inserted:", data);
+    console.log("Image inserted:");
     return "success";
   }
 };
@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
       if (result == "success") {
         console.log(`Successfully added the image to Supabase`);
       } else {
-        console.log("Unsuccessful additon to Supabase" + result);
+        console.log("Unsuccessful additon to Supabase");
       }
       return NextResponse.json({
         success: true,

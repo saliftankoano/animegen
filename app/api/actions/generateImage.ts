@@ -6,7 +6,6 @@ export async function generateImage(prompt: string) {
     const user = await currentUser();
     const username = user?.username || "Gino432";
     const profileimage = user?.imageUrl || username || "rando";
-    console.log(profileimage + " in generateImage");
     const response = await fetch("https://www.genwalls.com/api/generate", {
       method: "POST",
       headers: {

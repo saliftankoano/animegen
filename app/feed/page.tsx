@@ -44,9 +44,8 @@ export default function Home() {
     const getImageUrl = await generateImage(prompt);
 
     if (!getImageUrl.success) {
-      console.log("Error generating image:", getImageUrl.error);
+      console.log("Error generating image:");
     } else {
-      console.log(getImageUrl.imageUrl);
       setIsGenerating(false);
       setGenerationComplete(true);
     }
@@ -59,7 +58,7 @@ export default function Home() {
       if (data.success) {
         setWallpaperFeed(data.images);
       } else {
-        console.log(data.error || "Failed to fetch images.");
+        console.log("Failed to fetch images.");
       }
     } catch (err) {
       console.error(err);

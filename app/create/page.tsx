@@ -100,7 +100,7 @@ export default function CreateImage() {
           </CardContent>
         </Card>
         <Button type="submit" className="w-full">
-          Generate Meme
+          Generate 🤩
         </Button>
       </form>
     </div>
