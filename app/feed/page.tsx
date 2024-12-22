@@ -9,6 +9,8 @@ import { X } from "lucide-react";
 import { generateImage } from "../actions/generateImage";
 import { getImages } from "../actions/getimages";
 import { SignedIn } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { Loading } from "@/components/Loading";
 
 // Define the type for wallpaper
 interface Wallpaper {
@@ -24,10 +26,11 @@ interface Wallpaper {
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  const [image, setImage] = useState<File | null>(null);
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   const [wallpaperFeed, setWallpaperFeed] = useState<Wallpaper[]>([]);
-
+  const router = useRouter();
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationComplete, setGenerationComplete] = useState(false);
   // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   const file = event.target.files?.[0];
   //   if (file) {
@@ -37,20 +40,18 @@ export default function Home() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Wallpaper prompt submitted:", { prompt, image });
-
+    setIsWidgetOpen(false);
+    setIsGenerating(true);
     const getImageUrl = await generateImage(prompt);
 
     if (!getImageUrl.success) {
       console.log("Error generating image:", getImageUrl.error);
     } else {
       console.log(getImageUrl.imageUrl);
+      setIsGenerating(false);
+      setGenerationComplete(true);
     }
-
-    console.log("Image URL:", getImageUrl.imageUrl);
     setPrompt("");
-    setImage(null);
-    setIsWidgetOpen(false);
   };
 
   const fetchImages = async () => {
@@ -70,6 +71,21 @@ export default function Home() {
     const interval = setInterval(fetchImages, 6000); // every 6 seconds
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (generationComplete) {
+      router.push("/feed");
+    }
+  }, [generationComplete, router]);
+
+  if (isGenerating) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8 relative">
       <h1 className="mt-4 text-4xl font-bold text-primary">Wall of fame 🤩</h1>

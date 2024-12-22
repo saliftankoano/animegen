@@ -1,14 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { generateImage } from "../actions/generateImage";
+import { useRouter } from "next/navigation";
+import { Loading } from "@/components/Loading";
 
 export default function CreateMeme() {
   const [caption, setCaption] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationComplete, setGenerationComplete] = useState(false);
+
+  const router = useRouter();
   // const [imageUrl, setImageUrl] = useState(
   //   process.env.DEFAULT_IMAGE_URL || null
   // );
@@ -22,12 +28,29 @@ export default function CreateMeme() {
   //   }
   // };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  useEffect(() => {
+    if (generationComplete) {
+      router.push("/feed");
+    }
+  }, [generationComplete, router]);
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Meme created:", { caption });
-    const data = generateImage(caption);
-    console.log(data);
+    setIsGenerating(true);
+    const imageGenerated = await generateImage(caption);
+    if (imageGenerated) {
+      setIsGenerating(false);
+      setGenerationComplete(true);
+    }
   };
+
+  if (isGenerating) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-8 pt-14">

@@ -7,7 +7,7 @@ import { neobrutalism } from "@clerk/themes";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Gen Walls",
+  title: "GenWalls",
   description: "Create and share wallpapers with the community",
 };
 
