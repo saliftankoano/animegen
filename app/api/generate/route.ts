@@ -1,3 +1,6 @@
+export const maxDuration = 60;
+export const dynamic = "force-dynamic";
+
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
