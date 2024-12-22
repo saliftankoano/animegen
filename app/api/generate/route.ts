@@ -41,6 +41,8 @@ const insertImage = async (
 
 export async function POST(req: NextRequest) {
   const { userId, sessionId, getToken } = getAuth(req);
+  const authData = getAuth(req);
+  console.log("Auth Data:", authData); // Log the entire auth object
   // Ensure the user is authenticated
   if (!userId || !sessionId) {
     console.log("user if or session unfound");
