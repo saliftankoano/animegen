@@ -1,11 +1,12 @@
 "use client";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { SignedIn, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitch } from "./ThemeSwitch";
-
+import { useUser } from "@clerk/nextjs";
 export function Navbar() {
+  const { user } = useUser();
   return (
     <nav className="fixed top-0 left-0 right-0 flex justify-center z-50 border-b border-primary bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between mx-4">
@@ -44,7 +45,12 @@ export function Navbar() {
         </div>
         <div className="flex items-center space-x-4">
           <ThemeSwitch />
-          <UserButton />
+          {user && <UserButton />}
+          {!user && (
+            <SignInButton>
+              <Button className="bg-blue-700 hover:bg-black">Sign In</Button>
+            </SignInButton>
+          )}
         </div>
       </div>
     </nav>

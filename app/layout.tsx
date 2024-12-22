@@ -25,9 +25,6 @@ export default function RootLayout({
         <ClerkProvider
           appearance={{
             baseTheme: neobrutalism,
-            elements: {
-              formButtonPrimary: "bg-black hover:bg-yellow-500",
-            },
           }}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
