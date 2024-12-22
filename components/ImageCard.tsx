@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageCircle } from "lucide-react";
+import { Heart, MessageCircle, Download } from "lucide-react";
 
 interface ImageCardProps {
   imageUrl: string;
@@ -96,6 +96,35 @@ export function ImageCard({
           >
             <MessageCircle className="w-4 h-4 mr-1" />
             {comments}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-foreground hover:text-foreground/80 ml-auto"
+            onClick={async (e) => {
+              e.stopPropagation(); // Prevents triggering any parent click events
+              try {
+                const response = await fetch(imageUrl);
+                if (!response.ok) throw new Error("Failed to fetch the image.");
+
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                const link = document.createElement("a");
+                link.href = blobUrl;
+                link.download = caption || "download";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Revoke the blob URL after the download is complete
+                window.URL.revokeObjectURL(blobUrl);
+              } catch (error) {
+                console.error("Download failed:", error);
+              }
+            }}
+          >
+            <Download className="w-4 h-4 mr-1" />
           </Button>
         </div>
       </CardFooter>
