@@ -1,7 +1,7 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { useAuth } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = (jwttoken: unknown) =>
@@ -13,7 +13,7 @@ const supabase = (jwttoken: unknown) =>
     },
   });
 
-// Attach Clerk token to Supabase requests
+// SUPABASE INSERTION
 const insertImage = async (
   username: string,
   profile_url: string,
@@ -39,15 +39,19 @@ const insertImage = async (
   }
 };
 
-function RetrieveToken() {
-  const { getToken } = useAuth();
-  if (!getToken) {
-    return null;
-  }
-  return getToken;
-}
 export async function POST(req: NextRequest) {
-  const token = RetrieveToken();
+  const { userId, sessionId, getToken } = getAuth(req);
+
+  // Ensure the user is authenticated
+  if (!userId || !sessionId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Retrieve Clerk's JWT
+  const jwttoken = await getToken();
+  if (!jwttoken) {
+    return NextResponse.json({ error: "Token not found" }, { status: 401 });
+  }
 
   try {
     const body = await req.json();
@@ -116,19 +120,17 @@ export async function POST(req: NextRequest) {
       // Generate the public URL
       const imageUrl = `https://${process.env.BUCKET_NAME}.s3.us-east-1.amazonaws.com/${filename}`;
       // Add to Supabase
-      if (token) {
-        const result = await insertImage(
-          username,
-          profileimage,
-          prompt,
-          imageUrl,
-          token
-        );
-        if (result == "success") {
-          console.log(`Successfully added the image to Supabase`);
-        } else {
-          console.log("Unsuccessful attempt of image additon to Supabase");
-        }
+      const result = await insertImage(
+        username,
+        profileimage,
+        prompt,
+        imageUrl,
+        jwttoken
+      );
+      if (result == "success") {
+        console.log(`Successfully added the image to Supabase`);
+      } else {
+        console.log("Unsuccessful attempt of image additon to Supabase");
       }
       return NextResponse.json({
         success: true,
