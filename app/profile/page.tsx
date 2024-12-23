@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { ImageCard } from "@/components/ImageCard";
+import { useUser } from "@clerk/clerk-react";
 
 // This would typically come from an API call
 const userProfile = {
@@ -60,6 +61,7 @@ const userMemes = [
 ];
 
 export default function ProfilePage() {
+  const { user } = useUser();
   const [profile, setProfile] = useState(userProfile);
 
   const handleProfileUpdate = (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,14 +81,14 @@ export default function ProfilePage() {
       <Card className="overflow-hidden">
         <CardContent className="p-6 flex flex-col items-center text-center">
           <Image
-            src={profile.avatar}
+            src={user?.imageUrl || "/dawg.png"}
             alt={profile.username}
             width={150}
             height={150}
             className="rounded-full mb-4"
           />
           <h1 className="text-3xl font-bold text-primary mb-2">
-            {profile.username}
+            {user?.username || "Gino432"}
           </h1>
           <p className="text-muted-foreground mb-4">{profile.bio}</p>
           <div className="flex justify-center space-x-4 mb-4">

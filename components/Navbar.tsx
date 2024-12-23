@@ -33,14 +33,14 @@ export function Navbar() {
                 </Button>
               </Link>
             </SignedIn>
-            {/* <Link href="/profile">
+            <Link href="/profile">
               <Button
                 variant="ghost"
                 className="text-primary hover:text-primary/80"
               >
                 Profile
               </Button>
-            </Link> */}
+            </Link>
           </div>
         </div>
         <div className="flex items-center space-x-4">
