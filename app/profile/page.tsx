@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +15,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { ImageCard } from "@/components/ImageCard";
 import { useUser } from "@clerk/clerk-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // This would typically come from an API call
 const userProfile = {
@@ -80,13 +80,10 @@ export default function ProfilePage() {
     <div className="max-w-4xl mx-auto space-y-8">
       <Card className="overflow-hidden">
         <CardContent className="p-6 flex flex-col items-center text-center">
-          <Image
-            src={user?.imageUrl || "/dawg.png"}
-            alt={profile.username}
-            width={150}
-            height={150}
-            className="rounded-full mb-4"
-          />
+          <Avatar className="mb-4">
+            <AvatarImage src={user?.imageUrl || "/dawg.png"} />
+            <AvatarFallback>{user?.username?.charAt(0) || "G"}</AvatarFallback>
+          </Avatar>
           <h1 className="text-3xl font-bold text-primary mb-2">
             {user?.username || "Gino432"}
           </h1>
