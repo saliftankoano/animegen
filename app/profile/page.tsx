@@ -11,53 +11,61 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { ImageCard } from "@/components/ImageCard";
 import { useUser } from "@clerk/clerk-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { updateProfileDescription } from "../api/actions/updateProfileDescription";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { ImageCardProfile } from "@/components/ImageCardProfile";
 
-const userImages = [
-  {
-    id: 1,
-    imageUrl: "/dawg.png",
-    caption: "When the code finally works",
-    creator: "MemeMaster",
-    creatorAvatar: "/dawg.png",
-    createdAt: "2023-06-15",
-    likes: 1337,
-    comments: 42,
-  },
-  {
-    id: 2,
-    imageUrl: "/dawg.png",
-    caption: "Debugging at 3 AM",
-    creator: "MemeMaster",
-    creatorAvatar: "/dawg.png",
-    createdAt: "2023-06-14",
-    likes: 2048,
-    comments: 128,
-  },
-  {
-    id: 3,
-    imageUrl: "/dawg.png",
-    caption: 'When the client says "small change"',
-    creator: "MemeMaster",
-    creatorAvatar: "/dawg.png",
-    createdAt: "2023-06-13",
-    likes: 4096,
-    comments: 256,
-  },
-];
+// Add interface for image type
+interface UserImage {
+  id: string;
+  user_id: string;
+  url: string;
+  prompt: string;
+  username: string;
+  profile_url: string;
+  likes_count: number;
+  comments_count: number;
+}
 
 export default function ProfilePage() {
   const [open, setOpen] = useState(false);
+  const [userImages, setUserImages] = useState<UserImage[]>([]);
   const { user } = useUser();
   const username = user?.username || "";
   const userId = user?.id || "";
   const imageUrl = user?.imageUrl || "/dawg.png";
   const [bio, setBio] = useState(String(user?.publicMetadata?.bio) || "");
   const generationCount = user?.publicMetadata?.generationCount || 0;
+
+  useEffect(() => {
+    const fetchUserImages = async () => {
+      if (!userId) return;
+
+      const supabase = createClientComponentClient({
+        supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      });
+
+      const { data, error } = await supabase
+        .from("image")
+        .select("*")
+        .eq("username", username)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching images:", error);
+        return;
+      }
+
+      setUserImages(data || []);
+    };
+
+    fetchUserImages();
+  }, [userId, username]);
+
   const handleProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -128,9 +136,22 @@ export default function ProfilePage() {
         My Creations
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {userImages.map((image) => (
-          <ImageCard key={image.id} {...image} />
-        ))}
+        {userImages.length > 0 ? (
+          userImages.map((image) => (
+            <ImageCardProfile
+              key={image.id}
+              imageUrl={image.url}
+              prompt={image?.prompt || ""}
+              username={image.username}
+              profile_url={image.profile_url}
+              likes_count={image?.likes_count || 0}
+            />
+          ))
+        ) : (
+          <p className="text-center col-span-full text-muted-foreground">
+            No images created yet
+          </p>
+        )}
       </div>
     </div>
   );
