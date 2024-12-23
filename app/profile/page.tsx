@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
@@ -16,44 +14,36 @@ import { Label } from "@/components/ui/label";
 import { ImageCard } from "@/components/ImageCard";
 import { useUser } from "@clerk/clerk-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { updateProfileDescription } from "../api/actions/updateProfileDescription";
+import { useState } from "react";
 
-// This would typically come from an API call
-const userProfile = {
-  username: "MemeMaster",
-  avatar: "/placeholder.svg?height=150&width=150",
-  bio: "Creating and sharing the dankest memes since 2023",
-  memeCount: 42,
-  followerCount: 1337,
-  followingCount: 420,
-};
-
-const userMemes = [
+const userImages = [
   {
     id: 1,
-    imageUrl: "/placeholder.svg?height=500&width=500",
+    imageUrl: "/dawg.png",
     caption: "When the code finally works",
     creator: "MemeMaster",
-    creatorAvatar: "/placeholder.svg?height=40&width=40",
+    creatorAvatar: "/dawg.png",
     createdAt: "2023-06-15",
     likes: 1337,
     comments: 42,
   },
   {
     id: 2,
-    imageUrl: "/placeholder.svg?height=500&width=500",
+    imageUrl: "/dawg.png",
     caption: "Debugging at 3 AM",
     creator: "MemeMaster",
-    creatorAvatar: "/placeholder.svg?height=40&width=40",
+    creatorAvatar: "/dawg.png",
     createdAt: "2023-06-14",
     likes: 2048,
     comments: 128,
   },
   {
     id: 3,
-    imageUrl: "/placeholder.svg?height=500&width=500",
+    imageUrl: "/dawg.png",
     caption: 'When the client says "small change"',
     creator: "MemeMaster",
-    creatorAvatar: "/placeholder.svg?height=40&width=40",
+    creatorAvatar: "/dawg.png",
     createdAt: "2023-06-13",
     likes: 4096,
     comments: 256,
@@ -61,19 +51,26 @@ const userMemes = [
 ];
 
 export default function ProfilePage() {
+  const [open, setOpen] = useState(false);
   const { user } = useUser();
-  const [profile, setProfile] = useState(userProfile);
-
-  const handleProfileUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+  const username = user?.username || "";
+  const userId = user?.id || "";
+  const imageUrl = user?.imageUrl || "/dawg.png";
+  const [bio, setBio] = useState(String(user?.publicMetadata?.bio) || "");
+  const generationCount = user?.publicMetadata?.generationCount || 0;
+  const handleProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const updatedProfile = {
-      ...profile,
-      username: formData.get("username") as string,
-      bio: formData.get("bio") as string,
-    };
-    setProfile(updatedProfile);
-    // Here you would typically send the updated profile to your backend
+    try {
+      const result = await updateProfileDescription(userId, bio);
+      const data = await result.json();
+      if (data.success) {
+        console.log("Profile updated successfully");
+        setOpen(false);
+        return;
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
@@ -81,32 +78,25 @@ export default function ProfilePage() {
       <Card className="overflow-hidden">
         <CardContent className="p-6 flex flex-col items-center text-center">
           <Avatar className="mb-4">
-            <AvatarImage src={user?.imageUrl || "/dawg.png"} />
-            <AvatarFallback>{user?.username?.charAt(0) || "G"}</AvatarFallback>
+            <AvatarImage src={imageUrl || "/dawg.png"} />
+            <AvatarFallback>{username?.charAt(0) || "G"}</AvatarFallback>
           </Avatar>
           <h1 className="text-3xl font-bold text-primary mb-2">
-            {user?.username || "Gino432"}
+            {username || "Gino432"}
           </h1>
-          <p className="text-muted-foreground mb-4">{profile.bio}</p>
+          <p className="text-muted-foreground mb-4">{bio || "No bio yet"}</p>
           <div className="flex justify-center space-x-4 mb-4">
             <div className="text-center">
-              <p className="font-bold text-foreground">{profile.memeCount}</p>
-              <p className="text-sm text-muted-foreground">Memes</p>
-            </div>
-            <div className="text-center">
               <p className="font-bold text-foreground">
-                {profile.followerCount}
+                {generationCount !== undefined && generationCount !== null
+                  ? generationCount.toString()
+                  : "0"}
               </p>
-              <p className="text-sm text-muted-foreground">Followers</p>
-            </div>
-            <div className="text-center">
-              <p className="font-bold text-foreground">
-                {profile.followingCount}
-              </p>
-              <p className="text-sm text-muted-foreground">Following</p>
+              <p className="text-sm text-muted-foreground">Creations</p>
             </div>
           </div>
-          <Dialog>
+
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
                 Edit Profile
@@ -118,16 +108,12 @@ export default function ProfilePage() {
               </DialogHeader>
               <form onSubmit={handleProfileUpdate} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="username">Username</Label>
-                  <Input
-                    id="username"
-                    name="username"
-                    defaultValue={profile.username}
-                  />
-                </div>
-                <div className="space-y-2">
                   <Label htmlFor="bio">Bio</Label>
-                  <Textarea id="bio" name="bio" defaultValue={profile.bio} />
+                  <Textarea
+                    id="bio"
+                    defaultValue={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                  />
                 </div>
                 <Button type="submit" className="w-full">
                   Save changes
@@ -138,10 +124,12 @@ export default function ProfilePage() {
         </CardContent>
       </Card>
 
-      <h2 className="text-2xl font-bold text-primary text-center">My Memes</h2>
+      <h2 className="text-2xl font-bold text-primary text-center">
+        My Creations
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {userMemes.map((meme) => (
-          <ImageCard key={meme.id} {...meme} />
+        {userImages.map((image) => (
+          <ImageCard key={image.id} {...image} />
         ))}
       </div>
     </div>
