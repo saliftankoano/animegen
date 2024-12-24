@@ -17,6 +17,10 @@ export default function ProfileDropdown() {
   const { user } = useUser();
   const router = useRouter();
 
+  const handleProfileClick = () => {
+    router.push("/profile");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,14 +33,19 @@ export default function ProfileDropdown() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.push("/profile")}>
-            <User />
-            <span>Profile</span>
+          <DropdownMenuItem asChild>
+            <button
+              onClick={handleProfileClick}
+              className="w-full flex items-center gap-2"
+            >
+              <User />
+              <span>Profile</span>
+            </button>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <SignOutButton>
-            <div className="flex items-center gap-2">
+            <div className="w-full flex items-center gap-2">
               <LogOut />
               <span>Log out</span>
             </div>
