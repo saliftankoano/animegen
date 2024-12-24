@@ -11,7 +11,7 @@ import { Loading } from "@/components/Loading";
 import { GenerateImage } from "../api/actions/generateImage";
 import { toast } from "sonner";
 export default function CreateImage() {
-  const [caption, setCaption] = useState("");
+  const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationComplete, setGenerationComplete] = useState(false);
   const router = useRouter();
@@ -45,7 +45,7 @@ export default function CreateImage() {
     event.preventDefault();
     setIsGenerating(true);
 
-    const imageGenerated = await GenerateImage(caption);
+    const imageGenerated = await GenerateImage(prompt);
     if (imageGenerated) {
       setIsGenerating(false);
       setGenerationComplete(true);
@@ -68,15 +68,32 @@ export default function CreateImage() {
       <h1 className="text-3xl font-bold">Write it, into existence! ✍️</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="caption" className="block text-sm font-medium mb-1">
-            Description
+          <label className="my-1  flex items-center">
+            <p className="text-md text-primary">
+              Charater limit:{" "}
+              <span className="text-muted-foreground">
+                <span
+                  className={`${
+                    prompt.length > 70
+                      ? "text-red-500"
+                      : prompt.length > 60
+                      ? "text-orange-500"
+                      : "text-green-500"
+                  }`}
+                >
+                  {prompt.length}
+                </span>
+                /77
+              </span>
+            </p>
           </label>
           <Textarea
-            id="caption"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            placeholder="Enter your description"
+            id="prompt"
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Giant calamari attacking a ship on the ocean"
             className="w-full"
+            maxLength={77}
           />
         </div>
         {/* <div>
@@ -102,7 +119,7 @@ export default function CreateImage() {
             />
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
               <p className="text-lg font-bold">
-                {caption || "Your caption here"}
+                {prompt || "Your prompt here"}
               </p>
             </div>
           </CardContent>
