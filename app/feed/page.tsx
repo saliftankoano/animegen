@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { X } from "lucide-react";
-import { generateImage } from "../api/actions/generateImage";
+import { GenerateImage } from "../api/actions/generateImage";
 import { SignedIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
@@ -95,7 +95,7 @@ export default function Home() {
     event.preventDefault();
     setIsWidgetOpen(false);
     setIsGenerating(true);
-    const getImageUrl = await generateImage(prompt);
+    const getImageUrl = await GenerateImage(prompt);
 
     if (!getImageUrl.success) {
       console.log("Error generating image:");

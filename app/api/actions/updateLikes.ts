@@ -23,7 +23,7 @@ export const createClient = async () => {
   );
 };
 
-export default async function updateLikes(url: string, username: string) {
+export default async function UpdateLikes(url: string, username: string) {
   const supabaseClient = await createClient();
   const { data, error } = await supabaseClient
     .from("image")

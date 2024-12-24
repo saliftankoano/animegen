@@ -1,6 +1,6 @@
 "use server";
 import { currentUser } from "@clerk/nextjs/server";
-export async function generateImage(prompt: string) {
+export async function GenerateImage(prompt: string) {
   try {
     const user = await currentUser();
     const username = user?.username || "Gino432";

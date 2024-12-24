@@ -1,6 +1,6 @@
 "use server";
 
-export async function updateProfileDescription(userId: string, bio: string) {
+export async function UpdateProfileDescription(userId: string, bio: string) {
   try {
     const response = await fetch(`${process.env.BASE_URL}/api/description`, {
       method: "POST",

@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import { generateImage } from "../api/actions/generateImage";
+import { GenerateImage } from "../api/actions/generateImage";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
-import { updateCreations } from "../api/actions/updateCreations";
+import { UpdateCreations } from "../api/actions/updateCreations";
 import { useUser } from "@clerk/nextjs";
-import { getCreations } from "../api/actions/getCreations";
+import { GetCreations } from "../api/actions/getCreations";
 import { toast } from "sonner";
 export default function CreateImage() {
   const { user } = useUser();
@@ -50,8 +50,8 @@ export default function CreateImage() {
     event.preventDefault();
     setIsGenerating(true);
 
-    const imageGenerated = await generateImage(caption);
-    const { success, message } = await updateCreations(username, creations);
+    const imageGenerated = await GenerateImage(caption);
+    const { success, message } = await UpdateCreations(username, creations);
     console.log(success, message, creations + "From create page");
     if (imageGenerated) {
       setIsGenerating(false);
@@ -64,7 +64,7 @@ export default function CreateImage() {
 
   useEffect(() => {
     const fetchCreations = async () => {
-      const { success, creations } = await getCreations(username);
+      const { success, creations } = await GetCreations(username);
       if (success) {
         setCreations(creations);
       }
