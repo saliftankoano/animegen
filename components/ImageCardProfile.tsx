@@ -13,6 +13,7 @@ interface ImageCardProps {
   username: string;
   profile_url: string;
   likes_count: number;
+  onImageClick: (url: string, prompt: string) => void;
 }
 
 export function ImageCardProfile({
@@ -21,6 +22,7 @@ export function ImageCardProfile({
   username,
   profile_url,
   likes_count,
+  onImageClick,
 }: ImageCardProps) {
   //const router = useRouter();
 
@@ -41,6 +43,7 @@ export function ImageCardProfile({
           height={650}
           className="w-full h-auto"
           loading="lazy"
+          onClick={() => onImageClick(imageUrl, prompt)}
         />
         <div className="absolute bottom-0 left-0 right-0 bg-primary/80 backdrop-blur-sm p-4">
           <p

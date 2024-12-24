@@ -17,7 +17,7 @@ import { UpdateProfileDescription } from "@/app/api/actions/updateProfileDescrip
 import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ImageCardProfile } from "@/components/ImageCardProfile";
-
+import Image from "next/image";
 // Add interface for image type
 interface UserImage {
   id: string;
@@ -38,6 +38,10 @@ export default function ProfilePage() {
   const userId = user?.id || "";
   const imageUrl = user?.imageUrl || "/dawg.png";
   const [bio, setBio] = useState(String(user?.publicMetadata?.bio) || "");
+  const [selectedImage, setSelectedImage] = useState<{
+    url: string;
+    prompt: string;
+  } | null>(null);
 
   useEffect(() => {
     const fetchUserImages = async () => {
@@ -76,6 +80,10 @@ export default function ProfilePage() {
     } catch (error) {
       console.error("Error updating profile:", error);
     }
+  };
+
+  const handleImageClick = (url: string, prompt: string) => {
+    setSelectedImage({ url, prompt });
   };
 
   return (
@@ -128,6 +136,24 @@ export default function ProfilePage() {
       <h2 className="text-2xl font-bold text-primary text-center">
         My Creations
       </h2>
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="max-w-4xl w-full p-4">
+            <Image
+              src={selectedImage.url}
+              alt={selectedImage.prompt}
+              width={1024}
+              height={1024}
+              className="w-full h-auto rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {userImages.length > 0 ? (
           userImages.map((image) => (
@@ -142,6 +168,7 @@ export default function ProfilePage() {
               username={image.username}
               profile_url={image.profile_url}
               likes_count={image?.likes_count || 0}
+              onImageClick={handleImageClick}
             />
           ))
         ) : (
