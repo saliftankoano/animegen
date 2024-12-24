@@ -8,13 +8,13 @@ import Image from "next/image";
 import { generateImage } from "../api/actions/generateImage";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
+import { updateCreations } from "../api/actions/updateCreations";
 import { useUser } from "@clerk/nextjs";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-
+import { getCreations } from "../api/actions/getcreations";
 export default function CreateImage() {
   const { user } = useUser();
-  const username = user?.username;
-  const supabaseClient = createClientComponentClient();
+  const username = user?.username || "";
+  const [creations, setCreations] = useState(0);
   const [caption, setCaption] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationComplete, setGenerationComplete] = useState(false);
@@ -37,25 +37,13 @@ export default function CreateImage() {
       router.push("/feed");
     }
   }, [generationComplete, router]);
-  const [currentCreations, setCurrentCreations] = useState(0);
-  const fetchCreations = async () => {
-    const { data, error } = await supabaseClient
-      .from("images_created")
-      .select("*")
-      .eq("username", username);
-    if (error) {
-      setCurrentCreations(0);
-    } else {
-      setCurrentCreations(data?.[0]?.creations);
-    }
-  };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    fetchCreations();
     setIsGenerating(true);
 
-    const imageGenerated = await generateImage(caption, currentCreations);
-
+    const imageGenerated = await generateImage(caption);
+    const { success, message } = await updateCreations(username, creations);
+    console.log(success, message, creations + "From create page");
     if (imageGenerated) {
       setIsGenerating(false);
       setGenerationComplete(true);
@@ -65,6 +53,15 @@ export default function CreateImage() {
     }
   };
 
+  useEffect(() => {
+    const fetchCreations = async () => {
+      const { success, creations } = await getCreations(username);
+      if (success) {
+        setCreations(creations);
+      }
+    };
+    fetchCreations();
+  }, [username, creations]);
   if (isGenerating) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-4rem)]">

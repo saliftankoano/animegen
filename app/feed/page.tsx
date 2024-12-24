@@ -39,7 +39,6 @@ export default function Home() {
       supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     })
   );
-  const [currentCreations, setCurrentCreations] = useState(0);
   useEffect(() => {
     // Initial fetch of images
     const fetchUserImages = async () => {
@@ -75,20 +74,8 @@ export default function Home() {
         )
         .subscribe();
     };
-    const fetchCreations = async () => {
-      const { data, error } = await supabaseClient
-        .from("images_created")
-        .select("*")
-        .eq("username", username);
 
-      if (error) {
-        setCurrentCreations(0);
-      } else {
-        setCurrentCreations(data?.[0]?.creations);
-      }
-    };
     fetchUserImages();
-    fetchCreations();
     setupSubscription();
 
     // Cleanup subscription when component unmounts
@@ -107,7 +94,7 @@ export default function Home() {
     event.preventDefault();
     setIsWidgetOpen(false);
     setIsGenerating(true);
-    const getImageUrl = await generateImage(prompt, currentCreations);
+    const getImageUrl = await generateImage(prompt);
 
     if (!getImageUrl.success) {
       console.log("Error generating image:");
