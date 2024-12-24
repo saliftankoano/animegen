@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function updateProfileDescription(userId: string, bio: string) {
   try {
-    const response = await fetch("/api/description", {
+    const response = await fetch(`${process.env.BASE_URL}/api/description`, {
       method: "POST",
       body: JSON.stringify({ bio: bio, userId }),
     });
