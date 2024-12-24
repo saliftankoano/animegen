@@ -8,8 +8,13 @@ import Image from "next/image";
 import { generateImage } from "../api/actions/generateImage";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
+import { useUser } from "@clerk/nextjs";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function CreateImage() {
+  const { user } = useUser();
+  const username = user?.username;
+  const supabaseClient = createClientComponentClient();
   const [caption, setCaption] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationComplete, setGenerationComplete] = useState(false);
@@ -32,12 +37,25 @@ export default function CreateImage() {
       router.push("/feed");
     }
   }, [generationComplete, router]);
-
+  const [currentCreations, setCurrentCreations] = useState(0);
+  const fetchCreations = async () => {
+    const { data, error } = await supabaseClient
+      .from("images_created")
+      .select("*")
+      .eq("username", username);
+    if (error) {
+      setCurrentCreations(0);
+    } else {
+      setCurrentCreations(data?.[0]?.creations);
+    }
+  };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    fetchCreations();
     setIsGenerating(true);
 
-    const imageGenerated = await generateImage(caption);
+    const imageGenerated = await generateImage(caption, currentCreations);
+
     if (imageGenerated) {
       setIsGenerating(false);
       setGenerationComplete(true);
