@@ -70,8 +70,9 @@ export default function ProfilePage() {
     e.preventDefault();
     try {
       const result = await updateProfileDescription(userId, bio);
-      const data = await result.json();
-      if (data.success) {
+      const serializedData = JSON.parse(JSON.stringify(result));
+      console.log(serializedData);
+      if (serializedData.success) {
         console.log("Profile updated successfully");
         setOpen(false);
         return;
