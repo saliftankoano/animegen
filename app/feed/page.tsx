@@ -15,8 +15,9 @@ import { RealtimeChannel } from "@supabase/supabase-js";
 import { useUser } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import Image from "next/image";
+import Paginations from "@/components/Paginations";
 // Define the type for wallpaper
-interface Wallpaper {
+export interface GeneratedImage {
   id: string;
   url: string;
   like_count: number;
@@ -31,10 +32,15 @@ export default function Home() {
   const username = user?.username;
   const [prompt, setPrompt] = useState("");
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
-  const [wallpaperFeed, setWallpaperFeed] = useState<Wallpaper[]>([]);
+  const [imageFeed, setImageFeed] = useState<GeneratedImage[]>([]);
   const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationComplete, setGenerationComplete] = useState(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const imagesPerPage = 12;
+  const lastImageIndex = currentPage * imagesPerPage;
+  const firstImageIndex = lastImageIndex - imagesPerPage;
+  const currentImages = imageFeed.slice(firstImageIndex, lastImageIndex);
   const [supabaseClient] = useState(() =>
     createClientComponentClient({
       supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -45,6 +51,7 @@ export default function Home() {
     url: string;
     prompt: string;
   } | null>(null);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     // Initial fetch of images
@@ -60,7 +67,7 @@ export default function Home() {
       }
       // Ensure the data is serializable by converting it to plain objects
       const serializedData = JSON.parse(JSON.stringify(data || []));
-      setWallpaperFeed(serializedData);
+      setImageFeed(serializedData);
     };
     // Set up real-time subscription
     let subscription: RealtimeChannel;
@@ -97,8 +104,79 @@ export default function Home() {
   //     setImage(file);
   //   }
   // };
+  const validatePrompt = (text: string): boolean => {
+    // Check for minimum length
+    if (text.length < 3) {
+      setError("Prompt must be at least 3 characters long");
+      return false;
+    }
+
+    // Check for maximum length (already handled by maxLength, but good to verify)
+    if (text.length > 77) {
+      setError("Prompt is too long");
+      return false;
+    }
+
+    // Check for Spam (repeated characters)
+    if (/(.)\1{4,}/.test(text)) {
+      setError("Please avoid repeating characters");
+      return false;
+    }
+
+    // Check for NSFW/inappropriate content patterns
+    const inappropriatePatterns = [
+      // URLs and spam (existing)
+      "http://",
+      "https://",
+      ".com",
+      ".net",
+      "www.",
+      // NSFW/inappropriate terms
+      "nude",
+      "naked",
+      "nsfw",
+      "porn",
+      "xxx",
+      "sex",
+      "explicit",
+      "adult",
+      "18+",
+      "r18",
+      "erotic",
+      // Body parts/inappropriate terms
+      "breast",
+      "nipple",
+      "genital",
+      "penis",
+      "vagina",
+      "n*de",
+      "n*k*d",
+      "s*x",
+      "p*rn",
+    ];
+
+    const normalizedText = text.toLowerCase();
+
+    if (
+      inappropriatePatterns.some((pattern) => normalizedText.includes(pattern))
+    ) {
+      setError("Inappropriate content is not allowed");
+      return false;
+    }
+
+    setError("");
+    return true;
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    // Validate before proceeding
+    if (!validatePrompt(prompt)) {
+      toast.error(error);
+      return;
+    }
+
     setIsWidgetOpen(false);
     setIsGenerating(true);
     const getImageUrl = await GenerateImage(prompt);
@@ -160,25 +238,31 @@ export default function Home() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {wallpaperFeed.map((wallpaper) => (
+        {currentImages.map((image) => (
           <ImageCard
-            key={wallpaper.id}
-            profile_url={wallpaper.profile_url || ""}
-            url={wallpaper.url || ""}
-            prompt={wallpaper.prompt || ""}
-            username={wallpaper.username || ""}
-            like_count={wallpaper.like_count || 0}
-            comment_count={wallpaper.comment_count || 0}
+            key={image.id}
+            profile_url={image.profile_url || ""}
+            url={image.url || ""}
+            prompt={image.prompt || ""}
+            username={image.username || ""}
+            like_count={image.like_count || 0}
+            comment_count={image.comment_count || 0}
             onImageClick={handleImageClick}
           />
         ))}
       </div>
+      <Paginations
+        images={imageFeed}
+        imagesPerPage={imagesPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
       <SignedIn>
         <Button
-          className="fixed bottom-12 right-12 bg-black hover:bg-yellow-500 text-white dark:bg-yellow-500 dark:text-black dark:hover:bg-blue-700"
+          className="fixed bottom-12 right-12 bg-blue-700 hover:bg-yellow-500 text-white dark:bg-yellow-500 dark:text-black dark:hover:bg-blue-700"
           onClick={() => setIsWidgetOpen(true)}
         >
-          Generate
+          Generate 🤩
         </Button>
       </SignedIn>
 
@@ -217,10 +301,13 @@ export default function Home() {
                 <Textarea
                   placeholder="Enter your Wallpaper prompt here..."
                   value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  className="min-h-[100px] bg-muted mt-2"
+                  onChange={(e) => setPrompt(e.target.value.trim())}
+                  className={`min-h-[100px] bg-muted mt-2 ${
+                    error ? "border-red-500" : ""
+                  }`}
                   maxLength={77}
                 />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
                 <div className="flex justify-end items-center space-x-2">
                   {/* <Input
                     type="file"
