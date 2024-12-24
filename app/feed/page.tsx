@@ -112,9 +112,9 @@ export default function Home() {
     if (!getImageUrl.success) {
       console.log("Error generating image:");
     } else {
-      setIsGenerating(false);
       setGenerationComplete(true);
     }
+    setIsGenerating(false);
     setPrompt("");
   };
 
