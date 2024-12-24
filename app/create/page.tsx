@@ -8,15 +8,9 @@ import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
-import { useUser } from "@clerk/nextjs";
-import { GetCreations } from "../api/actions/getcreations";
 import { GenerateImage } from "../api/actions/generateImage";
-import { UpdateCreations } from "../api/actions/updatecreations";
 import { toast } from "sonner";
 export default function CreateImage() {
-  const { user } = useUser();
-  const username = user?.username || "";
-  const [creations, setCreations] = useState(0);
   const [caption, setCaption] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationComplete, setGenerationComplete] = useState(false);
@@ -52,8 +46,6 @@ export default function CreateImage() {
     setIsGenerating(true);
 
     const imageGenerated = await GenerateImage(caption);
-    const { success, message } = await UpdateCreations(username, creations);
-    console.log(success, message, creations + "From create page");
     if (imageGenerated) {
       setIsGenerating(false);
       setGenerationComplete(true);
@@ -63,15 +55,6 @@ export default function CreateImage() {
     }
   };
 
-  useEffect(() => {
-    const fetchCreations = async () => {
-      const { success, creations } = await GetCreations(username);
-      if (success) {
-        setCreations(creations);
-      }
-    };
-    fetchCreations();
-  }, [username, creations]);
   if (isGenerating) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-4rem)]">

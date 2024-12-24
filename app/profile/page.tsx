@@ -38,7 +38,6 @@ export default function ProfilePage() {
   const userId = user?.id || "";
   const imageUrl = user?.imageUrl || "/dawg.png";
   const [bio, setBio] = useState(String(user?.publicMetadata?.bio) || "");
-  const generationCount = user?.publicMetadata?.generationCount || 0;
 
   useEffect(() => {
     const fetchUserImages = async () => {
@@ -93,11 +92,7 @@ export default function ProfilePage() {
           <p className="text-muted-foreground mb-4">{bio || "No bio yet"}</p>
           <div className="flex justify-center space-x-4 mb-4">
             <div className="text-center">
-              <p className="font-bold text-foreground">
-                {generationCount !== undefined && generationCount !== null
-                  ? generationCount.toString()
-                  : "0"}
-              </p>
+              <p className="font-bold text-foreground">{userImages.length}</p>
               <p className="text-sm text-muted-foreground">Creations</p>
             </div>
           </div>
