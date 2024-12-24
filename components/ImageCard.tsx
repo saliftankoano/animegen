@@ -1,38 +1,103 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 //import { useRouter } from "next/navigation";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Download } from "lucide-react";
-
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { RealtimeChannel } from "@supabase/supabase-js";
 interface ImageCardProps {
-  imageUrl: string;
+  url: string;
   prompt: string;
-  creator: string;
-  creatorAvatar: string;
-  likes_count: number;
-  comments_count: number;
+  username: string;
+  profile_url: string;
+  like_count: number;
+  comment_count: number;
 }
 
 export function ImageCard({
-  imageUrl,
+  url,
   prompt,
-  creator,
-  creatorAvatar,
-  likes_count,
-  comments_count,
+  username,
+  profile_url,
+  like_count,
+  comment_count,
 }: ImageCardProps) {
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(likes_count);
+  const [likeCount, setLikeCount] = useState(like_count);
+  const [supabaseClient] = useState(() =>
+    createClientComponentClient({
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    })
+  );
+
+  useEffect(() => {
+    const fetchLikeCount = async () => {
+      const { data, error } = await supabaseClient
+        .from("image")
+        .select("like_count")
+        .eq("url", url)
+        .eq("username", username)
+        .single();
+      if (error) throw error;
+      setLikeCount(data.like_count);
+    };
+    // Set up real-time subscription
+    let subscription: RealtimeChannel;
+    const setupSubscription = () => {
+      subscription = supabaseClient
+        .channel("like_updates")
+        .on(
+          "postgres_changes",
+          {
+            event: "*", // Listen to all events (insert, update, delete)
+            schema: "public",
+            table: "image",
+            filter: `url=eq.${url}`,
+          },
+          async () => {
+            // Refetch like count when changes occur
+            await fetchLikeCount();
+          }
+        )
+        .subscribe();
+    };
+    fetchLikeCount();
+    setupSubscription();
+    // Cleanup subscription when component unmounts
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, [supabaseClient, url, username]);
   //const router = useRouter();
 
-  const handleLike = (e: React.MouseEvent) => {
+  const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLiked(!isLiked);
-    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+    try {
+      const { error } = await supabaseClient
+        .from("image")
+        .update({ like_count: isLiked ? likeCount - 1 : likeCount + 1 })
+        .eq("url", url)
+        .eq("username", username)
+        .single();
+
+      if (error) throw error;
+      setIsLiked(!isLiked);
+      const { data } = await supabaseClient
+        .from("image")
+        .select("like_count")
+        .eq("url", url)
+        .eq("username", username)
+        .single();
+      if (error) throw error;
+      else if (data) setLikeCount(data.like_count);
+    } catch (error) {
+      console.error("Error updating like:", error);
+    }
   };
 
   // const handleCardClick = () => {
@@ -46,7 +111,7 @@ export function ImageCard({
     >
       <CardContent className="p-0 relative">
         <Image
-          src={imageUrl}
+          src={url}
           alt={prompt || "Wallpaper"}
           width={500}
           height={500}
@@ -66,15 +131,15 @@ export function ImageCard({
       <CardFooter className="flex justify-between items-center p-4 bg-card">
         <div className="flex items-center space-x-2">
           <Avatar className="w-8 h-8">
-            <AvatarImage src={creatorAvatar} alt={creator} />
+            <AvatarImage src={profile_url} alt={username} />
             <AvatarFallback>
-              {typeof creator === "string"
-                ? creator.slice(0, 2).toUpperCase()
+              {typeof username === "string"
+                ? username.slice(0, 2).toUpperCase()
                 : "Gino432"}
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-sm font-medium text-foreground">{creator}</p>
+            <p className="text-sm font-medium text-foreground">{username}</p>
           </div>
         </div>
         <div className="flex items-center space-x-2">
@@ -98,7 +163,7 @@ export function ImageCard({
             className="text-foreground hover:text-foreground/80"
           >
             <MessageCircle className="w-4 h-4 mr-1" />
-            {comments_count}
+            {comment_count}
           </Button>
           <Button
             variant="ghost"
@@ -107,7 +172,7 @@ export function ImageCard({
             onClick={async (e) => {
               e.stopPropagation(); // Prevents triggering any parent click events
               try {
-                const response = await fetch(imageUrl);
+                const response = await fetch(url);
                 if (!response.ok) throw new Error("Failed to fetch the image.");
 
                 const blob = await response.blob();

@@ -6,22 +6,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { X } from "lucide-react";
 import { generateImage } from "../api/actions/generateImage";
-import { getImages } from "../api/actions/getimages";
 import { SignedIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { ImageCard } from "@/components/ImageCard";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { RealtimeChannel } from "@supabase/supabase-js";
 
 // Define the type for wallpaper
 interface Wallpaper {
-  key: string;
+  id: string;
   url: string;
-  metadata: {
-    prompt: string;
-    createdAt: string;
-    creator: string;
-    profileimage: string;
-  };
+  like_count: number;
+  comment_count: number;
+  profile_url: string;
+  username: string;
+  prompt: string;
 }
 
 export default function Home() {
@@ -31,6 +31,57 @@ export default function Home() {
   const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationComplete, setGenerationComplete] = useState(false);
+  const [supabaseClient] = useState(() =>
+    createClientComponentClient({
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    })
+  );
+
+  useEffect(() => {
+    // Initial fetch of images
+    const fetchUserImages = async () => {
+      const { data, error } = await supabaseClient
+        .from("image")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching images:", error);
+        return;
+      }
+      // Ensure the data is serializable by converting it to plain objects
+      const serializedData = JSON.parse(JSON.stringify(data || []));
+      setWallpaperFeed(serializedData);
+    };
+    // Set up real-time subscription
+    let subscription: RealtimeChannel;
+    const setupSubscription = () => {
+      subscription = supabaseClient
+        .channel("image_changes")
+        .on(
+          "postgres_changes",
+          {
+            event: "*", // Listen to all events (insert, update, delete)
+            schema: "public",
+            table: "image",
+          },
+          async () => {
+            // Refetch all images when any change occurs
+            await fetchUserImages();
+          }
+        )
+        .subscribe();
+    };
+
+    fetchUserImages();
+    setupSubscription();
+    // Cleanup subscription when component unmounts
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, [supabaseClient]);
+
   // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   const file = event.target.files?.[0];
   //   if (file) {
@@ -52,24 +103,6 @@ export default function Home() {
     setPrompt("");
   };
 
-  const fetchImages = async () => {
-    try {
-      const data = await getImages();
-      if (data.success) {
-        setWallpaperFeed(data.images);
-      } else {
-        console.log("Failed to fetch images.");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  useEffect(() => {
-    fetchImages();
-    const interval = setInterval(fetchImages, 6000); // every 6 seconds
-    return () => clearInterval(interval);
-  }, []);
-
   useEffect(() => {
     if (generationComplete) {
       router.push("/feed");
@@ -88,16 +121,15 @@ export default function Home() {
     <div className="space-y-8 relative">
       <h1 className="mt-4 text-4xl font-bold text-primary">Wall of fame 🤩</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {wallpaperFeed.map((wallpaper, index) => (
+        {wallpaperFeed.map((wallpaper) => (
           <ImageCard
-            key={index}
-            creatorAvatar={wallpaper.metadata.profileimage}
-            imageUrl={wallpaper.url}
-            caption={wallpaper.metadata.prompt}
-            createdAt={wallpaper.metadata.createdAt}
-            creator={wallpaper.metadata.creator}
-            likes={3200}
-            comments={3}
+            key={wallpaper.id}
+            profile_url={wallpaper.profile_url || ""}
+            url={wallpaper.url || ""}
+            prompt={wallpaper.prompt || ""}
+            username={wallpaper.username || ""}
+            like_count={wallpaper.like_count || 0}
+            comment_count={wallpaper.comment_count || 0}
           />
         ))}
       </div>

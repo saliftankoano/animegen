@@ -1,3 +1,4 @@
+"use server";
 import { NextResponse } from "next/server";
 
 export async function updateProfileDescription(userId: string, bio: string) {
