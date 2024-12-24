@@ -143,7 +143,7 @@ export default function LandingPage() {
             />
             <FaqItem
               question="How can I reach out?"
-              answer="You can reach out to me by messaging me on LinkedIn (see footer)"
+              answer="You can reach out to me on LinkedIn (see link in the footer)"
               index={2}
               expandedFaq={expandedFaq}
               setExpandedFaq={setExpandedFaq}
