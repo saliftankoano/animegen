@@ -9,6 +9,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Download } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { RealtimeChannel } from "@supabase/supabase-js";
+
+type Image = {
+  url: string;
+  username: string;
+  like_count: number;
+};
+
 interface ImageCardProps {
   url: string;
   prompt: string;
@@ -78,23 +85,19 @@ export function ImageCard({
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      const { error } = await supabaseClient
+      const { error, data } = await supabaseClient
         .from("image")
         .update({ like_count: isLiked ? likeCount - 1 : likeCount + 1 })
         .eq("url", url)
         .eq("username", username)
+        .select()
         .single();
 
       if (error) throw error;
       setIsLiked(!isLiked);
-      const { data } = await supabaseClient
-        .from("image")
-        .select("like_count")
-        .eq("url", url)
-        .eq("username", username)
-        .single();
+
       if (error) throw error;
-      else if (data) setLikeCount(data.like_count);
+      else if (data) setLikeCount((data as Image).like_count);
     } catch (error) {
       console.error("Error updating like:", error);
     }
