@@ -108,7 +108,6 @@ export default function Home() {
 
   useEffect(() => {
     if (generationComplete) {
-      router.push("/feed");
       toast("Generation successful", {
         description: "Great job! 👏",
       });
@@ -116,7 +115,7 @@ export default function Home() {
       toast("Generation unsuccessful", {
         description: "Please try again 🙏😭",
       });
-      router.push("/create");
+      router.push("/feed");
     }
   }, [generationComplete, router]);
 
