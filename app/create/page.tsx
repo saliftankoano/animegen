@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import { GenerateImage } from "../api/actions/generateImage";
+import { GenerateImage } from "@/app/api/actions/generateImage";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
-import { UpdateCreations } from "../api/actions/updateCreations";
+import { UpdateCreations } from "@/app/api/actions/updateCreations";
 import { useUser } from "@clerk/nextjs";
-import { GetCreations } from "../api/actions/getCreations";
+import { GetCreations } from "@/app/api/actions/getCreations";
 import { toast } from "sonner";
 export default function CreateImage() {
   const { user } = useUser();

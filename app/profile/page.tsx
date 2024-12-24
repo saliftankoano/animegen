@@ -13,7 +13,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { useUser } from "@clerk/clerk-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UpdateProfileDescription } from "../api/actions/updateProfileDescription";
+import { UpdateProfileDescription } from "@/app/api/actions/updateProfileDescription";
 import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ImageCardProfile } from "@/components/ImageCardProfile";
