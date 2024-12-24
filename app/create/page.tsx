@@ -10,7 +10,8 @@ import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { updateCreations } from "../api/actions/updateCreations";
 import { useUser } from "@clerk/nextjs";
-import { getCreations } from "../api/actions/getcreations";
+import { getCreations } from "../api/actions/getCreations";
+import { toast } from "sonner";
 export default function CreateImage() {
   const { user } = useUser();
   const username = user?.username || "";
@@ -35,6 +36,14 @@ export default function CreateImage() {
   useEffect(() => {
     if (generationComplete) {
       router.push("/feed");
+      toast("Generation successful", {
+        description: "Great job! 👏",
+      });
+    } else {
+      toast("Generation unsuccessful", {
+        description: "Please try again 🙏😭",
+      });
+      router.push("/create");
     }
   }, [generationComplete, router]);
   const handleSubmit = async (event: React.FormEvent) => {

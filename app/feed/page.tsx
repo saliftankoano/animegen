@@ -13,6 +13,7 @@ import { ImageCard } from "@/components/ImageCard";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useUser } from "@clerk/clerk-react";
+import { toast } from "sonner";
 // Define the type for wallpaper
 interface Wallpaper {
   id: string;
@@ -108,6 +109,14 @@ export default function Home() {
   useEffect(() => {
     if (generationComplete) {
       router.push("/feed");
+      toast("Generation successful", {
+        description: "Great job! 👏",
+      });
+    } else {
+      toast("Generation unsuccessful", {
+        description: "Please try again 🙏😭",
+      });
+      router.push("/create");
     }
   }, [generationComplete, router]);
 
