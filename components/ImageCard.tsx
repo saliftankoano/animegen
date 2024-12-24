@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-//import { useRouter } from "next/navigation";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Download } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { RealtimeChannel } from "@supabase/supabase-js";
-
 type Image = {
   url: string;
   username: string;
@@ -23,6 +21,7 @@ interface ImageCardProps {
   profile_url: string;
   like_count: number;
   comment_count: number;
+  onImageClick: (url: string, prompt: string) => void;
 }
 
 export function ImageCard({
@@ -32,6 +31,7 @@ export function ImageCard({
   profile_url,
   like_count,
   comment_count,
+  onImageClick,
 }: ImageCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(like_count);
@@ -41,7 +41,6 @@ export function ImageCard({
       supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     })
   );
-
   useEffect(() => {
     const fetchLikeCount = async () => {
       const { data, error } = await supabaseClient
@@ -80,7 +79,6 @@ export function ImageCard({
       subscription?.unsubscribe();
     };
   }, [supabaseClient, url, username]);
-  //const router = useRouter();
 
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -103,14 +101,14 @@ export function ImageCard({
     }
   };
 
-  // const handleCardClick = () => {
-  //   router.push(`/wallpaper/${imageUrl}`);
-  // };
+  const handleCardClick = () => {
+    onImageClick(url, prompt);
+  };
 
   return (
     <Card
       className="overflow-hidden border-2 border-primary cursor-pointer transition-shadow hover:shadow-lg"
-      // onClick={handleCardClick}
+      onClick={handleCardClick}
     >
       <CardContent className="p-0 relative">
         <Image

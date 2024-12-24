@@ -14,6 +14,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useUser } from "@clerk/clerk-react";
 import { toast } from "sonner";
+import Image from "next/image";
 // Define the type for wallpaper
 interface Wallpaper {
   id: string;
@@ -40,6 +41,11 @@ export default function Home() {
       supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     })
   );
+  const [selectedImage, setSelectedImage] = useState<{
+    url: string;
+    prompt: string;
+  } | null>(null);
+
   useEffect(() => {
     // Initial fetch of images
     const fetchUserImages = async () => {
@@ -119,6 +125,10 @@ export default function Home() {
     }
   }, [generationComplete, router]);
 
+  const handleImageClick = (url: string, prompt: string) => {
+    setSelectedImage({ url, prompt });
+  };
+
   if (isGenerating) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
@@ -130,6 +140,25 @@ export default function Home() {
   return (
     <div className="space-y-8 relative">
       <h1 className="mt-4 text-4xl font-bold text-primary">Wall of fame 🤩</h1>
+
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="max-w-4xl w-full p-4">
+            <Image
+              src={selectedImage.url}
+              alt={selectedImage.prompt}
+              width={1024}
+              height={1024}
+              className="w-full h-auto rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {wallpaperFeed.map((wallpaper) => (
           <ImageCard
@@ -140,6 +169,7 @@ export default function Home() {
             username={wallpaper.username || ""}
             like_count={wallpaper.like_count || 0}
             comment_count={wallpaper.comment_count || 0}
+            onImageClick={handleImageClick}
           />
         ))}
       </div>
