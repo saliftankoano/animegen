@@ -175,7 +175,7 @@ export default function Home() {
       </div>
       <SignedIn>
         <Button
-          className="fixed bottom-12 right-12 bg-black hover:bg-yellow-500 text-white"
+          className="fixed bottom-12 right-12 bg-black hover:bg-yellow-500 text-white dark:bg-yellow-500 dark:text-black dark:hover:bg-blue-700"
           onClick={() => setIsWidgetOpen(true)}
         >
           Generate
