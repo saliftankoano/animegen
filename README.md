@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🖼️ GenWalls
 
-## Getting Started
+<p align="left">
+  <img src="https://raw.githubusercontent.com/saliftankoano/genwalls/refs/heads/main/public/gw.png" alt="GenWalls Logo" width="200" />
+</p>
 
-First, run the development server:
+GenWalls is a modern web application that empowers users to create, share, and discover AI-generated wallpapers and images. Built with Next.js, TypeScript, and Tailwind CSS, it offers a seamless and interactive experience for creative minds.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🎨 Image Generation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Write prompts to generate unique AI images
+- Character limit guidance for optimal prompt writing
+- Real-time generation status updates
+- Seamless integration with AI image generation API
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 👥 User Experience
 
-## Learn More
+- Clean and intuitive user interface
+- Responsive design that works on all devices
+- Dark/Light theme support
+- Smooth animations and transitions using Framer Motion
 
-To learn more about Next.js, take a look at the following resources:
+### 🌟 Social Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- User profiles with customizable bios
+- Image likes and interaction tracking
+- Real-time updates using Supabase
+- Image sharing and downloading capabilities
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🔐 Authentication
 
-## Deploy on Vercel
+- Secure user authentication with Clerk
+- Protected routes and API endpoints
+- Profile management and customization
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ Technical Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS
+- **Authentication**: Clerk
+- **Database**: Supabase
+- **State Management**: React Hooks
+- **Animations**: Framer Motion
+- **Styling**: Shadcn UI Components
+- **Deployment**: Vercel
+
+## 🚀 Future Plans
+
+1. **Enhanced Social Features**
+
+   - Comments system (coming soon)
+   - User following/followers (coming soon)
+   - Social sharing integrations (coming soon)
+
+2. **Advanced Image Generation**
+
+   - AI-assisted prompt suggestions (coming soon)
+   - Multiple style options (coming soon)
+   - Batch generation capabilities (coming soon)
+
+3. **Community Features**
+
+   - User collections/galleries (coming soon)
+   - Featured images section (coming soon)
+   - Community challenges (coming soon)
+
+4. **Premium Features**
+   - Priority generation (coming soon)
+   - Advanced customization options (coming soon)
+   - Exclusive styles and filters (coming soon)
+
+## 💡 Technical Challenges & Solutions
+
+### Real-time Updates
+
+- Implemented Supabase real-time subscriptions for instant like updates
+- Optimized data synchronization to prevent unnecessary rerenders
+
+### Image Generation
+
+- Built a robust error handling system for generation failures
+- Implemented loading states and progress indicators
+
+### Performance
+
+- Optimized image loading with Next.js Image component
+- Implemented lazy loading for better initial page load
+- Used efficient state management patterns
+
+## 🤝 Contributing
+
+We welcome contributions! Feel free to:
+
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Built by Salif Tankoano
+- Inspired by the creative AI community
+- Special thanks to Headstarter for the inspiration
+
+---
+
+<p align="center">Made with ❤️ by the GenWalls team</p>
