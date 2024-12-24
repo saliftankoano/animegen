@@ -1,5 +1,4 @@
 "use server";
-import { NextResponse } from "next/server";
 
 export async function updateProfileDescription(userId: string, bio: string) {
   try {
@@ -9,9 +8,9 @@ export async function updateProfileDescription(userId: string, bio: string) {
     });
     const data = await response.json();
     console.log(data);
-    return NextResponse.json({ success: true });
+    return { success: true };
   } catch (error) {
     console.error("Error updating profile:", error);
-    return NextResponse.json({ success: false });
+    return { success: false };
   }
 }
