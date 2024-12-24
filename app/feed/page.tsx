@@ -12,7 +12,7 @@ import { Loading } from "@/components/Loading";
 import { ImageCard } from "@/components/ImageCard";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { RealtimeChannel } from "@supabase/supabase-js";
-
+import { useUser } from "@clerk/clerk-react";
 // Define the type for wallpaper
 interface Wallpaper {
   id: string;
@@ -25,6 +25,8 @@ interface Wallpaper {
 }
 
 export default function Home() {
+  const { user } = useUser();
+  const username = user?.username;
   const [prompt, setPrompt] = useState("");
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   const [wallpaperFeed, setWallpaperFeed] = useState<Wallpaper[]>([]);
@@ -37,7 +39,7 @@ export default function Home() {
       supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     })
   );
-
+  const [currentCreations, setCurrentCreations] = useState(0);
   useEffect(() => {
     // Initial fetch of images
     const fetchUserImages = async () => {
@@ -73,14 +75,27 @@ export default function Home() {
         )
         .subscribe();
     };
+    const fetchCreations = async () => {
+      const { data, error } = await supabaseClient
+        .from("images_created")
+        .select("*")
+        .eq("username", username);
 
+      if (error) {
+        setCurrentCreations(0);
+      } else {
+        setCurrentCreations(data?.[0]?.creations);
+      }
+    };
     fetchUserImages();
+    fetchCreations();
     setupSubscription();
+
     // Cleanup subscription when component unmounts
     return () => {
       subscription?.unsubscribe();
     };
-  }, [supabaseClient]);
+  }, [supabaseClient, username]);
 
   // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   const file = event.target.files?.[0];
@@ -92,7 +107,7 @@ export default function Home() {
     event.preventDefault();
     setIsWidgetOpen(false);
     setIsGenerating(true);
-    const getImageUrl = await generateImage(prompt);
+    const getImageUrl = await generateImage(prompt, currentCreations);
 
     if (!getImageUrl.success) {
       console.log("Error generating image:");
