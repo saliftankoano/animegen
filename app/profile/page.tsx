@@ -134,7 +134,11 @@ export default function ProfilePage() {
             <ImageCardProfile
               key={image.id}
               imageUrl={image.url}
-              prompt={image?.prompt || ""}
+              prompt={
+                image?.prompt.length < 80
+                  ? image?.prompt
+                  : image?.prompt.slice(0, 80) + "..."
+              }
               username={image.username}
               profile_url={image.profile_url}
               likes_count={image?.likes_count || 0}
