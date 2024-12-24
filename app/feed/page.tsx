@@ -188,18 +188,38 @@ export default function Home() {
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-primary">
-                  Wallpaper Magic
+                  Describe your Image
                 </h2>
                 <Button variant="ghost" onClick={() => setIsWidgetOpen(false)}>
                   <X className="h-6 w-6" />
                 </Button>
+              </div>
+              <div className="my-1  flex items-center">
+                <p className="text-md text-primary">
+                  Charater limit:{" "}
+                  <span className="text-muted-foreground">
+                    <span
+                      className={`${
+                        prompt.length > 70
+                          ? "text-red-500"
+                          : prompt.length > 60
+                          ? "text-orange-500"
+                          : "text-green-500"
+                      }`}
+                    >
+                      {prompt.length}
+                    </span>
+                    /77
+                  </span>
+                </p>
               </div>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <Textarea
                   placeholder="Enter your Wallpaper prompt here..."
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  className="min-h-[100px] bg-muted"
+                  className="min-h-[100px] bg-muted mt-2"
+                  maxLength={77}
                 />
                 <div className="flex justify-end items-center space-x-2">
                   {/* <Input
