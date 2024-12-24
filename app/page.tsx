@@ -12,7 +12,7 @@ const images = [
   "/cat.png",
   "/doggy.png",
   "/magician.png",
-  "/zombie.png",
+  "/squid.png",
   "/brown_bear.png",
   "/eagle.png",
   "/cyborg.png",
