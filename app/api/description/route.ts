@@ -3,7 +3,6 @@ import { clerkClient } from "@clerk/nextjs/server";
 
 export async function POST(request: NextRequest) {
   const { bio, userId } = await request.json();
-  console.log(bio, userId + " In the API route");
 
   const client = await clerkClient();
   try {
@@ -12,10 +11,9 @@ export async function POST(request: NextRequest) {
         bio: bio,
       },
     });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error updating profile:", error);
     return NextResponse.json({ success: false });
   }
-
-  return NextResponse.json({ success: true });
 }

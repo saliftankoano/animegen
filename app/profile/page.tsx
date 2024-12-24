@@ -66,14 +66,17 @@ export default function ProfilePage() {
     fetchUserImages();
   }, [userId, username]);
 
+  useEffect(() => {
+    console.log(bio + " In the Profile Page via useEffect");
+  }, [bio]);
+
   const handleProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const result = await updateProfileDescription(userId, bio);
       const serializedData = JSON.parse(JSON.stringify(result));
-      console.log(serializedData);
+      console.log(serializedData + " In the Profile Page");
       if (serializedData.success) {
-        console.log("Profile updated successfully");
         setOpen(false);
         return;
       }
