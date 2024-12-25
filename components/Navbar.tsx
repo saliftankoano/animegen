@@ -34,14 +34,16 @@ export function Navbar() {
                 </Button>
               </Link>
             </SignedIn>
-            <Link href="/profile">
-              <Button
-                variant="ghost"
-                className="text-primary hover:text-primary/80"
-              >
-                Profile
-              </Button>
-            </Link>
+            {user && (
+              <Link href="/profile">
+                <Button
+                  variant="ghost"
+                  className="text-primary hover:text-primary/80"
+                >
+                  Profile
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
         <div className="flex items-center space-x-4">
