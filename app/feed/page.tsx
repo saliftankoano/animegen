@@ -171,15 +171,17 @@ export default function Home() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    const trimmedPrompt = prompt.trim();
+
     // Validate before proceeding
-    if (!validatePrompt(prompt)) {
+    if (!validatePrompt(trimmedPrompt)) {
       toast.error(error);
       return;
     }
 
     setIsWidgetOpen(false);
     setIsGenerating(true);
-    const getImageUrl = await GenerateImage(prompt);
+    const getImageUrl = await GenerateImage(trimmedPrompt);
 
     if (!getImageUrl.success) {
       console.log("Error generating image:");
@@ -301,7 +303,7 @@ export default function Home() {
                 <Textarea
                   placeholder="Enter your Wallpaper prompt here..."
                   value={prompt}
-                  onChange={(e) => setPrompt(e.target.value.trim())}
+                  onChange={(e) => setPrompt(e.target.value)}
                   className={`min-h-[100px] bg-muted mt-2 ${
                     error ? "border-red-500" : ""
                   }`}
