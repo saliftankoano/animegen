@@ -16,6 +16,10 @@ const images = [
   "/brown_bear.png",
   "/eagle.png",
   "/cyborg.png",
+  "/underwater.png",
+  "/cyberpunk.png",
+  "/dolphin.png",
+  "/sky.png",
 ];
 export default function LandingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -48,6 +52,7 @@ export default function LandingPage() {
                   width={300}
                   height={300}
                   className="object-cover transition-transform duration-300 hover:scale-110"
+                  loading="eager"
                 />
               </div>
             ))}
@@ -220,6 +225,7 @@ function FeatureCard({
           width={600}
           height={400}
           className="rounded-lg shadow-lg"
+          loading="lazy"
         />
       </div>
       <div className="w-full md:w-1/2 space-y-4">
