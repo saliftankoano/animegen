@@ -50,7 +50,10 @@ export function Navbar() {
           <ThemeSwitch />
           {user && <ProfileDropdown />}
           {!user && (
-            <SignInButton>
+            <SignInButton
+              forceRedirectUrl={"/feed"}
+              signUpFallbackRedirectUrl={"/feed"}
+            >
               <Button className="bg-blue-700 hover:bg-black">Sign In</Button>
             </SignInButton>
           )}
