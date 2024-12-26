@@ -25,6 +25,7 @@ export interface GeneratedImages {
   profile_url: string;
   username: string;
   prompt: string;
+  on_feed: boolean;
 }
 
 export default function Home() {
@@ -59,6 +60,7 @@ export default function Home() {
       const { data, error } = await supabaseClient
         .from("image")
         .select("*")
+        .eq("on_feed", true)
         .order("created_at", { ascending: false });
 
       if (error) {
