@@ -76,7 +76,12 @@ export default function LandingPage() {
             size="lg"
             className="bg-primary text-primary-foreground hover:bg-blue-700"
           >
-            <SignUpButton>Join the community</SignUpButton>
+            <SignUpButton
+              signInForceRedirectUrl={"/feed"}
+              forceRedirectUrl={"/feed"}
+            >
+              Join the community
+            </SignUpButton>
           </Button>
         </motion.div>
       </section>
