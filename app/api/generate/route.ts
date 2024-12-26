@@ -13,7 +13,8 @@ const insertImage = async (
   username: string,
   profile_url: string,
   prompt: string,
-  url: string
+  url: string,
+  on_feed: false
 ) => {
   const { error } = await supabase.from("image").insert([
     {
@@ -21,6 +22,7 @@ const insertImage = async (
       profile_url: profile_url,
       prompt: prompt,
       url: url,
+      on_feed: on_feed,
     },
   ]);
 
@@ -106,7 +108,8 @@ export async function POST(req: NextRequest) {
         username,
         profileimage,
         prompt,
-        imageUrl
+        imageUrl,
+        false
       );
       if (result == "success") {
         console.log(`Successfully added the image to Supabase`);

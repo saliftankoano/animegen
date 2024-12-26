@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,26 +10,14 @@ import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { GenerateImage } from "../api/actions/generateImage";
 import { toast } from "sonner";
+import updateImageOnFeed from "../api/actions/addToFeed";
 export default function CreateImage() {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState(null);
-  const [generationComplete, setGenerationComplete] = useState(false);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState(null);
   const router = useRouter();
 
-  useEffect(() => {
-    if (generationComplete) {
-      router.push("/feed");
-      toast("Generation successful", {
-        description: "Great job! 👏",
-      });
-    } else {
-      toast("Generation unsuccessful", {
-        description: "Please try again 🙏😭",
-      });
-      router.push("/create");
-    }
-  }, [generationComplete, router]);
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsGenerating(true);
@@ -38,13 +26,40 @@ export default function CreateImage() {
     console.log(imageGenerated);
     if (imageGenerated) {
       setGeneratedImage(imageGenerated);
+      setGeneratedImageUrl(imageGenerated.imageUrl);
       setIsGenerating(false);
-      setGenerationComplete(true);
+      toast("Success!", {
+        description: "Your Image was successfully generated",
+        action: {
+          label: "Dismiss",
+          onClick: () => console.log("Dismiss"),
+        },
+      });
     } else {
       setIsGenerating(false);
-      console.error("An Error occured dutin generation");
+      toast("Failed!", {
+        description: "Your Image was not generated.",
+        action: {
+          label: "Dismiss",
+          onClick: () => console.log("Dismiss"),
+        },
+      });
     }
-    console.log(generatedImage);
+  };
+  const handleAddToFeed = async () => {
+    const { success } = await updateImageOnFeed(generatedImageUrl || "");
+    if (success) {
+      router.push("/feed");
+      return;
+    }
+
+    toast("Feed Error", {
+      description: "Your image was not added to the feed. Please try again.",
+      action: {
+        label: "Dismiss",
+        onClick: () => console.log("Dismiss"),
+      },
+    });
   };
 
   if (isGenerating) {
@@ -56,7 +71,7 @@ export default function CreateImage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8 pt-14">
+    <div className="max-w-2xl mx-auto space-y-8">
       <h1 className="text-3xl font-bold">Write it, into existence! ✍️</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -91,12 +106,12 @@ export default function CreateImage() {
         <Card className="overflow-hidden">
           <CardContent className="p-0 relative">
             <Image
-              src={generatedImage || "/dawg.png"}
+              src={generatedImageUrl || "/dawg.png"}
               alt="Meme preview"
               loading="lazy"
-              width={500}
-              height={500}
-              className="w-full h-auto"
+              width={250}
+              height={250}
+              className="w-[100%] h-[80vh]"
             />
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
               <p className="text-lg font-bold">
@@ -105,9 +120,22 @@ export default function CreateImage() {
             </div>
           </CardContent>
         </Card>
-        <Button type="submit" className="w-full">
-          Generate 🤩
-        </Button>
+        <div className="w-full">
+          <Button
+            type="submit"
+            className={`${generatedImage ? "w-[49%] mr-[1%]" : "w-full"}`}
+          >
+            {generatedImage ? "Generate Again" : "Generate 🤩"}
+          </Button>
+          {generatedImage && (
+            <Button
+              onClick={() => handleAddToFeed}
+              className="ml-[1%] w-[49%] hover:bg-green-500"
+            >
+              Add To Feed
+            </Button>
+          )}
+        </div>
       </form>
     </div>
   );

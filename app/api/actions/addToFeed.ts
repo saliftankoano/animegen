@@ -22,23 +22,17 @@ const createClient = async () => {
     }
   );
 };
-export default async function updateLikes(imageUrl: string) {
+export default async function updateImageOnFeed(imageUrl: string) {
   const supabaseClient = await createClient();
-  const { data, error } = await supabaseClient
+  const { error } = await supabaseClient
     .from("image")
-    .select("like_count")
+    .update({ on_feed: true })
     .eq("url", imageUrl)
     .single();
-  const newLikeCount = data?.like_count || 0 + 1;
-  if (!error) {
-    try {
-      await supabaseClient
-        .from("image")
-        .update("like_count", newLikeCount)
-        .eq("url", imageUrl)
-        .single();
-    } catch (error) {
-      console.log("Failed to update image" + error);
-    }
+  if (error) {
+    console.log("Failed to update image" + error);
+    return { success: false };
+  } else {
+    return { success: true };
   }
 }
