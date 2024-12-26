@@ -1,4 +1,4 @@
-import { GeneratedImage } from "@/app/feed/page";
+import { GeneratedImages } from "@/app/feed/page";
 import { motion } from "framer-motion";
 export default function Paginations({
   images,
@@ -6,7 +6,7 @@ export default function Paginations({
   currentPage,
   setCurrentPage,
 }: {
-  images: GeneratedImage[];
+  images: GeneratedImages[];
   imagesPerPage: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;

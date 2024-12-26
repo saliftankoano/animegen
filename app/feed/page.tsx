@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import Paginations from "@/components/Paginations";
 // Define the type for wallpaper
-export interface GeneratedImage {
+export interface GeneratedImages {
   id: string;
   url: string;
   like_count: number;
@@ -32,7 +32,7 @@ export default function Home() {
   const username = user?.username;
   const [prompt, setPrompt] = useState("");
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
-  const [imageFeed, setImageFeed] = useState<GeneratedImage[]>([]);
+  const [imageFeed, setImageFeed] = useState<GeneratedImages[]>([]);
   const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationComplete, setGenerationComplete] = useState(false);
