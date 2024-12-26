@@ -13,20 +13,9 @@ import { toast } from "sonner";
 export default function CreateImage() {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState(null);
   const [generationComplete, setGenerationComplete] = useState(false);
   const router = useRouter();
-  // const [imageUrl, setImageUrl] = useState(
-  //   process.env.DEFAULT_IMAGE_URL || null
-  // );
-
-  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => setImageUrl(e.target?.result as string);
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
 
   useEffect(() => {
     if (generationComplete) {
@@ -46,13 +35,16 @@ export default function CreateImage() {
     setIsGenerating(true);
 
     const imageGenerated = await GenerateImage(prompt);
+    console.log(imageGenerated);
     if (imageGenerated) {
+      setGeneratedImage(imageGenerated);
       setIsGenerating(false);
       setGenerationComplete(true);
     } else {
       setIsGenerating(false);
-      console.error("JWT Token is null");
+      console.error("An Error occured dutin generation");
     }
+    console.log(generatedImage);
   };
 
   if (isGenerating) {
@@ -96,21 +88,10 @@ export default function CreateImage() {
             maxLength={77}
           />
         </div>
-        {/* <div>
-          <label htmlFor="image" className="block text-sm font-medium mb-1">
-            Upload Image
-          </label>
-          <Input
-            id="image"
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-          />
-        </div> */}
         <Card className="overflow-hidden">
           <CardContent className="p-0 relative">
             <Image
-              src={"/dawg.png"}
+              src={generatedImage || "/dawg.png"}
               alt="Meme preview"
               loading="lazy"
               width={500}
