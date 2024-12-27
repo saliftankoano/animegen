@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { X } from "lucide-react";
 import { GenerateImage } from "../api/actions/generateImage";
 import { SignedIn } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { ImageCard } from "@/components/ImageCard";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -34,9 +34,9 @@ export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   const [imageFeed, setImageFeed] = useState<GeneratedImages[]>([]);
-  const router = useRouter();
+  // const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generationComplete, setGenerationComplete] = useState(false);
+  // const [generationComplete, setGenerationComplete] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const imagesPerPage = 12;
   const lastImageIndex = currentPage * imagesPerPage;
@@ -53,7 +53,6 @@ export default function Home() {
     prompt: string;
   } | null>(null);
   const [error, setError] = useState<string>("");
-
   useEffect(() => {
     // Initial fetch of images
     const fetchUserImages = async () => {
@@ -188,24 +187,11 @@ export default function Home() {
     if (!getImageUrl.success) {
       console.log("Error generating image:");
     } else {
-      setGenerationComplete(true);
+      // setGenerationComplete(true);
     }
     setIsGenerating(false);
     setPrompt("");
   };
-
-  useEffect(() => {
-    if (generationComplete) {
-      toast("Generation successful", {
-        description: "Great job! 👏",
-      });
-    } else {
-      toast("Generation unsuccessful", {
-        description: "Please try again 🙏😭",
-      });
-      router.push("/feed");
-    }
-  }, [generationComplete, router]);
 
   const handleImageClick = (url: string, prompt: string) => {
     setSelectedImage({ url, prompt });
@@ -313,27 +299,6 @@ export default function Home() {
                 />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
                 <div className="flex justify-end items-center space-x-2">
-                  {/* <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                    id="image-upload"
-                  /> */}
-                  {/* <label htmlFor="image-upload" className="cursor-pointer">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
-                    >
-                      <Upload className="mr-2 h-4 w-4" /> Upload Image
-                    </Button>
-                  </label>
-                  {image && (
-                    <span className="text-sm text-muted-foreground">
-                      {image.name}
-                    </span>
-                  )} */}
                   <Button
                     type="submit"
                     className="bg-primary text-primary-foreground hover:bg-yellow-500"

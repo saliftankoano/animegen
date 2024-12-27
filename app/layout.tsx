@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { neobrutalism } from "@clerk/themes";
 import { Analytics } from "@vercel/analytics/react";
+import ThemeAwareToaster from "@/components/ThemeAwareToaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -32,6 +33,7 @@ export default function RootLayout({
             <div className="min-h-screen bg-background text-foreground">
               <Navbar />
               <main className="container mx-auto px-4 py-8 pt-20">
+                <ThemeAwareToaster />
                 {children}
                 <Analytics />
               </main>

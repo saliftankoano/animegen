@@ -1,11 +1,9 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { GenerateImage } from "../api/actions/generateImage";
@@ -49,17 +47,12 @@ export default function CreateImage() {
   const handleAddToFeed = async () => {
     const { success } = await updateImageOnFeed(generatedImageUrl || "");
     if (success) {
-      router.push("/feed");
-      return;
-    }
+      toast.success("Your Image was successfully Added to the feed");
 
-    toast("Feed Error", {
-      description: "Your image was not added to the feed. Please try again.",
-      action: {
-        label: "Dismiss",
-        onClick: () => console.log("Dismiss"),
-      },
-    });
+      router.push("/feed");
+    } else {
+      toast.error("Your Image was successfully Added to the feed");
+    }
   };
 
   if (isGenerating) {
@@ -129,7 +122,7 @@ export default function CreateImage() {
           </Button>
           {generatedImage && (
             <Button
-              onClick={() => handleAddToFeed}
+              onClick={handleAddToFeed}
               className="ml-[1%] w-[49%] hover:bg-green-500"
             >
               Add To Feed
