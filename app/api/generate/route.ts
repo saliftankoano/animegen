@@ -45,7 +45,6 @@ export async function POST(req: NextRequest) {
     );
 
     url.searchParams.set("prompt", encodeURIComponent(prompt));
-    url.searchParams.set("api_key", process.env.API_KEY || "");
 
     const timeoutDuration = 60000; // 60 seconds
     const fetchPromise = fetch(url.toString(), {

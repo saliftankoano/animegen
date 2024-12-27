@@ -26,32 +26,19 @@ export default function CreateImage() {
       setGeneratedImage(imageGenerated);
       setGeneratedImageUrl(imageGenerated.imageUrl);
       setIsGenerating(false);
-      toast("Success!", {
-        description: "Your Image was successfully generated",
-        action: {
-          label: "Dismiss",
-          onClick: () => console.log("Dismiss"),
-        },
-      });
+      toast.success("Your Image was successfully generated");
     } else {
       setIsGenerating(false);
-      toast("Failed!", {
-        description: "Your Image was not generated.",
-        action: {
-          label: "Dismiss",
-          onClick: () => console.log("Dismiss"),
-        },
-      });
+      toast.success("Error: Your Image was not generated.");
     }
   };
   const handleAddToFeed = async () => {
     const { success } = await updateImageOnFeed(generatedImageUrl || "");
     if (success) {
-      toast.success("Your Image was successfully Added to the feed");
-
+      toast.success("Image successfully Posted to the feed");
       router.push("/feed");
     } else {
-      toast.error("Your Image was successfully Added to the feed");
+      toast.error("Your Image was not posted to the feed");
     }
   };
 
@@ -125,7 +112,7 @@ export default function CreateImage() {
               onClick={handleAddToFeed}
               className="ml-[1%] w-[49%] hover:bg-green-500"
             >
-              Add To Feed
+              Post
             </Button>
           )}
         </div>
