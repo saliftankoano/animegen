@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { X } from "lucide-react";
 import { GenerateImage } from "../api/actions/generateImage";
-import { SignedIn } from "@clerk/nextjs";
+// import { SignedIn } from "@clerk/nextjs";
 // import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { ImageCard } from "@/components/ImageCard";
@@ -99,12 +99,6 @@ export default function Home() {
     };
   }, [supabaseClient, username]);
 
-  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   if (file) {
-  //     setImage(file);
-  //   }
-  // };
   const validatePrompt = (text: string): boolean => {
     // Check for minimum length
     if (text.length < 3) {
@@ -247,14 +241,14 @@ export default function Home() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-      <SignedIn>
+      {/* <SignedIn>
         <Button
           className="fixed bottom-12 right-12 bg-blue-700 hover:bg-yellow-500 text-white dark:bg-yellow-500 dark:text-black dark:hover:bg-blue-700"
           onClick={() => setIsWidgetOpen(true)}
         >
           Generate 🤩
         </Button>
-      </SignedIn>
+      </SignedIn> */}
 
       {isWidgetOpen && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
