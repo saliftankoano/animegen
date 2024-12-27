@@ -170,7 +170,7 @@ export default function Home() {
 
     // Validate before proceeding
     if (!validatePrompt(trimmedPrompt)) {
-      toast.error(error);
+      toast.error("Invalid prompt, please try again " + error);
       return;
     }
 
