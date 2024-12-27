@@ -40,9 +40,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { prompt, username, profileimage } = body;
-    const url = new URL(
-      "https://saliftankoano--genwalls-inference-generate.modal.run"
-    );
+    const url = new URL(process.env.GENERATE_URL || "");
 
     url.searchParams.set("prompt", encodeURIComponent(prompt));
 
