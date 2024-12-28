@@ -1,7 +1,7 @@
 # 🖼️ AnimeGen
 
 <p align="left">
-  <img src="https://raw.githubusercontent.com/saliftankoano/AnimeGen/refs/heads/main/public/gw.png" alt="AnimeGen Logo" width="200" />
+  <img src="https://raw.githubusercontent.com/saliftankoano/AnimeGen/refs/heads/main/public/AG.png" alt="AnimeGen Logo" width="200" />
 </p>
 
 AnimeGen is a modern web application that empowers users to create, share, and discover AI-generated wallpapers and images. Built with Next.js, TypeScript, and Tailwind CSS, it offers a seamless and interactive experience for creative minds.

@@ -21,10 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link
-          rel="icon"
-          href="https://ik.imagekit.io/engineerbf24/ag.png?updatedAt=1735421514384"
-        />
+        <link rel="icon" href="/AG.png" />
       </head>
       <body className={inter.className}>
         <ClerkProvider
