@@ -102,7 +102,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <FeatureCard
               title="Easy Image Creation"
-              description="Write a prompt, One click, and get a high-quality image in a minute."
+              description="Write a prompt, One click, and get a high-quality image in 1 minute."
               imageSrc="/chillin.png"
               imageAlt="Easy Image Creation"
             />
