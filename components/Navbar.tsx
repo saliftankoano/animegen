@@ -13,7 +13,7 @@ export function Navbar() {
       <div className="container flex h-16 items-center justify-between mx-4">
         <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold text-2xl text-primary">GenWalls</span>
+            <span className="font-bold text-2xl text-primary">AnimeGen</span>
           </Link>
           <div className="flex items-center space-x-4">
             <Link href="/feed">

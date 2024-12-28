@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "saliftankoano--genwalls-inference-generate.modal.run",
+        hostname: "saliftankoano--animegen-inference-generate.modal.run",
       },
       {
         protocol: "https",

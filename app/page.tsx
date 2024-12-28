@@ -137,15 +137,15 @@ export default function LandingPage() {
           </motion.h2>
           <div className="max-w-3xl mx-auto space-y-6">
             <FaqItem
-              question="Is AnimeG free to use?"
-              answer="Yes, AnimeG is currently free for all users. We plan to introduce premium features in the future, but a free tier will always be available."
+              question="Is AnimeGen free to use?"
+              answer="Yes, AnimeGen is currently free for all users. We plan to introduce premium features in the future, but a free tier will always be available."
               index={0}
               expandedFaq={expandedFaq}
               setExpandedFaq={setExpandedFaq}
             />
             <FaqItem
-              question="What are the future plans for AnimeG?"
-              answer="We're constantly working on improving AnimeG. Future plans include AI assited prompt generation, collaborative creation, and various styles of images."
+              question="What are the future plans for AnimeGen?"
+              answer="We're constantly working on improving AnimeGen. Future plans include AI assited prompt generation, collaborative creation, and various styles of images."
               index={1}
               expandedFaq={expandedFaq}
               setExpandedFaq={setExpandedFaq}
@@ -158,7 +158,7 @@ export default function LandingPage() {
               setExpandedFaq={setExpandedFaq}
             />
             <FaqItem
-              question="I would like to contribute to AnimeG, how can I do that?"
+              question="I would like to contribute to AnimeGen, how can I do that?"
               answer="Send me a DM on LinkedIn (see footer)"
               index={3}
               expandedFaq={expandedFaq}

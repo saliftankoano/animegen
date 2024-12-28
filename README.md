@@ -1,10 +1,10 @@
-# 🖼️ GenWalls
+# 🖼️ AnimeGen
 
 <p align="left">
-  <img src="https://raw.githubusercontent.com/saliftankoano/genwalls/refs/heads/main/public/gw.png" alt="GenWalls Logo" width="200" />
+  <img src="https://raw.githubusercontent.com/saliftankoano/AnimeGen/refs/heads/main/public/gw.png" alt="AnimeGen Logo" width="200" />
 </p>
 
-GenWalls is a modern web application that empowers users to create, share, and discover AI-generated wallpapers and images. Built with Next.js, TypeScript, and Tailwind CSS, it offers a seamless and interactive experience for creative minds.
+AnimeGen is a modern web application that empowers users to create, share, and discover AI-generated wallpapers and images. Built with Next.js, TypeScript, and Tailwind CSS, it offers a seamless and interactive experience for creative minds.
 
 ## ✨ Features
 
@@ -108,4 +108,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-<p align="center">Made with ❤️ by the GenWalls team</p>
+<p align="center">Made with ❤️ by the AnimeGen team</p>
