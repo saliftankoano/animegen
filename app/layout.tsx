@@ -9,7 +9,7 @@ import ThemeAwareToaster from "@/components/ThemeAwareToaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "GenWalls",
+  title: "AnimeGen",
   description: "Create and share wallpapers with the community",
 };
 
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/gw.png" />
+        <link rel="icon" href="/ag.png" />
       </head>
       <body className={inter.className}>
         <ClerkProvider
