@@ -101,6 +101,12 @@ We welcome contributions! Feel free to:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## 🤝 Internal Optimizations and Improvements
+
+- Create a hook to handle image downloading
+- Create a hook to handle image sharing
+- Create a hook to handle image liking
+
 ## 🙏 Acknowledgments
 
 - Built by Salif Tankoano
