@@ -172,25 +172,41 @@ export function ImageCard({
             size="sm"
             className="text-foreground hover:text-foreground/80 ml-auto"
             onClick={async (e) => {
-              e.stopPropagation(); // Prevents triggering any parent click events
+              e.stopPropagation();
+
+              // Create a shorter, cleaner filename
+              const words = prompt?.split(" ") || ["image"];
+              const shortName = words.slice(0, 3).join("_").toLowerCase();
+              const sanitizedName = shortName.replace(/[^a-z0-9_]/g, "");
+
               try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Failed to fetch the image.");
+                const response = await fetch(url, {
+                  headers: {
+                    Accept: "image/png",
+                    "Cache-Control": "no-cache",
+                    Pragma: "no-cache",
+                  },
+                  cache: "no-store",
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch image");
 
                 const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
+                const imageBlob = new Blob([blob], { type: "image/png" });
+                const blobUrl = window.URL.createObjectURL(imageBlob);
 
                 const link = document.createElement("a");
                 link.href = blobUrl;
-                link.download = prompt || "download";
+                link.download = `${sanitizedName}.png`;
+                link.rel = "noopener noreferrer";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-
-                // Revoke the blob URL after the download is complete
                 window.URL.revokeObjectURL(blobUrl);
               } catch (error) {
                 console.error("Download failed:", error);
+                // Fallback
+                window.open(url, "_blank");
               }
             }}
           >
