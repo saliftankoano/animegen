@@ -28,7 +28,6 @@ export default function RootLayout({
           appearance={{
             baseTheme: neobrutalism,
           }}
-          publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="min-h-screen bg-background text-foreground">

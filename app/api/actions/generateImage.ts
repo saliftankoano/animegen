@@ -5,7 +5,7 @@ export async function GenerateImage(prompt: string) {
     const user = await currentUser();
     const username = user?.username || "Gino432";
     const profileimage = user?.imageUrl || username || "rando";
-    const response = await fetch("https://www.genwalls.com/api/generate", {
+    const response = await fetch("https://www.animegen.io/api/generate", {
       method: "POST",
       headers: {
         "X-API-KEY": process.env.API_KEY || "",
