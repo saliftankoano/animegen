@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "AnimeGen",
-  description: "Create and share wallpapers with the community",
+  description: "Create and share the best anime images with the community",
 };
 
 export default function RootLayout({
