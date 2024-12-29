@@ -15,12 +15,88 @@ export default function CreateImage() {
   const [generatedImage, setGeneratedImage] = useState(null);
   const [generatedImageUrl, setGeneratedImageUrl] = useState(null);
   const router = useRouter();
+  const [error, setError] = useState("");
+  const validatePrompt = (text: string): boolean => {
+    // Check for minimum length
+    if (text.length < 3) {
+      setError("Prompt must be at least 3 characters long");
+      return false;
+    }
 
+    // Check for maximum length (already handled by maxLength, but good to verify)
+    if (text.length > 77) {
+      setError("Prompt is too long");
+      return false;
+    }
+
+    // Check for Spam (repeated characters)
+    if (/(.)\1{4,}/.test(text)) {
+      setError("Please avoid repeating characters");
+      return false;
+    }
+
+    /**
+     * NSFW/inappropriate content patterns
+     * Will be improved in the future with LLM moderation
+     */
+    const inappropriatePatterns = [
+      // URLs and spam (existing)
+      "http://",
+      "https://",
+      ".com",
+      ".net",
+      "www.",
+      // NSFW/inappropriate terms
+      "no clothes*",
+      "undressed",
+      "nude",
+      "naked",
+      "nsfw",
+      "porn",
+      "xxx",
+      "sex",
+      "explicit",
+      "adult",
+      "18+",
+      "r18",
+      "erotic",
+      // Body parts/inappropriate terms
+      "breast",
+      "nipple",
+      "genital",
+      "penis",
+      "anus",
+      "dick",
+      "vagina",
+      "n*de",
+      "n*k*d",
+      "s*x",
+      "p*rn",
+    ];
+
+    const normalizedText = text.toLowerCase();
+
+    if (
+      inappropriatePatterns.some((pattern) => normalizedText.includes(pattern))
+    ) {
+      setError("Do better! No NSFW content allowed 🚫");
+      return false;
+    }
+
+    setError("");
+    return true;
+  };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setIsGenerating(true);
 
-    const imageGenerated = await GenerateImage(prompt);
+    if (!validatePrompt(prompt)) {
+      toast.error("Invalid prompt, please try again " + error);
+      return;
+    }
+    // Begin normal generation process
+    setIsGenerating(true);
+    const trimmedPrompt = prompt.trim();
+    const imageGenerated = await GenerateImage(trimmedPrompt);
     console.log(imageGenerated);
     if (imageGenerated) {
       setGeneratedImage(imageGenerated);
@@ -74,12 +150,13 @@ export default function CreateImage() {
               </span>
             </p>
           </label>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <Textarea
             id="prompt"
+            className="w-full mt-2"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Giant calamari attacking a ship on the ocean"
-            className="w-full"
             maxLength={300}
           />
         </div>
