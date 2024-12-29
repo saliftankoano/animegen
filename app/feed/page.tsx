@@ -216,6 +216,8 @@ export default function Home() {
               height={1024}
               className="w-full h-auto rounded-lg"
               onClick={(e) => e.stopPropagation()}
+              unoptimized={true}
+              priority
             />
           </div>
         </div>

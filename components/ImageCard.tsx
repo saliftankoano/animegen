@@ -113,11 +113,12 @@ export function ImageCard({
       <CardContent className="p-0 relative">
         <Image
           src={url}
-          alt={prompt || "Wallpaper"}
-          width={500}
-          height={500}
+          alt={prompt}
+          width={400}
+          height={400}
           className="w-full h-auto"
-          loading="lazy"
+          unoptimized={true}
+          loading="eager"
         />
         <div className="absolute bottom-0 left-0 right-0 bg-primary/80 backdrop-blur-sm p-4">
           <p

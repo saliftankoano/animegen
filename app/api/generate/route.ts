@@ -94,12 +94,15 @@ export async function POST(req: NextRequest) {
         // These parameters prevent S3 from compressing or transforming the image
         CacheControl: "no-transform",
         ContentEncoding: "identity",
+        StorageClass: "STANDARD", // Standard storage class
         Metadata: {
           prompt: prompt,
           createdAt: new Date().toISOString(),
           creator: username || "Gino432",
           profileimage: profileimage,
-          "original-quality": "true", // Allows tracking of the original quality files
+          "original-quality": "true",
+          "content-encoding": "identity",
+          "cache-control": "no-transform",
         },
       });
       await s3Client.send(command);
