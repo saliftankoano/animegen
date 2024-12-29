@@ -94,8 +94,6 @@ export async function POST(req: NextRequest) {
         // These parameters prevent S3 from compressing or transforming the image
         CacheControl: "no-transform",
         ContentEncoding: "identity",
-        // Set maximum quality
-        ACL: "public-read",
         Metadata: {
           prompt: prompt,
           createdAt: new Date().toISOString(),
