@@ -70,7 +70,7 @@ export default function CreateImage() {
                 >
                   {prompt.length}
                 </span>
-                /77
+                /194
               </span>
             </p>
           </label>
@@ -86,7 +86,11 @@ export default function CreateImage() {
         <Card className="overflow-hidden">
           <CardContent className="p-0 relative">
             <Image
-              src={generatedImageUrl || "/dawg.png"}
+              src={
+                generatedImageUrl ||
+                process.env.NEXT_PUBLIC_DEFAULT_IMAGE! ||
+                "/dawg.png"
+              }
               alt="Meme preview"
               loading="lazy"
               width={250}

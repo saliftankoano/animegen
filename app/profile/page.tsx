@@ -36,8 +36,10 @@ export default function ProfilePage() {
   const { user } = useUser();
   const username = user?.username || "";
   const userId = user?.id || "";
-  const imageUrl = user?.imageUrl || "/dawg.png";
-  const [bio, setBio] = useState(String(user?.publicMetadata?.bio) || "");
+  const imageUrl = user?.imageUrl || "/join.png";
+  const [bio, setBio] = useState(
+    user?.publicMetadata?.bio ? String(user?.publicMetadata?.bio) : "No bio yet"
+  );
   const [selectedImage, setSelectedImage] = useState<{
     url: string;
     prompt: string;
@@ -97,7 +99,7 @@ export default function ProfilePage() {
           <h1 className="text-3xl font-bold text-primary mb-2">
             {username || "Gino432"}
           </h1>
-          <p className="text-muted-foreground mb-4">{bio || "No bio yet"}</p>
+          <p className="text-muted-foreground mb-4">{bio}</p>
           <div className="flex justify-center space-x-4 mb-4">
             <div className="text-center">
               <p className="font-bold text-foreground">{userImages.length}</p>
