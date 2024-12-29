@@ -61,16 +61,16 @@ export default function CreateImage() {
               <span className="text-muted-foreground">
                 <span
                   className={`${
-                    prompt.length > 345
+                    prompt.length > 295
                       ? "text-red-500"
-                      : prompt.length > 340
+                      : prompt.length >= 290
                       ? "text-orange-500"
                       : "text-green-500"
                   }`}
                 >
                   {prompt.length}
                 </span>
-                /350
+                /300
               </span>
             </p>
           </label>
@@ -80,22 +80,25 @@ export default function CreateImage() {
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Giant calamari attacking a ship on the ocean"
             className="w-full"
-            maxLength={350}
+            maxLength={300}
           />
         </div>
         <Card className="overflow-hidden">
           <CardContent className="p-0 relative">
             <Image
+              className="w-[100%] h-[80vh]"
               src={
                 generatedImageUrl ||
                 process.env.NEXT_PUBLIC_DEFAULT_IMAGE! ||
                 "/dawg.png"
               }
-              alt="Meme preview"
-              loading="lazy"
+              alt={prompt || "Meme preview"}
+              loading="eager"
               width={250}
               height={250}
-              className="w-[100%] h-[80vh]"
+              unoptimized={true}
+              priority
+              quality={100}
             />
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
               <p className="text-lg font-bold">
