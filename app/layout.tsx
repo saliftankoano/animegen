@@ -11,6 +11,36 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "AnimeGen",
   description: "Create and share the best anime images with the community",
+  keywords:
+    "anime, AI art, anime generation, anime image generation, anime community, anime creator",
+  authors: [{ name: "AnimeGen" }],
+  openGraph: {
+    title: "AnimeGen - AI Anime Image Generation",
+    description: "Create and share the best anime images with the community",
+    url: "https://animegen.io",
+    siteName: "AnimeGen",
+    images: [
+      {
+        url: "/AG.png",
+        width: 40,
+        height: 40,
+        alt: "AnimeGen - Create Amazing Anime Art",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
