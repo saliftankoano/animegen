@@ -81,6 +81,7 @@ AnimeGen is a modern web application that empowers users to create, share, and d
 
 - Built a robust error handling system for generation failures
 - Implemented loading states and progress indicators
+- Difficulty in getting the image to downloaded image to show up in the correct format fixed by setting explicit headers in the fetch request and file type in the blob
 
 ### Performance
 
