@@ -50,6 +50,8 @@ export async function POST(req: NextRequest) {
       headers: {
         "X-API-KEY": process.env.API_KEY || "",
         Accept: "image/png",
+        "Accept-Encoding": "identity", // Prevents compression
+        "Cache-Control": "no-transform", // Add this to prevent transformations
       },
     });
 
@@ -89,11 +91,17 @@ export async function POST(req: NextRequest) {
         Key: filename,
         Body: Buffer.from(imagebuffer),
         ContentType: "image/png",
+        // These parameters prevent S3 from compressing or transforming the image
+        CacheControl: "no-transform",
+        ContentEncoding: "identity",
+        // Set maximum quality
+        ACL: "public-read",
         Metadata: {
           prompt: prompt,
           createdAt: new Date().toISOString(),
           creator: username || "Gino432",
           profileimage: profileimage,
+          "original-quality": "true", // Allows tracking of the original quality files
         },
       });
       await s3Client.send(command);
