@@ -61,16 +61,16 @@ export default function CreateImage() {
               <span className="text-muted-foreground">
                 <span
                   className={`${
-                    prompt.length > 250
+                    prompt.length > 345
                       ? "text-red-500"
-                      : prompt.length > 240
+                      : prompt.length > 340
                       ? "text-orange-500"
                       : "text-green-500"
                   }`}
                 >
                   {prompt.length}
                 </span>
-                /250
+                /350
               </span>
             </p>
           </label>
@@ -80,7 +80,7 @@ export default function CreateImage() {
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Giant calamari attacking a ship on the ocean"
             className="w-full"
-            maxLength={250}
+            maxLength={350}
           />
         </div>
         <Card className="overflow-hidden">
