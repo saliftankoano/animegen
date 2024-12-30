@@ -105,28 +105,39 @@ export function ImageCard({
     onImageClick(url, prompt);
   };
 
+  // Add state for hover
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Truncate prompt to 50 characters
+  const truncatedPrompt =
+    prompt.length > 45 ? prompt.slice(0, 45) + "..." : prompt;
+
   return (
     <Card
       className="overflow-hidden border-2 border-primary cursor-pointer transition-shadow hover:shadow-lg"
       onClick={handleCardClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <CardContent className="p-0 relative">
-        <Image
-          src={url}
-          alt={prompt}
-          width={400}
-          height={400}
-          className="w-full h-auto"
-          unoptimized={true}
-          loading="eager"
-        />
+        {/* Image */}
+        <div
+          className="cursor-pointer relative aspect-square"
+          onClick={() => onImageClick(url, prompt)}
+        >
+          <Image
+            src={url}
+            alt={prompt}
+            fill
+            className="object-cover"
+            unoptimized={true}
+          />
+        </div>
+
+        {/* Prompt overlay */}
         <div className="absolute bottom-0 left-0 right-0 bg-primary/80 backdrop-blur-sm p-4">
-          <p
-            className={`text-lg font-bold text-primary-foreground ${
-              prompt?.length > 20 ? "text-sm" : ""
-            }`}
-          >
-            {prompt}
+          <p className={`text-sm font-bold text-primary-foreground`}>
+            {isHovered ? prompt : truncatedPrompt}
           </p>
         </div>
       </CardContent>
