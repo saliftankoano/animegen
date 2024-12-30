@@ -16,6 +16,7 @@ import { GenerationTips } from "@/components/GenerationTips";
 export default function CreateImage() {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
     null
   );
@@ -101,6 +102,7 @@ export default function CreateImage() {
   const handleAddToFeed = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (!generatedImageUrl) return;
+    setIsPosting(true);
     const { success } = await updateImageOnFeed(generatedImageUrl);
     if (success) {
       toast.success("Image successfully posted to the feed");
@@ -108,6 +110,7 @@ export default function CreateImage() {
     } else {
       toast.error("Your image was not posted to the feed");
     }
+    setIsPosting(false);
   };
   const downloadImage = async (url: string) => {
     // Create a shorter, cleaner filename
@@ -198,9 +201,16 @@ export default function CreateImage() {
             <Button
               onClick={handleAddToFeed}
               className="flex-1 bg-green-500 hover:bg-green-600"
+              disabled={isPosting}
             >
-              <Send className="mr-2 h-4 w-4" />
-              Post to Feed
+              {isPosting ? (
+                <Loading />
+              ) : (
+                <>
+                  <Send className="mr-2 h-4 w-4" />
+                  Post to Feed
+                </>
+              )}
             </Button>
           )}
         </div>
