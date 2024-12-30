@@ -10,7 +10,7 @@ import { Loading } from "@/components/Loading";
 import { GenerateImage } from "@/app/api/actions/generateImage";
 import { toast } from "sonner";
 import updateImageOnFeed from "@/app/api/actions/addToFeed";
-import { AlertCircle, Send, ImagePlus } from "lucide-react";
+import { AlertCircle, Send, ImagePlus, Download } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { GenerationTips } from "@/components/GenerationTips";
 export default function CreateImage() {
@@ -108,7 +108,42 @@ export default function CreateImage() {
       toast.error("Your image was not posted to the feed");
     }
   };
+  const downloadImage = async (url: string) => {
+    // Create a shorter, cleaner filename
+    const words = prompt?.split(" ") || ["image"];
+    const shortName = words.slice(0, 3).join("_").toLowerCase();
+    const sanitizedName = shortName.replace(/[^a-z0-9_]/g, "");
 
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Accept: "image/png",
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+        cache: "no-store",
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch image");
+
+      const blob = await response.blob();
+      const imageBlob = new Blob([blob], { type: "image/png" });
+      const blobUrl = window.URL.createObjectURL(imageBlob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = `${sanitizedName}.png`;
+      link.rel = "noopener noreferrer";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+      // Fallback
+      window.open(url, "_blank");
+    }
+  };
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <h1 className="text-3xl font-bold text-center">
@@ -171,6 +206,17 @@ export default function CreateImage() {
       </form>
       <Card className="overflow-hidden">
         <CardContent className="p-0 relative h-[50vh]">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute top-2 right-0 text-foreground hover:text-foreground/80 hover:cursor-pointer"
+            onClick={async (e) => {
+              e.stopPropagation();
+              downloadImage(generatedImageUrl || "");
+            }}
+          >
+            <Download className="w-4 h-4 mr-1" />
+          </Button>
           <Image
             src={
               generatedImageUrl ||
