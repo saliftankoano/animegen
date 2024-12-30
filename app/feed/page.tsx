@@ -240,7 +240,7 @@ export default function Home() {
             prompt={image.prompt || ""}
             username={image.username || ""}
             like_count={image.like_count || 0}
-            comment_count={image.comment_count || 0}
+            // comment_count={image.comment_count || 0}
             onImageClick={handleImageClick}
           />
         ))}

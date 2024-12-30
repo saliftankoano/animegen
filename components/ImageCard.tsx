@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageCircle, Download } from "lucide-react";
+import { Heart, Download } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { RealtimeChannel } from "@supabase/supabase-js";
 type Image = {
@@ -20,7 +20,7 @@ interface ImageCardProps {
   username: string;
   profile_url: string;
   like_count: number;
-  comment_count: number;
+  // comment_count: number;
   onImageClick: (url: string, prompt: string) => void;
 }
 
@@ -30,7 +30,7 @@ export function ImageCard({
   username,
   profile_url,
   like_count,
-  comment_count,
+  // comment_count,
   onImageClick,
 }: ImageCardProps) {
   const [isLiked, setIsLiked] = useState(false);
@@ -170,14 +170,14 @@ export function ImageCard({
             />
             {likeCount}
           </Button>
-          <Button
+          {/* <Button
             variant="ghost"
             size="sm"
             className="text-foreground hover:text-foreground/80"
           >
             <MessageCircle className="w-4 h-4 mr-1" />
             {comment_count}
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             size="sm"
