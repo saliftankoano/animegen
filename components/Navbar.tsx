@@ -19,7 +19,7 @@ export function Navbar() {
             <Link href="/feed">
               <Button
                 variant="ghost"
-                className="text-primary hover:text-primary/80"
+                className="text-primary font-bold hover:text-primary dark:hover:text-black dark:hover:bg-white"
               >
                 Feed
               </Button>
@@ -28,7 +28,7 @@ export function Navbar() {
               <Link href="/create">
                 <Button
                   variant="ghost"
-                  className="dark:text-yellow-500 dark:hover:text-black dark:hover:bg-white"
+                  className="font-bold dark:text-yellow-500 dark:hover:text-black dark:hover:bg-white"
                 >
                   Create
                 </Button>
@@ -38,7 +38,7 @@ export function Navbar() {
               <Link href="/profile">
                 <Button
                   variant="ghost"
-                  className="text-primary hover:text-primary/80"
+                  className="text-primary font-bold dark:hover:text-black dark:hover:bg-white"
                 >
                   Profile
                 </Button>
