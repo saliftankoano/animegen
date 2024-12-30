@@ -22,7 +22,7 @@ export function Loading() {
   return (
     <div className="flex flex-col items-center space-y-4">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      <Progress value={progress} className="w-[60%] bg-green-500" />
+      <Progress value={progress} color="primary" className="w-[60%]" />
       <p className="text-sm text-muted-foreground">Working our magic... ✨</p>
     </div>
   );
