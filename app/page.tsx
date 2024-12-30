@@ -1,6 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { SignUpButton } from "@clerk/nextjs";
+import { JoinButton } from "@/components/JoinButton";
 import { motion } from "framer-motion";
 import { ChevronDown, Laptop } from "lucide-react";
 import Image from "next/image";
@@ -70,18 +69,7 @@ export default function LandingPage() {
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
             The best anime images generated in community
           </p>
-          <Button
-            asChild
-            size="lg"
-            className="bg-primary text-primary-foreground hover:bg-blue-700"
-          >
-            <SignUpButton
-              signInForceRedirectUrl={"/feed"}
-              forceRedirectUrl={"/feed"}
-            >
-              Join the community
-            </SignUpButton>
-          </Button>
+          <JoinButton />
         </motion.div>
       </section>
 
