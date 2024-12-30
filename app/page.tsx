@@ -9,8 +9,8 @@ import { FaGithub } from "react-icons/fa";
 
 const images = [
   "/demonslayer.png",
-  "/onepiece.png",
-  "/girls.png",
+  "/eren.png",
+  "/colosal.png",
   "/fight.png",
   "/captain.png",
   "/zoro.png",

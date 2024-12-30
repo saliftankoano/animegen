@@ -24,7 +24,7 @@ export default function CreateImage() {
     }
 
     // Check for maximum length (already handled by maxLength, but good to verify)
-    if (text.length > 77) {
+    if (text.length > 300) {
       setError("Prompt is too long");
       return false;
     }
