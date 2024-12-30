@@ -13,6 +13,8 @@ import updateImageOnFeed from "@/app/api/actions/addToFeed";
 import { AlertCircle, Send, ImagePlus, Download } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { GenerationTips } from "@/components/GenerationTips";
+import { StarRating } from "@/components/StarRating";
+
 export default function CreateImage() {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -20,6 +22,7 @@ export default function CreateImage() {
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
     null
   );
+  const [showRating, setShowRating] = useState(false);
   const router = useRouter();
   const [error, setError] = useState("");
 
@@ -28,10 +31,7 @@ export default function CreateImage() {
       setError("Prompt must be at least 3 characters long");
       return false;
     }
-    if (text.length > 300) {
-      setError("Prompt is too long");
-      return false;
-    }
+
     if (/(.)\1{4,}/.test(text)) {
       setError("Please avoid repeating characters");
       return false;
@@ -93,6 +93,7 @@ export default function CreateImage() {
     if (imageGenerated) {
       setGeneratedImageUrl(imageGenerated.imageUrl);
       toast.success("Your image was successfully generated");
+      setShowRating(true);
     } else {
       toast.error("Error: Your image was not generated");
     }
@@ -148,6 +149,16 @@ export default function CreateImage() {
       window.open(url, "_blank");
     }
   };
+
+  const handleRating = async (rating: number) => {
+    // TODO: Implement the logic to save the rating
+    console.log(`Image rated: ${rating} stars`);
+    toast.success(
+      `Thank you for your feedback! You rated the image ${rating} stars.`
+    );
+    setShowRating(false);
+  };
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <h1 className="text-3xl font-bold text-center">
@@ -214,6 +225,19 @@ export default function CreateImage() {
             </Button>
           )}
         </div>
+        {showRating && (
+          <Card>
+            <CardContent className="p-6 flex flex-col items-center space-y-4">
+              <h2 className="text-xl font-semibold">
+                How would you rate this image?
+              </h2>
+              <StarRating onRate={handleRating} />
+              <p className="text-sm text-gray-500">
+                Your feedback helps us improve our image generation!
+              </p>
+            </CardContent>
+          </Card>
+        )}
       </form>
       <Card className="overflow-hidden">
         <CardContent className="p-0 relative h-[50vh]">
