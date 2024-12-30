@@ -7,7 +7,7 @@ export function JoinButton() {
       <Button
         asChild
         size="lg"
-        className="bg-primary text-primary-foreground hover:bg-white hover:text-black"
+        className="bg-primary text-primary-foreground hover:transition-all hover:duration-300 hover:bg-white hover:text-black"
       >
         <SignUpButton
           signInForceRedirectUrl={"/feed"}
