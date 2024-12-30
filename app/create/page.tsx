@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,47 +7,41 @@ import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
-import { GenerateImage } from "../api/actions/generateImage";
+import { GenerateImage } from "@/app/api/actions/generateImage";
 import { toast } from "sonner";
-import updateImageOnFeed from "../api/actions/addToFeed";
+import updateImageOnFeed from "@/app/api/actions/addToFeed";
+import { AlertCircle, Send, ImagePlus } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { GenerationTips } from "@/components/GenerationTips";
 export default function CreateImage() {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedImage, setGeneratedImage] = useState(null);
-  const [generatedImageUrl, setGeneratedImageUrl] = useState(null);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
+    null
+  );
   const router = useRouter();
   const [error, setError] = useState("");
+
   const validatePrompt = (text: string): boolean => {
-    // Check for minimum length
     if (text.length < 3) {
       setError("Prompt must be at least 3 characters long");
       return false;
     }
-
-    // Check for maximum length (already handled by maxLength, but good to verify)
     if (text.length > 300) {
       setError("Prompt is too long");
       return false;
     }
-
-    // Check for Spam (repeated characters)
     if (/(.)\1{4,}/.test(text)) {
       setError("Please avoid repeating characters");
       return false;
     }
 
-    /**
-     * NSFW/inappropriate content patterns
-     * Will be improved in the future with LLM moderation
-     */
     const inappropriatePatterns = [
-      // URLs and spam (existing)
       "http://",
       "https://",
       ".com",
       ".net",
       "www.",
-      // NSFW/inappropriate terms
       "no clothes*",
       "undressed",
       "nude",
@@ -60,7 +55,6 @@ export default function CreateImage() {
       "18+",
       "r18",
       "erotic",
-      // Body parts/inappropriate terms
       "breast",
       "nipple",
       "genital",
@@ -75,7 +69,6 @@ export default function CreateImage() {
     ];
 
     const normalizedText = text.toLowerCase();
-
     if (
       inappropriatePatterns.some((pattern) => normalizedText.includes(pattern))
     ) {
@@ -86,121 +79,116 @@ export default function CreateImage() {
     setError("");
     return true;
   };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     if (!validatePrompt(prompt)) {
-      toast.error("Invalid prompt, please try again " + error);
+      toast.error(`Invalid prompt: ${error}`);
       return;
     }
-    // Begin normal generation process
     setIsGenerating(true);
     const trimmedPrompt = prompt.trim();
     const imageGenerated = await GenerateImage(trimmedPrompt);
-    console.log(imageGenerated);
     if (imageGenerated) {
-      setGeneratedImage(imageGenerated);
       setGeneratedImageUrl(imageGenerated.imageUrl);
-      setIsGenerating(false);
-      toast.success("Your Image was successfully generated");
+      toast.success("Your image was successfully generated");
     } else {
-      setIsGenerating(false);
-      toast.success("Error: Your Image was not generated.");
+      toast.error("Error: Your image was not generated");
     }
+    setIsGenerating(false);
   };
+
   const handleAddToFeed = async () => {
-    const { success } = await updateImageOnFeed(generatedImageUrl || "");
+    if (!generatedImageUrl) return;
+    const { success } = await updateImageOnFeed(generatedImageUrl);
     if (success) {
-      toast.success("Image successfully Posted to the feed");
+      toast.success("Image successfully posted to the feed");
       router.push("/feed");
     } else {
-      toast.error("Your Image was not posted to the feed");
+      toast.error("Your image was not posted to the feed");
     }
   };
 
-  if (isGenerating) {
-    return (
-      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
-        <Loading />
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-2xl mx-auto space-y-8">
-      <h1 className="text-3xl font-bold">Write it, into existence! ✍️</h1>
+    <div className="max-w-2xl mx-auto space-y-6">
+      <h1 className="text-3xl font-bold text-center">
+        Write it into existence! ✍️
+      </h1>
+      <GenerationTips />
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="my-1  flex items-center">
-            <p className="text-md text-primary">
-              Charater limit:{" "}
-              <span className="text-muted-foreground">
-                <span
-                  className={`${
-                    prompt.length > 295
-                      ? "text-red-500"
-                      : prompt.length >= 290
-                      ? "text-orange-500"
-                      : "text-green-500"
-                  }`}
-                >
-                  {prompt.length}
-                </span>
-                /300
-              </span>
-            </p>
+        <div className="space-y-2">
+          <label className="flex items-center justify-between text-sm font-medium">
+            <span>Your Prompt</span>
+            <span
+              className={`${
+                prompt.length > 295
+                  ? "text-red-500"
+                  : prompt.length >= 290
+                  ? "text-orange-500"
+                  : "text-green-500"
+              }`}
+            >
+              {prompt.length}/300
+            </span>
           </label>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
           <Textarea
             id="prompt"
-            className="w-full mt-2"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Giant calamari attacking a ship on the ocean"
             maxLength={300}
+            className="h-24 resize-none"
           />
+          {error && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
         </div>
-        <Card className="overflow-hidden">
-          <CardContent className="p-0 relative">
-            <Image
-              className="w-[100%] h-[80vh]"
-              src={
-                generatedImageUrl ||
-                process.env.NEXT_PUBLIC_DEFAULT_IMAGE! ||
-                "/dawg.png"
-              }
-              alt={prompt || "Meme preview"}
-              loading="eager"
-              width={250}
-              height={250}
-              unoptimized={true}
-              priority
-              quality={100}
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
-              <p className="text-lg font-bold">
-                {prompt || "Your prompt here"}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-        <div className="w-full">
-          <Button
-            type="submit"
-            className={`${generatedImage ? "w-[49%] mr-[1%]" : "w-full"}`}
-          >
-            {generatedImage ? "Generate Again" : "Generate 🤩"}
+        <div className="flex space-x-4">
+          <Button type="submit" className="flex-1" disabled={isGenerating}>
+            {isGenerating ? (
+              <Loading />
+            ) : (
+              <>
+                <ImagePlus className="mr-2 h-4 w-4" />
+                {generatedImageUrl ? "Generate Again" : "Generate 🤩"}
+              </>
+            )}
           </Button>
-          {generatedImage && (
+          {generatedImageUrl && (
             <Button
               onClick={handleAddToFeed}
-              className="ml-[1%] w-[49%] hover:bg-green-500"
+              className="flex-1 bg-green-500 hover:bg-green-600"
             >
-              Post
+              <Send className="mr-2 h-4 w-4" />
+              Post to Feed
             </Button>
           )}
         </div>
       </form>
+      <Card className="overflow-hidden">
+        <CardContent className="p-0 relative h-[50vh]">
+          <Image
+            src={
+              generatedImageUrl ||
+              process.env.NEXT_PUBLIC_DEFAULT_IMAGE! ||
+              "/dawg.png"
+            }
+            alt={prompt || "Meme preview"}
+            layout="fill"
+            objectFit="contain"
+            priority
+          />
+          <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
+            <p className="text-sm font-bold truncate">
+              {prompt || "Your prompt here"}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
