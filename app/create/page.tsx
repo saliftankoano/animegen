@@ -98,7 +98,8 @@ export default function CreateImage() {
     setIsGenerating(false);
   };
 
-  const handleAddToFeed = async () => {
+  const handleAddToFeed = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     if (!generatedImageUrl) return;
     const { success } = await updateImageOnFeed(generatedImageUrl);
     if (success) {
