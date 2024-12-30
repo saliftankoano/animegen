@@ -16,6 +16,7 @@ import { useUser } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import Image from "next/image";
 import Paginations from "@/components/Paginations";
+import { useRouter } from "next/navigation";
 // Define the type for wallpaper
 export interface GeneratedImages {
   id: string;
@@ -29,6 +30,7 @@ export interface GeneratedImages {
 }
 
 export default function Home() {
+  const router = useRouter();
   const { user } = useUser();
   const username = user?.username;
   const [prompt, setPrompt] = useState("");
@@ -201,7 +203,17 @@ export default function Home() {
 
   return (
     <div className="space-y-8 relative">
-      <h1 className="mt-4 text-4xl font-bold text-primary">Wall of fame 🤩</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="mt-4 text-4xl font-bold text-primary">
+          Wall of fame 🤩
+        </h1>
+        <Button
+          className="bg-yellow-500 hover:bg-yellow-500/80"
+          onClick={() => router.push("/create")}
+        >
+          Generate
+        </Button>
+      </div>
 
       {selectedImage && (
         <div

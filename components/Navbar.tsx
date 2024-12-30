@@ -28,7 +28,7 @@ export function Navbar() {
               <Link href="/create">
                 <Button
                   variant="ghost"
-                  className="text-primary hover:text-primary/80"
+                  className="dark:text-yellow-500 dark:hover:text-black dark:hover:bg-white"
                 >
                   Create
                 </Button>
