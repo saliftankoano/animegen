@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ChevronDown, Laptop } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { FaGithub } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
 
 const images = [
   "/demonslayer.png",
@@ -192,10 +192,10 @@ export default function LandingPage() {
             LinkedIn
           </a>
           <a
-            href="https://github.com/saliftankoano"
+            href="https://www.linkedin.com/in/salif-tankoano/"
             className="text-primary hover:underline"
           >
-            <FaGithub size={24} />
+            <FaLinkedin size={24} />
           </a>
         </div>
       </footer>
