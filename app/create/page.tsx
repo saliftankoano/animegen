@@ -206,24 +206,24 @@ export default function CreateImage() {
       </form>
       <Card className="overflow-hidden">
         <CardContent className="p-0 relative h-[50vh]">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="absolute top-2 right-0 text-foreground hover:text-foreground/80 hover:cursor-pointer"
-            onClick={async (e) => {
-              e.stopPropagation();
-              downloadImage(generatedImageUrl || "");
-            }}
-          >
-            <Download className="w-4 h-4 mr-1" />
-          </Button>
+          {generatedImageUrl && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute top-2 right-2 z-10 bg-background/80 hover:bg-background/90"
+              onClick={() => downloadImage(generatedImageUrl)}
+            >
+              <Download className="w-4 h-4 mr-1" />
+              Download
+            </Button>
+          )}
           <Image
             src={
               generatedImageUrl ||
               process.env.NEXT_PUBLIC_DEFAULT_IMAGE! ||
               "/dawg.png"
             }
-            alt={prompt || "Meme preview"}
+            alt={prompt || "Generated image preview"}
             layout="fill"
             objectFit="contain"
             priority

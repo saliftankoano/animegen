@@ -14,7 +14,7 @@ export function Loading() {
         }
         return prevProgress + 2.77777778;
       });
-    }, 1000); // Every second increment the progress by 2.77777778%
+    }, 1400); // Every 1.4 seconds increment the progress by 2.77777778%
 
     return () => clearInterval(timer);
   }, []);
@@ -22,7 +22,7 @@ export function Loading() {
   return (
     <div className="flex flex-col items-center space-y-4">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      <Progress value={progress} className="w-[60%]" />
+      <Progress value={progress} className="w-[60%] bg-green-500" />
       <p className="text-sm text-muted-foreground">Working our magic... ✨</p>
     </div>
   );
