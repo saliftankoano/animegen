@@ -24,8 +24,7 @@ export function Loading() {
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
       <Progress
         value={progress}
-        color="white"
-        className="w-[60%] bg-green-500"
+        className="w-[60%] bg-black [&>div]:bg-white"
       />
       <p className="text-sm text-muted-foreground">Working our magic... ✨</p>
     </div>
