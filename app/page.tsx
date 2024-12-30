@@ -1,11 +1,13 @@
 "use client";
-import { JoinButton } from "@/components/JoinButton";
-import { motion } from "framer-motion";
-import { ChevronDown, Laptop } from "lucide-react";
+
 import Image from "next/image";
 import { useState } from "react";
+import { Laptop } from "lucide-react";
+import { motion } from "framer-motion";
 import { FaLinkedin } from "react-icons/fa";
-
+import { JoinButton } from "@/components/JoinButton";
+import { FaqItem } from "@/components/landing/FaqItem";
+import { FeatureCard } from "@/components/landing/FeatureCard";
 const images = [
   "/demonslayer.png",
   "/eren.png",
@@ -188,93 +190,5 @@ export default function LandingPage() {
         </div>
       </footer>
     </div>
-  );
-}
-
-function FeatureCard({
-  title,
-  description,
-  imageSrc,
-  imageAlt,
-}: {
-  title: string;
-  description: string;
-  imageSrc: string;
-  imageAlt: string;
-}) {
-  return (
-    <motion.div
-      className="flex flex-col md:flex-row items-center gap-8"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.8 }}
-      viewport={{ once: false }}
-    >
-      <div className="w-full md:w-1/2">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          width={600}
-          height={400}
-          className="rounded-lg shadow-lg"
-          loading="lazy"
-        />
-      </div>
-      <div className="w-full md:w-1/2 space-y-4">
-        <h3 className="text-2xl font-bold text-primary">{title}</h3>
-        <p className="text-muted-foreground">{description}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-function FaqItem({
-  question,
-  answer,
-  index,
-  expandedFaq,
-  setExpandedFaq,
-}: {
-  question: string;
-  answer: string;
-  index: number;
-  expandedFaq: number | null;
-  setExpandedFaq: (index: number | null) => void;
-}) {
-  const isExpanded = index === expandedFaq;
-
-  return (
-    <motion.div
-      className="border border-border rounded-lg overflow-hidden"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      viewport={{ once: true }}
-    >
-      <button
-        className="flex justify-between items-center w-full p-4 text-left bg-card hover:bg-muted/50 transition-colors"
-        onClick={() => setExpandedFaq(isExpanded ? null : index)}
-      >
-        <span className="font-semibold">{question}</span>
-        <ChevronDown
-          className={`w-5 h-5 transition-transform ${
-            isExpanded ? "transform rotate-180" : ""
-          }`}
-        />
-      </button>
-      <motion.div
-        initial={false}
-        animate={{
-          height: isExpanded ? "auto" : 0,
-          opacity: isExpanded ? 1 : 0,
-        }}
-        transition={{ duration: 0.3 }}
-        className="overflow-hidden"
-      >
-        <div className="p-4 bg-background">
-          <p>{answer}</p>
-        </div>
-      </motion.div>
-    </motion.div>
   );
 }
