@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,7 +15,7 @@ import { useUser } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import Image from "next/image";
 import Paginations from "@/components/Paginations";
-import { useRouter } from "next/navigation";
+import { CreateImageCTA } from "@/components/create-image-cta";
 // Define the type for wallpaper
 export interface GeneratedImages {
   id: string;
@@ -30,7 +29,7 @@ export interface GeneratedImages {
 }
 
 export default function Home() {
-  const router = useRouter();
+  // const router = useRouter();
   const { user } = useUser();
   const username = user?.username;
   const [prompt, setPrompt] = useState("");
@@ -207,14 +206,11 @@ export default function Home() {
         <h1 className="mt-4 text-4xl font-bold text-primary">
           Wall of fame 🤩
         </h1>
-        <Button
-          className="bg-yellow-500 hover:bg-yellow-500/80"
-          onClick={() => router.push("/create")}
-        >
-          Generate
-        </Button>
+        {/* <Button variant="outline" onClick={() => router.push("/create")}>
+          Donate
+        </Button> */}
       </div>
-
+      <CreateImageCTA />
       {selectedImage && (
         <div
           className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50"
@@ -255,14 +251,6 @@ export default function Home() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-      {/* <SignedIn>
-        <Button
-          className="fixed bottom-12 right-12 bg-blue-700 hover:bg-yellow-500 text-white dark:bg-yellow-500 dark:text-black dark:hover:bg-blue-700"
-          onClick={() => setIsWidgetOpen(true)}
-        >
-          Generate 🤩
-        </Button>
-      </SignedIn> */}
 
       {isWidgetOpen && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">

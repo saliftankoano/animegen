@@ -135,8 +135,8 @@ export function ImageCard({
         </div>
 
         {/* Prompt overlay */}
-        <div className="absolute bottom-0 left-0 right-0 bg-primary/80 backdrop-blur-sm p-4">
-          <p className={`text-sm font-bold text-primary-foreground`}>
+        <div className="absolute bottom-0 left-0 right-0 bg-blue-500 backdrop-blur-sm p-4">
+          <p className={`text-sm font-bold text-white`}>
             {isHovered ? prompt : truncatedPrompt}
           </p>
         </div>
