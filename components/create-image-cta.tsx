@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-
 export function CreateImageCTA() {
   return (
     <Card className="relative overflow-hidden mt-8">
