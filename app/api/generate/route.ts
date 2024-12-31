@@ -46,7 +46,6 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const body = await req.json();
     const { prompt, username, profileimage } = body;
     const url = new URL(process.env.GENERATE_URL || "");
 
@@ -139,7 +138,7 @@ export async function POST(req: NextRequest) {
     } catch (error) {
       console.log(error);
       return NextResponse.json(
-        { success: false, error: `Failed request: ${error}` },
+        { success: false, error: `Storage operations failed: ${error}` },
         { status: 500 }
       );
     }
