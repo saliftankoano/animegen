@@ -2,6 +2,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { auth } from "@clerk/nextjs/server";
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -35,7 +36,15 @@ const insertImage = async (
 };
 
 export async function POST(req: NextRequest) {
-  // Ensure the user is authenticated
+  // Add authentication check at the start of the POST handler
+  const { userId } = await auth();
+
+  if (!userId) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized access" },
+      { status: 401 }
+    );
+  }
 
   try {
     const body = await req.json();
