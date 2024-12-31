@@ -2,7 +2,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -36,9 +36,9 @@ const insertImage = async (
 };
 
 export async function POST(req: NextRequest) {
-  const { userId } = await auth();
-  console.log("User ID: ", userId);
-  if (!userId) {
+  const user = await currentUser();
+  console.log("User ID: ", user);
+  if (!user) {
     return NextResponse.json(
       { error: "Unauthorized access from image generation API Layer" },
       { status: 401 }
