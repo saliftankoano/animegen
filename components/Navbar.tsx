@@ -13,13 +13,15 @@ export function Navbar() {
       <div className="container flex h-16 items-center justify-between mx-4">
         <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold text-2xl text-primary">AnimeGen</span>
+            <span className="font-bold text-2xl text-primary hover:text-blue-700 dark:hover:text-white">
+              AnimeGen
+            </span>
           </Link>
           <div className="flex items-center space-x-4">
             <Link href="/feed">
               <Button
                 variant="ghost"
-                className="text-primary font-bold hover:text-primary dark:hover:text-black dark:hover:bg-white"
+                className="text-primary font-bold hover:bg-blue-600 hover:text-white dark:hover:text-black dark:hover:bg-white"
               >
                 Feed
               </Button>
@@ -54,7 +56,9 @@ export function Navbar() {
               forceRedirectUrl={"/feed"}
               signUpFallbackRedirectUrl={"/feed"}
             >
-              <Button className="bg-blue-700 hover:bg-black">Sign In</Button>
+              <Button className="bg-blue-700 hover:bg-white hover:text-black">
+                Sign In
+              </Button>
             </SignInButton>
           )}
         </div>
