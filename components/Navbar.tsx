@@ -9,7 +9,7 @@ import ProfileDropdown from "@/components/ProfileDropdown";
 export function Navbar() {
   const { user } = useUser();
   return (
-    <nav className="fixed top-0 left-0 right-0 flex justify-center z-50 border-b border-primary bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="fixed top-0 left-0 right-0 flex justify-center z-50 border-b border-primary bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
       <div className="container flex h-16 items-center justify-between mx-4">
         <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
