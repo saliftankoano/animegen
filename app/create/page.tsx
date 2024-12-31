@@ -14,8 +14,10 @@ import { AlertCircle, Send, ImagePlus, Download } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { GenerationTips } from "@/components/GenerationTips";
 import { StarRating } from "@/components/StarRating";
-
+import { JoinButton } from "@/components/JoinButton";
+import { useUser } from "@clerk/nextjs";
 export default function CreateImage() {
+  const { user } = useUser();
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
@@ -159,6 +161,18 @@ export default function CreateImage() {
     setShowRating(false);
   };
 
+  if (!user) {
+    return (
+      <div className="max-w-2xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-3xl font-bold text-center mt-[25vh] mb-4">
+            You ain&apos;t slick, you have to join <br /> to create an image! 😉
+          </h1>
+          <JoinButton />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <h1 className="text-3xl font-bold text-center">
