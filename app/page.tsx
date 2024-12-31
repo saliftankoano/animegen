@@ -68,7 +68,7 @@ export default function LandingPage() {
           <h1 className="text-4xl md:text-6xl font-bold text-primary">
             Welcome to AnimeGen
           </h1>
-          <p className="text-xl md:text-2xl text-black/60 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-black/60 max-w-2xl mx-auto dark:text-white">
             The best anime images generated in community
           </p>
           <JoinButton />
