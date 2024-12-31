@@ -36,12 +36,11 @@ const insertImage = async (
 };
 
 export async function POST(req: NextRequest) {
-  // Add authentication check at the start of the POST handler
   const { userId } = await auth();
 
   if (!userId) {
     return NextResponse.json(
-      { success: false, error: "Unauthorized access" },
+      { error: "Unauthorized access from image generation API Layer" },
       { status: 401 }
     );
   }

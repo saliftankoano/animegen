@@ -91,10 +91,10 @@ export default function CreateClientComponent() {
     }
 
     if (!user) {
-      return {
-        success: false,
-        error: "Unauthorized access. You must be logged in to generate images",
-      };
+      return Response.json(
+        { error: "Unauthorized access from create client component" },
+        { status: 401 }
+      );
     }
 
     setIsGenerating(true);
