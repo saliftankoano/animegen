@@ -1,10 +1,11 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { neobrutalism } from "@clerk/themes";
 import { Analytics } from "@vercel/analytics/react";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import ThemeAwareToaster from "@/components/ThemeAwareToaster";
 import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
@@ -83,6 +84,7 @@ export default function RootLayout({
               <main className="container mx-auto px-4 py-8 pt-20">
                 <ThemeAwareToaster />
                 {children}
+                <SpeedInsights />
                 <Analytics />
               </main>
             </div>
