@@ -37,7 +37,7 @@ const insertImage = async (
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
-
+  console.log("User ID: ", userId);
   if (!userId) {
     return NextResponse.json(
       { error: "Unauthorized access from image generation API Layer" },
