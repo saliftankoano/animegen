@@ -34,7 +34,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="h-[78vh] relative flex-grow flex items-center justify-center bg-gradient-to-b from-background to-secondary overflow-hidden">
+      <section className="h-[77vh] relative flex-grow flex items-center justify-center bg-gradient-to-b from-background to-secondary overflow-hidden">
         <motion.div
           className="absolute inset-0 z-0"
           initial={{ scale: 1.1, opacity: 0 }}
