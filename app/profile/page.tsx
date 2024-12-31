@@ -38,7 +38,7 @@ export default function ProfilePage() {
   const userId = user?.id || "";
   const imageUrl = user?.imageUrl || "/join.png";
   const [bio, setBio] = useState(
-    user?.publicMetadata?.bio ? String(user?.publicMetadata?.bio) : "No bio yet"
+    user?.publicMetadata?.bio ? String(user?.publicMetadata?.bio) : ""
   );
   const [selectedImage, setSelectedImage] = useState<{
     url: string;
@@ -99,7 +99,7 @@ export default function ProfilePage() {
           <h1 className="text-3xl font-bold text-primary mb-2">
             {username || "Gino432"}
           </h1>
-          <p className="text-muted-foreground mb-4">{bio}</p>
+          <p className="text-muted-foreground mb-4">{bio || "No bio yet"}</p>
           <div className="flex justify-center space-x-4 mb-4">
             <div className="text-center">
               <p className="font-bold text-foreground">{userImages.length}</p>
@@ -122,7 +122,7 @@ export default function ProfilePage() {
                   <Label htmlFor="bio">Bio</Label>
                   <Textarea
                     id="bio"
-                    defaultValue={bio}
+                    placeholder="Write a bio about yourself"
                     onChange={(e) => setBio(e.target.value)}
                   />
                 </div>
