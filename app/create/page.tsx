@@ -89,6 +89,14 @@ export default function CreateImage() {
       toast.error(`Invalid prompt: ${error}`);
       return;
     }
+
+    if (!user) {
+      return {
+        success: false,
+        error: "Unauthorized access. You must be logged in to generate images",
+      };
+    }
+
     setIsGenerating(true);
     const trimmedPrompt = prompt.trim();
     const imageGenerated = await GenerateImage(trimmedPrompt);

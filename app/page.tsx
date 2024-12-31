@@ -68,7 +68,7 @@ export default function LandingPage() {
           <h1 className="text-4xl md:text-6xl font-bold text-primary">
             Welcome to AnimeGen
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-black/60 max-w-2xl mx-auto">
             The best anime images generated in community
           </p>
           <JoinButton />
@@ -81,7 +81,7 @@ export default function LandingPage() {
           className="container mx-auto px-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, delay: 1.3 }}
         >
           <motion.h2
             className="text-4xl font-bold text-center mb-16 text-primary"
@@ -160,7 +160,7 @@ export default function LandingPage() {
       </section>
       {/* Footer Section */}
       <footer className="py-4 bg-background text-center">
-        <p className="text-sm text-muted-foreground text-center text-orange-500">
+        <p className="text-sm text-muted-foreground text-center text-orange-500 dark:text-white">
           Created by Salif Tankoano
         </p>
         <div className="flex justify-center space-x-4 mt-2">

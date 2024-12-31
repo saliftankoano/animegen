@@ -5,6 +5,13 @@ export async function GenerateImage(prompt: string) {
     const user = await currentUser();
     const username = user?.username || "Gino432";
     const profileimage = user?.imageUrl || username || "rando";
+
+    if (!user) {
+      return {
+        success: false,
+        error: "Unauthorized access. You must be logged in to generate images",
+      };
+    }
     const response = await fetch("https://www.animegen.io/api/generate", {
       method: "POST",
       headers: {
