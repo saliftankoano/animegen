@@ -10,6 +10,7 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
+  metadataBase: new URL("https://animegen.io"),
   title: "AnimeGen",
   description: "Create and share the best anime images with the community",
   keywords:

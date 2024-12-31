@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ImageCardProfile } from "@/components/ImageCardProfile";
 import Image from "next/image";
+import { JoinButton } from "@/components/JoinButton";
 // Add interface for image type
 interface UserImage {
   id: string;
@@ -87,7 +88,18 @@ export default function ProfilePage() {
   const handleImageClick = (url: string, prompt: string) => {
     setSelectedImage({ url, prompt });
   };
-
+  if (!user) {
+    return (
+      <div className="max-w-2xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-3xl font-bold text-center mt-[25vh] mb-4">
+            You ain&apos;t slick, you have to join <br /> to create an image! 😉
+          </h1>
+          <JoinButton />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <Card className="overflow-hidden">
