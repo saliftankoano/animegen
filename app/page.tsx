@@ -76,7 +76,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-card">
+      <section className="py-4 bg-card rounded-lg">
         <motion.div
           className="container mx-auto px-4"
           initial={{ opacity: 0, y: 20 }}
@@ -89,7 +89,7 @@ export default function LandingPage() {
           >
             Why Choose AnimeGen?
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <FeatureCard
               title="Easy Image Creation"
               description="Write a prompt, One click, and get a high-quality image in 1 minute."
@@ -117,6 +117,7 @@ export default function LandingPage() {
           </div>
         </motion.div>
       </section>
+      {/* FAQ Section */}
       <section className="py-24 bg-background">
         <div className="container mx-auto px-4">
           <motion.h2
