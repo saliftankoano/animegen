@@ -72,6 +72,11 @@ AnimeGen is a modern web application that empowers users to create, share, and d
 
 ## 💡 Technical Challenges & Solutions
 
+### Authentication and Security
+
+- I stuggled initially with keeping unautharized users from accessing the create page
+- Fixed by using server side validation prior to allowing users to access the create page
+
 ### Real-time Updates
 
 - Implemented Supabase real-time subscriptions for instant like updates
@@ -114,5 +119,12 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Special thanks to Headstarter for the inspiration
 
 ---
+
+## My todo list
+
+- [ ] Fix overprotection of create page
+- [ ] Fix dark mode theme switcher color to be consistent with other hover effects
+- [ ] Add Shimmer effect for loading state
+- [ ] Add LLM prompt augmentation
 
 <p align="center">Made with ❤️ by the AnimeGen team</p>
