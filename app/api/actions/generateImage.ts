@@ -3,6 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 export async function GenerateImage(prompt: string) {
   try {
     const user = await currentUser();
+    const userId = user?.id;
     const username = user?.username || "Gino432";
     const profileimage = user?.imageUrl || username || "rando";
 
@@ -18,7 +19,7 @@ export async function GenerateImage(prompt: string) {
         "X-API-KEY": process.env.API_KEY || "",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ prompt, username, profileimage }),
+      body: JSON.stringify({ prompt, username, profileimage, userId }),
     });
     const data = await response.json();
 
