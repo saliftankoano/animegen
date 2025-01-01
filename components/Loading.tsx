@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Loader2 } from "lucide-react";
-
+import { TextShimmer } from "@/components/ui/text-shimmer";
 export function Loading() {
   const [progress, setProgress] = useState(0);
 
@@ -26,7 +26,12 @@ export function Loading() {
         value={progress}
         className="w-[60%] bg-black [&>div]:bg-white"
       />
-      <p className="text-sm text-muted-foreground">Working our magic... ✨</p>
+      <TextShimmer
+        duration={1}
+        className="text-xl font-medium [--base-color:theme(colors.black)] [--base-gradient-color:theme(colors.green.500)] dark:[--base-color:theme(colors.black)] dark:[--base-gradient-color:theme(colors.yellow.500)]"
+      >
+        Working our magic... ✨
+      </TextShimmer>
     </div>
   );
 }
