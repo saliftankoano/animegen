@@ -30,7 +30,7 @@ export function Navbar() {
               <Link href="/create">
                 <Button
                   variant="ghost"
-                  className="font-bold dark:text-yellow-500 dark:hover:text-black dark:hover:bg-white"
+                  className="font-bold  text-black hover:text-white hover:bg-blue-700 dark:text-yellow-500 dark:hover:text-black dark:hover:bg-white"
                 >
                   Create
                 </Button>
@@ -40,7 +40,7 @@ export function Navbar() {
               <Link href="/profile">
                 <Button
                   variant="ghost"
-                  className="text-primary font-bold dark:hover:text-black dark:hover:bg-white"
+                  className="text-primary font-bold hover:text-white hover:bg-blue-700 dark:text-yellow-500 dark:hover:text-black dark:hover:bg-white"
                 >
                   Profile
                 </Button>
