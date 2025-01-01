@@ -122,9 +122,12 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## My todo list
 
-- [ ] Fix overprotection of create page
-- [ ] Fix dark mode theme switcher color to be consistent with other hover effects
-- [ ] Add Shimmer effect for loading state
+- [x] Fix overprotection of create page
+- [x] Fix dark mode theme switcher color to be consistent with other hover effects
+- [x] Add Shimmer effect for loading state
+- [ ] Fix loading state to be more consistent
+- [ ] Migrate to supabase auth
+- [ ] Implement generation rating connection to the database
 - [ ] Add LLM prompt augmentation
 
 <p align="center">Made with ❤️ by the AnimeGen team</p>
