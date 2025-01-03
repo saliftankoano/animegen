@@ -7,7 +7,7 @@ import { useUser } from "@clerk/clerk-react";
 import Image from "next/image";
 import Paginations from "@/components/Paginations";
 import { CreateImageCTA } from "@/components/create-image-cta";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 export interface GeneratedImages {
   id: string;
   url: string;
@@ -88,61 +88,59 @@ export default function Home() {
   const handleImageClick = (url: string, prompt: string) => {
     setSelectedImage({ url, prompt });
   };
-  const queryClient = new QueryClient();
-  return (
-    <QueryClientProvider client={queryClient}>
-      <div className="space-y-8 relative">
-        <div className="flex justify-between items-center">
-          <h1 className="mt-4 text-4xl font-bold text-primary">
-            Wall of fame 🤩
-          </h1>
 
-          {/* <Button variant="outline" onClick={() => router.push("/create")}>
+  return (
+    <div className="space-y-8 relative">
+      <div className="flex justify-between items-center">
+        <h1 className="mt-4 text-4xl font-bold text-primary">
+          Wall of fame 🤩
+        </h1>
+
+        {/* <Button variant="outline" onClick={() => router.push("/create")}>
           Donate
         </Button> */}
-        </div>
-        <CreateImageCTA />
-        {selectedImage && (
-          <div
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50"
-            onClick={() => setSelectedImage(null)}
-          >
-            <div className="max-w-4xl w-full p-4">
-              <Image
-                src={selectedImage.url}
-                alt={selectedImage.prompt}
-                width={1024}
-                height={1024}
-                className="w-full h-auto rounded-lg"
-                onClick={(e) => e.stopPropagation()}
-                unoptimized={true}
-                priority
-              />
-            </div>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {currentImages.map((image) => (
-            <ImageCard
-              key={image.id}
-              profile_url={image.profile_url || ""}
-              url={image.url || ""}
-              prompt={image.prompt || ""}
-              username={image.username || ""}
-              like_count={image.like_count || 0}
-              // comment_count={image.comment_count || 0}
-              onImageClick={handleImageClick}
-            />
-          ))}
-        </div>
-        <Paginations
-          images={imageFeed}
-          imagesPerPage={imagesPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
       </div>
-    </QueryClientProvider>
+      <CreateImageCTA />
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="max-w-4xl w-full p-4">
+            <Image
+              src={selectedImage.url}
+              alt={selectedImage.prompt}
+              width={1024}
+              height={1024}
+              className="w-full h-auto rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+              unoptimized={true}
+              loading="lazy"
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {currentImages.map((image) => (
+          <ImageCard
+            key={image.id}
+            profile_url={image.profile_url || ""}
+            url={image.url || ""}
+            prompt={image.prompt || ""}
+            username={image.username || ""}
+            like_count={image.like_count || 0}
+            // comment_count={image.comment_count || 0}
+            onImageClick={handleImageClick}
+          />
+        ))}
+      </div>
+      <Paginations
+        images={imageFeed}
+        imagesPerPage={imagesPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+    </div>
   );
 }
