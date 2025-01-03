@@ -40,7 +40,7 @@ export function Navbar() {
               <Link href="/profile">
                 <Button
                   variant="ghost"
-                  className="text-primary font-bold hover:text-white hover:bg-blue-700 dark:hover:text-black dark:hover:bg-white"
+                  className="text-primary font-bold hover:text-white hover:bg-blue-700 dark:text-blue-700 dark:hover:text-black dark:hover:bg-white"
                 >
                   Profile
                 </Button>

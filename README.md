@@ -125,9 +125,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [x] Fix overprotection of create page (Dec 31, 2024)
 - [x] Fix dark mode theme switcher color to be consistent with other hover effects (Jan 1, 2025)
 - [x] Add Shimmer effect for loading state (Jan 1, 2025)
+- [x] Add image download functionality (Dec 31, 2024)
+- [ ] Add infinite scroll for feed page
+- [ ] Implement generation rating connection to the database
 - [ ] Fix loading state to be more consistent
 - [ ] Migrate to supabase auth
-- [ ] Implement generation rating connection to the database
 - [ ] Add LLM prompt augmentation
 
 <p align="center">Made with ❤️ by the AnimeGen team</p>
