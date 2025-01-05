@@ -43,72 +43,6 @@ export default function Home() {
   });
   const observerRef = useRef<HTMLDivElement | null>(null);
   const [hasMore, setHasMore] = useState(true);
-  // useEffect(() => {
-  //   // Initial fetch of images
-  //   const fetchUserImages = async () => {
-  //     const { data, error } = await supabaseClient
-  //       .from("image")
-  //       .select("*")
-  //       .eq("on_feed", true)
-  //       .range(0, 5)
-  //       .order("created_at", { ascending: false });
-
-  //     if (error) {
-  //       console.error("Error fetching images:", error);
-  //       return;
-  //     }
-  //     // Ensure the data is serializable by converting it to plain objects
-  //     const serializedData = JSON.parse(JSON.stringify(data || []));
-  //     setImageFeed(serializedData);
-  //   };
-  //   // Set up real-time subscription
-  //   let subscription: RealtimeChannel;
-  //   const setupSubscription = () => {
-  //     subscription = supabaseClient
-  //       .channel("image_changes")
-  //       .on(
-  //         "postgres_changes",
-  //         {
-  //           event: "*", // Listen to all events (insert, update, delete)
-  //           schema: "public",
-  //           table: "image",
-  //         },
-  //         async () => {
-  //           // Refetch all images when any change occurs
-  //           await fetchUserImages();
-  //         }
-  //       )
-  //       .subscribe();
-  //   };
-
-  //   fetchUserImages();
-  //   setupSubscription();
-
-  //   // Cleanup subscription when component unmounts
-  //   return () => {
-  //     subscription?.unsubscribe();
-  //   };
-  // }, [supabaseClient, username]);
-  // useEffect(() => {
-  //   const fetchUserImages = async () => {
-  //     const { data, error } = await supabaseClient
-  //       .from("image")
-  //       .select("*")
-  //       .eq("on_feed", true)
-  //       .range(0, 5)
-  //       .order("created_at", { ascending: false });
-
-  //     if (error) {
-  //       console.error("Error fetching images:", error);
-  //       return;
-  //     }
-  //     // Ensure the data is serializable by converting it to plain objects
-  //     const serializedData = JSON.parse(JSON.stringify(data || []));
-  //     setImageFeed(serializedData);
-  //   };
-  //   fetchUserImages();
-  // }, [supabaseClient]);
-
   // Fetch images from the database
   useEffect(() => {
     const fetchUserImages = async (start: number, end: number) => {
@@ -166,7 +100,32 @@ export default function Home() {
       console.log("Observer ref is " + observerRef.current);
     }
   }, [imageFeed.length, ref]);
+  // Handle new image inserted into the feed
+  useEffect(() => {
+    const channel = supabaseClient
+      .channel("image_feed_changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "image",
+          filter: "on_feed=eq.true",
+        },
+        (payload) => {
+          console.log("New image inserted into feed");
+          setImageFeed((prev) => {
+            const newImage = JSON.parse(JSON.stringify(payload.new));
+            return [newImage, ...prev];
+          });
+        }
+      )
+      .subscribe();
 
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [supabaseClient]);
   const handleImageClick = (url: string, prompt: string) => {
     setSelectedImage({ url, prompt });
   };
@@ -206,7 +165,7 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {imageFeed.map((image, index) => (
           <div
-            key={image.id}
+            key={`${image.id}-${index}`}
             data-id={index}
             ref={index === imageFeed.length - 1 ? observerRef : null}
           >
