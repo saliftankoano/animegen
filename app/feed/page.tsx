@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ImageCard } from "@/components/ImageCard";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useUser } from "@clerk/clerk-react";
 import Image from "next/image";
-import Paginations from "@/components/Paginations";
 import { CreateImageCTA } from "@/components/create-image-cta";
 
 export interface GeneratedImages {
@@ -21,8 +21,10 @@ export interface GeneratedImages {
 
 export default function Home() {
   const { user } = useUser();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const username = user?.username;
   const [imageFeed, setImageFeed] = useState<GeneratedImages[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentPage, setCurrentPage] = useState<number>(1);
   const imagesPerPage = 12;
   const lastImageIndex = currentPage * imagesPerPage;
@@ -38,14 +40,62 @@ export default function Home() {
     url: string;
     prompt: string;
   } | null>(null);
+  const lastImageRef = useRef(null);
 
+  const [lastImageInView, setLastImageInView] = useState(false);
+  // useEffect(() => {
+  //   // Initial fetch of images
+  //   const fetchUserImages = async () => {
+  //     const { data, error } = await supabaseClient
+  //       .from("image")
+  //       .select("*")
+  //       .eq("on_feed", true)
+  //       .range(0, 5)
+  //       .order("created_at", { ascending: false });
+
+  //     if (error) {
+  //       console.error("Error fetching images:", error);
+  //       return;
+  //     }
+  //     // Ensure the data is serializable by converting it to plain objects
+  //     const serializedData = JSON.parse(JSON.stringify(data || []));
+  //     setImageFeed(serializedData);
+  //   };
+  //   // Set up real-time subscription
+  //   let subscription: RealtimeChannel;
+  //   const setupSubscription = () => {
+  //     subscription = supabaseClient
+  //       .channel("image_changes")
+  //       .on(
+  //         "postgres_changes",
+  //         {
+  //           event: "*", // Listen to all events (insert, update, delete)
+  //           schema: "public",
+  //           table: "image",
+  //         },
+  //         async () => {
+  //           // Refetch all images when any change occurs
+  //           await fetchUserImages();
+  //         }
+  //       )
+  //       .subscribe();
+  //   };
+
+  //   fetchUserImages();
+  //   setupSubscription();
+
+  //   // Cleanup subscription when component unmounts
+  //   return () => {
+  //     subscription?.unsubscribe();
+  //   };
+  // }, [supabaseClient, username]);
   useEffect(() => {
-    // Initial fetch of images
     const fetchUserImages = async () => {
       const { data, error } = await supabaseClient
         .from("image")
         .select("*")
         .eq("on_feed", true)
+        .range(0, 5)
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -56,35 +106,22 @@ export default function Home() {
       const serializedData = JSON.parse(JSON.stringify(data || []));
       setImageFeed(serializedData);
     };
-    // Set up real-time subscription
-    let subscription: RealtimeChannel;
-    const setupSubscription = () => {
-      subscription = supabaseClient
-        .channel("image_changes")
-        .on(
-          "postgres_changes",
-          {
-            event: "*", // Listen to all events (insert, update, delete)
-            schema: "public",
-            table: "image",
-          },
-          async () => {
-            // Refetch all images when any change occurs
-            await fetchUserImages();
-          }
-        )
-        .subscribe();
-    };
-
     fetchUserImages();
-    setupSubscription();
-
-    // Cleanup subscription when component unmounts
-    return () => {
-      subscription?.unsubscribe();
-    };
-  }, [supabaseClient, username]);
-
+  }, [supabaseClient]);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setLastImageInView(entry.isIntersecting);
+        console.log(
+          "Last Image is now in view! Current length = " + imageFeed.length
+        );
+      },
+      { threshold: 1 }
+    );
+    if (lastImageRef.current) {
+      observer.observe(lastImageRef.current);
+    }
+  }, [lastImageInView, imageFeed.length]);
   const handleImageClick = (url: string, prompt: string) => {
     setSelectedImage({ url, prompt });
   };
@@ -122,25 +159,26 @@ export default function Home() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {currentImages.map((image) => (
-          <ImageCard
+        {currentImages.map((image, index) => (
+          <div
             key={image.id}
-            profile_url={image.profile_url || ""}
-            url={image.url || ""}
-            prompt={image.prompt || ""}
-            username={image.username || ""}
-            like_count={image.like_count || 0}
-            // comment_count={image.comment_count || 0}
-            onImageClick={handleImageClick}
-          />
+            ref={index === currentImages.length - 1 ? lastImageRef : null}
+          >
+            {lastImageInView && index == currentImages.length - 1
+              ? "Yup this one is the last!"
+              : ""}
+            <ImageCard
+              profile_url={image.profile_url || ""}
+              url={image.url || ""}
+              prompt={image.prompt || ""}
+              username={image.username || ""}
+              like_count={image.like_count || 0}
+              // comment_count={image.comment_count || 0}
+              onImageClick={handleImageClick}
+            />
+          </div>
         ))}
       </div>
-      <Paginations
-        images={imageFeed}
-        imagesPerPage={imagesPerPage}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
     </div>
   );
 }

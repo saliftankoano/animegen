@@ -127,6 +127,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [x] Add Shimmer effect for loading state (Jan 1, 2025)
 - [x] Add image download functionality (Dec 31, 2024)
 - [ ] Add infinite scroll for feed page
+- [ ] Move auth to supabase
 - [ ] Implement generation rating connection to the database
 - [ ] Fix loading state to be more consistent
 - [ ] Migrate to supabase auth
