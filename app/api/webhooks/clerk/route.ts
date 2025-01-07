@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
   const supabase = createClient(
     process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
   if (!SIGNING_SECRET) {
     throw new Error(
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
     const bio = public_metadata.bio;
 
     try {
-      supabase.from("image").insert([
+      await supabase.from("user").insert([
         {
           user_id: id,
           username: username,
