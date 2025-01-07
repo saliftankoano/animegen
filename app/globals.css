@@ -56,6 +56,7 @@
     --foreground: 220 10% 98%;
 
     --card: 220 40% 13%;
+    --card-dark: 220 40% 13%;
     --card-foreground: 220 10% 98%;
 
     --popover: 220 40% 10%;
@@ -87,6 +88,9 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark .bg-card-dark {
+    background-color: hsl(var(--card-dark) / 1);
   }
 }
 

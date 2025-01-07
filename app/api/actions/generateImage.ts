@@ -6,7 +6,7 @@ export async function GenerateImage(prompt: string) {
     const userId = user?.id;
     const username = user?.username || "Gino432";
     const profileimage = user?.imageUrl || username || "rando";
-    console.log("User ID from generateImage server side: ", userId);
+
     if (!user) {
       return Response.json(
         { error: "Unauthorized access from generateImage server side" },

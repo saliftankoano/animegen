@@ -9,7 +9,7 @@ import { Loading } from "@/components/Loading";
 import { GenerateImage } from "@/app/api/actions/generateImage";
 import { toast } from "sonner";
 import updateImageOnFeed from "@/app/api/actions/addToFeed";
-import { AlertCircle, Send, ImagePlus, Download } from "lucide-react";
+import { AlertCircle, Send, ImagePlus, Download, Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { GenerationTips } from "@/components/GenerationTips";
 import { StarRating } from "@/components/StarRating";
@@ -190,7 +190,7 @@ export default function CreateClientComponent() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
           <label className="flex items-center justify-between text-sm font-medium">
-            <span>Your Prompt</span>
+            <span className="text-green-500">Your Prompt</span>
             <span
               className={`${
                 prompt.length > 295
@@ -207,7 +207,7 @@ export default function CreateClientComponent() {
             id="prompt"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Giant calamari attacking a ship on the ocean"
+            placeholder="Isagi from Bluelock facing the camera with his tongue out with a demonic look."
             maxLength={300}
             className="h-24 resize-none"
           />
@@ -220,16 +220,22 @@ export default function CreateClientComponent() {
           )}
         </div>
         <div className="flex space-x-4">
-          <Button type="submit" className="flex-1" disabled={isGenerating}>
-            {isGenerating ? (
+          {isGenerating ? (
+            <div
+              className="w-full flex flex-col items-center justify-center
+                  bg-card dark:bg-card-dark p-6 rounded-md shadow-lg"
+            >
               <Loading />
-            ) : (
+            </div>
+          ) : (
+            <Button type="submit" className="flex-1" disabled={isGenerating}>
               <>
                 <ImagePlus className="mr-2 h-4 w-4" />
                 {generatedImageUrl ? "Generate Again" : "Generate 🤩"}
               </>
-            )}
-          </Button>
+            </Button>
+          )}
+
           {generatedImageUrl && (
             <Button
               onClick={handleAddToFeed}
@@ -237,7 +243,7 @@ export default function CreateClientComponent() {
               disabled={isPosting}
             >
               {isPosting ? (
-                <Loading />
+                <Loader2 />
               ) : (
                 <>
                   <Send className="mr-2 h-4 w-4" />
@@ -254,7 +260,7 @@ export default function CreateClientComponent() {
                 How would you rate this image?
               </h2>
               <StarRating onRate={handleRating} />
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-green-500">
                 Your feedback helps us improve our image generation!
               </p>
             </CardContent>

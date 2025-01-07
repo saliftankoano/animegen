@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
-module.exports = {
-  trailingSlash: false,
-};
 
 const nextConfig: NextConfig = {
+  trailingSlash: false,
   images: {
     remotePatterns: [
       {
