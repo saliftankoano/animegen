@@ -1,4 +1,7 @@
 import type { NextConfig } from "next";
+module.exports = {
+  trailingSlash: false,
+};
 
 const nextConfig: NextConfig = {
   images: {
