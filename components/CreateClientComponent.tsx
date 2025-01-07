@@ -15,6 +15,7 @@ import { GenerationTips } from "@/components/GenerationTips";
 import { StarRating } from "@/components/StarRating";
 import { JoinButton } from "@/components/JoinButton";
 import { useUser } from "@clerk/nextjs";
+import updateStars from "@/app/api/actions/updateStars";
 
 export default function CreateClientComponent() {
   const { user } = useUser();
@@ -161,12 +162,13 @@ export default function CreateClientComponent() {
   };
 
   const handleRating = async (rating: number) => {
-    // TODO: Implement the logic to save the rating
-    console.log(`Image rated: ${rating} stars`);
-    toast.success(
-      `Thank you for your feedback! You rated the image ${rating} stars.`
-    );
-    setShowRating(false);
+    if (generatedImageUrl) {
+      await updateStars(generatedImageUrl, rating);
+      toast.success(
+        `Thank you for your feedback! You rated the image ${rating} stars.`
+      );
+      setShowRating(false);
+    }
   };
 
   if (!user) {

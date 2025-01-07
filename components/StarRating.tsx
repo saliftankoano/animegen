@@ -15,13 +15,15 @@ export function StarRating({ onRate }: StarRatingProps) {
         const ratingValue = index + 1;
         return (
           <button
+            type="button"
             key={index}
             className={`focus:outline-none ${
               ratingValue <= (hover || rating)
                 ? "text-yellow-400"
                 : "text-gray-300"
             }`}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setRating(ratingValue);
               onRate(ratingValue);
             }}

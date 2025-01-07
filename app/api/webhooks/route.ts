@@ -6,7 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
   const supabase = createClient(
-    process.env.SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
   if (!SIGNING_SECRET) {

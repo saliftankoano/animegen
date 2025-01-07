@@ -26,7 +26,7 @@ export function Loading() {
                    [--base-color:theme(colors.gray.100)] 
                    [--base-gradient-color:theme(colors.blue.400)]
                    dark:[--base-color:theme(colors.gray.300)] 
-                   dark:[--base-gradient-color:theme(colors.blue.700)]"
+                   dark:[--base-gradient-color:theme(colors.yellow.500)]"
       >
         Working our magic... ✨
       </TextShimmer>

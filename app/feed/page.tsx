@@ -32,6 +32,7 @@ export default function Home() {
       supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     })
   );
+
   const [selectedImage, setSelectedImage] = useState<{
     url: string;
     prompt: string;
@@ -97,7 +98,6 @@ export default function Home() {
     }
     if (observerRef.current) {
       ref(observerRef.current);
-      console.log("Observer ref is " + observerRef.current);
     }
   }, [imageFeed.length, ref]);
   // Handle new image inserted into the feed
