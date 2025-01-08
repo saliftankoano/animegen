@@ -51,9 +51,6 @@ export async function POST(req: Request) {
     });
   }
 
-  // Do something with payload
-  // For this guide, log payload to console
-
   if (evt.type === "user.created") {
     const { id, email_addresses, username, image_url, public_metadata } =
       evt.data;
