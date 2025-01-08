@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     const bio = public_metadata.bio;
 
     try {
-      const { data, error } = await supabase.from("user").insert([
+      await supabase.from("user").insert([
         {
           user_id: id,
           username: username,
@@ -72,8 +72,6 @@ export async function POST(req: Request) {
           bio: bio,
         },
       ]);
-      console.log(data);
-      console.log(error);
     } catch (error) {
       console.log(error);
     }
