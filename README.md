@@ -129,7 +129,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [x] Add infinite scroll for feed page (Jan 5th, 2024)
 - [x] Fix loading state to be more consistent (Jan 7th, 2024)
 - [x] Implement generation rating connection to the database (Jan 7th, 2024)
-- [ ] Integrate clerk webhooks on user created and updated to supabase
+- [x] Integrate clerk webhooks on user created and updated to supabase (Jan 7th, 2024) 10PM
 - [ ] Add LLM prompt augmentation
 
 <p align="center">Made with ❤️ by the AnimeGen team</p>
