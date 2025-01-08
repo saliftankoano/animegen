@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     });
   }
 
-  if (evt.type === "user.created") {
+  if (evt.type === "user.created" || evt.type === "user.updated") {
     const { id, email_addresses, username, image_url, public_metadata } =
       evt.data;
     if (!id || !email_addresses) {
@@ -63,15 +63,28 @@ export async function POST(req: Request) {
     const bio = public_metadata.bio;
 
     try {
-      await supabase.from("user").insert([
-        {
-          user_id: id,
-          username: username,
-          email_address: email_address,
-          image_url: image_url,
-          bio: bio,
-        },
-      ]);
+      if (evt.type === "user.updated") {
+        await supabase.from("user").upsert(
+          {
+            user_id: id,
+            username: username,
+            email_address: email_address,
+            image_url: image_url,
+            bio: bio,
+          },
+          { onConflict: "user_id" }
+        );
+      } else {
+        await supabase.from("user").insert([
+          {
+            user_id: id,
+            username: username,
+            email_address: email_address,
+            image_url: image_url,
+            bio: bio,
+          },
+        ]);
+      }
     } catch (error) {
       console.log(error);
     }
