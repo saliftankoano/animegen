@@ -130,6 +130,17 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [x] Fix loading state to be more consistent (Jan 7th, 2024)
 - [x] Implement generation rating connection to the database (Jan 7th, 2024)
 - [x] Integrate clerk webhooks on user created and updated to supabase (Jan 7th, 2024) 10PM
+
+### Implement image generation limits per plan
+
+- [x] Add columns to user table to store plan, monthly image generation count & last reset date (Jan 8th, 2025)
+- [ ] Add supabase count increment on image generation
+- [ ] Display monthly image generation count on user profile and on create page
+- [ ] Add plans to landing page
+- [ ] Add Stripe integration to handle payment and subscription management
+
+### Additional AI features
+
 - [ ] Add LLM prompt augmentation
 
 <p align="center">Made with ❤️ by the AnimeGen team</p>
