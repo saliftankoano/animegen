@@ -82,6 +82,7 @@ export async function POST(req: Request) {
             email_address: email_address,
             image_url: image_url,
             bio: bio,
+            last_reset: Date.now(),
           },
         ]);
       }
