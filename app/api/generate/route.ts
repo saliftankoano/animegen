@@ -36,17 +36,16 @@ const insertImage = async (
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const userIdReceived = body?.userId;
-  console.log("User ID: ", userIdReceived);
-  if (!userIdReceived) {
+  const user_id = body?.userId;
+
+  if (!user_id) {
     return NextResponse.json(
       { error: "Unauthorized access from image generation API Layer" },
       { status: 401 }
     );
   }
-
+  const { username, profileimage, email, prompt, bio, mo_img_count } = body;
   try {
-    const { prompt, username, profileimage } = body;
     const url = new URL(process.env.GENERATE_URL || "");
 
     url.searchParams.set("prompt", encodeURIComponent(prompt));
@@ -84,8 +83,9 @@ export async function POST(req: NextRequest) {
     const filename = `${crypto.randomUUID()}.png`;
     const accessKeyId = process.env.S3_ACCESS_KEY;
     const secretAccessKey = process.env.S3_SECRET_ACCESS;
+
+    // S3 storage + Update monthly image count
     try {
-      // S3 storage
       const s3Client = new S3Client({
         region: process.env.S3_REGION || "",
         credentials: {
@@ -129,6 +129,19 @@ export async function POST(req: NextRequest) {
       } else {
         console.log("Unsuccessful additon to Supabase");
       }
+      // Increment the user image count
+      await supabase.from("user").upsert(
+        {
+          user_id: user_id,
+          username: username,
+          email_address: email,
+          image_url: imageUrl,
+          bio: bio || "",
+          mo_img_count: mo_img_count + 1,
+        },
+        { onConflict: "user_id" }
+      );
+      console.log(`Successfully updated the user's image count`);
       return NextResponse.json({
         success: true,
         message: `Recieved: ${prompt}`,
