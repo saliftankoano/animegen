@@ -17,10 +17,7 @@ const images = [
   "/tanjiro.png",
   "/nezuko.png",
   "/fireandice.png",
-  "/hulk.png",
-  "/wonderwoman.png",
-  "/dystopia.png",
-  "/one_punch_black.png",
+  "/colosal.png",
 ];
 export default function LandingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -34,15 +31,15 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="h-[77vh] relative flex-grow flex items-center justify-center bg-gradient-to-b from-background to-secondary overflow-hidden">
+      <section className="h-[50%] md:h-[50vh] xl:h-[77vh] relative flex-grow flex items-center justify-center bg-gradient-to-b from-background to-secondary overflow-hidden">
         <motion.div
           className="absolute inset-0 z-0"
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.5 }}
         >
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-4 p-4">
-            {[...Array(12)].map((_, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+            {[...Array(9)].map((_, i) => (
               <div
                 key={i}
                 className="aspect-square relative overflow-hidden rounded-lg"
