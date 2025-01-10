@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,8 +16,10 @@ import { StarRating } from "@/components/StarRating";
 import { JoinButton } from "@/components/JoinButton";
 import { useUser } from "@clerk/nextjs";
 import updateStars from "@/app/api/actions/updateStars";
+import getPlan from "@/app/api/actions/getPlan";
+import getImageGenerations from "@/app/api/actions/getImageGenerations";
 
-export default function CreateClientComponent() {
+export default function CreateClient() {
   const { user } = useUser();
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -28,7 +30,32 @@ export default function CreateClientComponent() {
   const [showRating, setShowRating] = useState(false);
   const router = useRouter();
   const [error, setError] = useState("");
+  const [userPlan, setUserPlan] = useState<"Free" | "Pro" | "Premium">("Free");
+  const [usedGenerations, setUsedGenerations] = useState(5);
 
+  const PLAN_LIMITS = {
+    Free: 10,
+    Pro: 200,
+    Premium: 1000,
+  };
+
+  useEffect(() => {
+    if (user) {
+      getPlan(user.id).then((plan) => setUserPlan(plan));
+    }
+  }, [user]);
+  // mo_img_count
+  useEffect(() => {
+    const fetchGenerations = async () => {
+      if (user) {
+        const storedGenerations = await getImageGenerations(user.id);
+        if (storedGenerations) {
+          setUsedGenerations(storedGenerations);
+        }
+      }
+    };
+    fetchGenerations();
+  }, [user, generatedImageUrl]);
   const validatePrompt = (text: string): boolean => {
     if (text.length < 3) {
       setError("Prompt must be at least 3 characters long");
@@ -184,13 +211,27 @@ export default function CreateClientComponent() {
     );
   }
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto space-y-3">
       <h1 className="text-3xl font-bold text-center">
         Write it into existence! ✍️
       </h1>
+
       <GenerationTips />
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
+          <div className="flex justify-end text-sm">
+            <span
+              className={`${
+                usedGenerations <= 3
+                  ? "text-red-500"
+                  : usedGenerations <= 6
+                  ? "text-orange-500"
+                  : "text-green-500"
+              }`}
+            >
+              {usedGenerations}/{PLAN_LIMITS[userPlan]} images
+            </span>
+          </div>
           <label className="flex items-center justify-between text-sm font-medium">
             <span className="text-green-500">Your Prompt</span>
             <span
@@ -270,7 +311,7 @@ export default function CreateClientComponent() {
         )}
       </form>
       <Card className="overflow-hidden">
-        <CardContent className="p-0 relative h-[50vh]">
+        <CardContent className="p-0 relative h-[45vh]">
           {generatedImageUrl && (
             <Button
               variant="ghost"

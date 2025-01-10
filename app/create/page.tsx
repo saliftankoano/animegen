@@ -1,4 +1,4 @@
-import CreateClientComponent from "@/components/CreateClientComponent";
+import CreateClientComponent from "@/app/create/CreateClientComponent";
 import { auth } from "@clerk/nextjs/server";
 
 async function CreatePageAuth() {
