@@ -19,7 +19,7 @@ export function GenerationLimits({
   const limit = planLimits[plan];
   const remainingGenerations = Math.max(limit - usedGenerations, 0);
   const percentage = Math.min((usedGenerations / limit) * 100, 100);
-
+  console.log(plan, usedGenerations, limit);
   return (
     <Card className="w-full">
       <CardHeader>

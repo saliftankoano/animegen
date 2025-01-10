@@ -1,4 +1,4 @@
-import { GeneratedImages } from "@/app/feed/page";
+import { GeneratedImages } from "@/app/feed/FeedPage";
 import { motion } from "framer-motion";
 export default function Paginations({
   images,

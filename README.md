@@ -135,7 +135,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - [x] Add columns to user table to store plan, monthly image generation count & last reset date (Jan 8th, 2025)
 - [x] Add supabase count increment on image generation (Jan 9th, 2025)
-- [ ] Display monthly image generation count on user profile and on create page
+- [x] Display monthly image generation count on user profile and on create page
 - [ ] Add plans to landing page
 - [ ] Add Stripe integration to handle payment and subscription management
 
