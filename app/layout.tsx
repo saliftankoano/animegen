@@ -1,6 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { Navbar } from "@/components/Navbar";
+//import { Navbar } from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { neobrutalism } from "@clerk/themes";
 import { Analytics } from "@vercel/analytics/react";
@@ -80,7 +80,6 @@ export default function RootLayout({
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="min-h-screen bg-background text-foreground">
-              <Navbar />
               <main className="container mx-auto px-4 py-8 pt-20">
                 <ThemeAwareToaster />
                 {children}
