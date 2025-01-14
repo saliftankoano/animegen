@@ -1,8 +1,18 @@
+"use client";
 import Image from "next/image";
 
 export default function Home() {
+  const images = [
+    "/colosal.png",
+    "/nezuko.png",
+    "/eren.png",
+    "/jinwoo.png",
+    "/captain.png",
+    "/demonslayer.png",
+  ];
+
   return (
-    <div id="wrapper" className="bg-gray-900">
+    <>
       <header
         id="header"
         className="sticky top-0 w-full bg-gray-900/80 backdrop-blur-md z-50 border-b border-gray-800"
@@ -39,33 +49,22 @@ export default function Home() {
         </div>
       </header>
       <section id="hero" className="h-[800px] relative overflow-hidden">
-        <div className="absolute inset-0 transition-opacity duration-1000">
+        <div className="absolute inset-0 transition-opacity duration-1000 bg-gradient-to-r from-gray-900/90 to-gray-900/10">
           <div className="carousel relative h-full">
             <Image
-              className="w-full h-full object-cover"
-              src="https://storage.googleapis.com/uxpilot-auth.appspot.com/3446f71adb-2b32d97b5a666cac83dc.png"
+              className={`w-full h-full object-cover`}
+              style={{ objectPosition: "10% 45%" }}
+              src={"/zenitsu.png"}
               alt="anime futuristic city at night with neon lights and flying vehicles, cyberpunk style"
-              width={800}
-              height={288}
-            />
-            <Image
-              className="w-full h-full object-cover hidden"
-              src="https://storage.googleapis.com/uxpilot-auth.appspot.com/6a3f638e11-d65c64672de0133d77f8.png"
-              alt="magical anime forest with glowing spirits and mystical elements, fantasy style"
-              width={800}
-              height={288}
-            />
-            <Image
-              className="w-full h-full object-cover hidden"
-              src="https://storage.googleapis.com/uxpilot-auth.appspot.com/897a61a1af-a79831db24274c61d958.png"
-              alt="post-apocalyptic anime cityscape with nature reclaiming buildings, dramatic lighting"
-              width={800}
-              height={288}
+              width={1920}
+              height={300}
+              priority
+              unoptimized={true}
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/10"></div>
         </div>
-        <div className="container mx-auto px-4 relative h-full flex items-center">
+        <div className="container mx-auto px-4 relative h-full flex pt-[12%]">
           <div className="max-w-2xl">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
               Create Stunning Anime Art with AI
@@ -147,36 +146,27 @@ export default function Home() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="group relative overflow-hidden rounded-xl">
-              <Image
-                className="rounded-xl w-full h-72 object-cover transform group-hover:scale-105 transition-transform duration-300"
-                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/658ce6cd67-d24d3f1465cabf1f292f.png"
-                alt="anime girl with cyberpunk outfit and neon hair, futuristic city background"
-                width={800}
-                height={288}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            </div>
-            <div className="group relative overflow-hidden rounded-xl">
-              <Image
-                className="rounded-xl w-full h-72 object-cover transform group-hover:scale-105 transition-transform duration-300"
-                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/1af64efb2b-6f09627393fabcc86168.png"
-                alt="epic anime battle scene with magic and energy effects, dramatic lighting"
-                width={800}
-                height={288}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            </div>
-            <div className="group relative overflow-hidden rounded-xl">
-              <Image
-                className="rounded-xl w-full h-72 object-cover transform group-hover:scale-105 transition-transform duration-300"
-                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/5b8a33f57d-f780b5c374f715bbb8e9.png"
-                alt="serene anime landscape with floating islands and aurora lights"
-                width={800}
-                height={288}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            </div>
+            {images.map((image, index) => (
+              <div
+                key={index}
+                className="group relative overflow-hidden rounded-xl"
+              >
+                <Image
+                  className="rounded-xl w-full h-72 object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  src={image}
+                  alt={`anime gallery preview image ${index + 1}`}
+                  width={800}
+                  height={288}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </div>
+            ))}
+          </div>
+          <div className="w-full text-center mt-8">
+            <button className="px-8 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 inline-flex items-center">
+              See More
+              <i className="fa-solid fa-arrow-right ml-2"></i>
+            </button>
           </div>
         </div>
       </section>
@@ -347,6 +337,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
