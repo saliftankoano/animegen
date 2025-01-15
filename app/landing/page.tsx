@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-
+import { CheckIcon, XIcon } from "lucide-react";
 export default function Home() {
   const images = [
     "/colosal.png",
@@ -13,6 +13,7 @@ export default function Home() {
 
   return (
     <>
+      {/* Navbar */}
       <header
         id="header"
         className="sticky top-0 w-full bg-gray-900/80 backdrop-blur-md z-50 border-b border-gray-800"
@@ -48,6 +49,7 @@ export default function Home() {
           </div>
         </div>
       </header>
+      {/* Hero */}
       <section id="hero" className="h-[800px] relative overflow-hidden">
         <div className="absolute inset-0 transition-opacity duration-1000 bg-gradient-to-r from-gray-900/90 to-gray-900/10">
           <div className="carousel relative h-full">
@@ -87,53 +89,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section id="features" className="py-20 bg-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Magic at Your Fingertips
-            </h2>
-            <p className="text-xl text-gray-300">
-              Discover the tools that will transform your creative vision into
-              reality
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-xl bg-gray-700/50 backdrop-blur-sm transform hover:-translate-y-1 transition-all">
-              <i className="fa-solid fa-wand-magic-sparkles text-3xl text-indigo-400 mb-4"></i>
-              <h3 className="text-xl font-bold text-white mb-2">
-                AI Magic Engine
-              </h3>
-              <p className="text-gray-300">
-                Experience the power of our next-gen AI that understands and
-                creates stunning anime art from your descriptions with
-                unprecedented accuracy
-              </p>
-            </div>
-            <div className="p-8 rounded-xl bg-gray-700/50 backdrop-blur-sm transform hover:-translate-y-1 transition-all">
-              <i className="fa-solid fa-palette text-3xl text-indigo-400 mb-4"></i>
-              <h3 className="text-xl font-bold text-white mb-2">
-                Infinite Style Universe
-              </h3>
-              <p className="text-gray-300">
-                Explore countless anime styles from classNameic to modern,
-                customize every detail, and develop your unique artistic
-                signature
-              </p>
-            </div>
-            <div className="p-8 rounded-xl bg-gray-700/50 backdrop-blur-sm transform hover:-translate-y-1 transition-all">
-              <i className="fa-solid fa-download text-3xl text-indigo-400 mb-4"></i>
-              <h3 className="text-xl font-bold text-white mb-2">
-                Crystal-Clear Quality
-              </h3>
-              <p className="text-gray-300">
-                Export your masterpieces in stunning high resolution, perfect
-                for prints, social media, or professional projects
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Gallery */}
       <section id="gallery" className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -163,13 +119,14 @@ export default function Home() {
             ))}
           </div>
           <div className="w-full text-center mt-8">
-            <button className="px-8 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 inline-flex items-center">
+            <button className="text-white text-lg px-8 py-4 bg-indigo-600  rounded-lg hover:bg-indigo-500 inline-flex items-center">
               See More
               <i className="fa-solid fa-arrow-right ml-2"></i>
             </button>
           </div>
         </div>
       </section>
+      {/* Pricing */}
       <section id="pricing" className="py-20 bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -182,89 +139,85 @@ export default function Home() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-xl border border-gray-700 bg-gray-900 hover:border-indigo-400 transition-colors">
-              <h3 className="text-2xl font-bold text-white mb-4">Explorer</h3>
+            {/* Free */}
+            <div className="h-[80%] mt-[20%] p-8 rounded-xl border-2 bg-gray-900 relative transform hover:-translate-y-2 transition-transform">
+              <h3 className="text-2xl font-bold text-white mb-4">Free</h3>
               <div className="text-4xl font-bold text-white mb-6">
-                $9<span className="text-lg text-gray-400">/month</span>
+                $0<span className="text-lg text-gray-400">/mo</span>
               </div>
               <ul className="space-y-4 mb-8 text-gray-300">
                 <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
+                  <CheckIcon className="text-green-400 mr-2" />
+                  <span>10 AI masterpieces monthly</span>
+                </li>
+                <li className="flex items-center line-through">
+                  <XIcon className="text-red-400 mr-2" />
+                  <span>LLM augmented prompts</span>
+                </li>
+
+                <li className="flex items-center line-through">
+                  <XIcon className="text-red-400 mr-2" />
+                  <span>Priority support</span>
+                </li>
+              </ul>
+            </div>
+            {/* Pro */}
+            <div className="p-8 rounded-xl border-2 border-yellow-600 bg-gray-900 relative transform hover:-translate-y-2 transition-transform">
+              <div className="absolute top-0 right-0 bg-yellow-600 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm">
+                Most Popular
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">Pro</h3>
+              <div className="text-4xl font-bold text-white mb-6">
+                $10<span className="text-lg text-gray-400">/mo</span>
+              </div>
+              <ul className="space-y-4 mb-8 text-gray-300">
+                <li className="flex items-center">
+                  <CheckIcon className="text-green-400 mr-2" />
                   <span>100 AI masterpieces monthly</span>
                 </li>
                 <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>Essential anime styles</span>
+                  <CheckIcon className="text-green-400 mr-2" />
+                  <span>LLM augmented prompts</span>
                 </li>
+
                 <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>Full HD quality exports</span>
+                  <CheckIcon className="text-green-400 mr-2" />
+                  <span>Priority support</span>
                 </li>
               </ul>
-              <button className="w-full px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500">
-                Start Creating
-              </button>
-            </div>
-            <div className="p-8 rounded-xl border-2 border-indigo-500 bg-gray-900 relative transform hover:-translate-y-2 transition-transform">
-              <div className="absolute top-0 right-0 bg-indigo-500 text-white px-4 py-1 rounded-bl-lg rounded-tr-xl text-sm">
-                Most Popular
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Creator</h3>
-              <div className="text-4xl font-bold text-white mb-6">
-                $29<span className="text-lg text-gray-400">/month</span>
-              </div>
-              <ul className="space-y-4 mb-8 text-gray-300">
-                <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>500 AI masterpieces monthly</span>
-                </li>
-                <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>Premium style collection</span>
-                </li>
-                <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>4K quality exports</span>
-                </li>
-                <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>Priority creative support</span>
-                </li>
-              </ul>
-              <button className="w-full px-6 py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-400">
+              <button className="w-full px-6 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500">
                 Unleash Creativity
               </button>
             </div>
-            <div className="p-8 rounded-xl border border-gray-700 bg-gray-900 hover:border-indigo-400 transition-colors">
-              <h3 className="text-2xl font-bold text-white mb-4">Studio</h3>
+            {/* PRO+ */}
+            <div className="p-8 rounded-xl border-2 border-cyan-600 bg-gray-900 relative transform hover:-translate-y-2 transition-transform">
+              <h3 className="text-2xl font-bold text-white mb-4">Pro+</h3>
               <div className="text-4xl font-bold text-white mb-6">
-                $99<span className="text-lg text-gray-400">/month</span>
+                $25<span className="text-lg text-gray-400">/mo</span>
               </div>
               <ul className="space-y-4 mb-8 text-gray-300">
                 <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>Unlimited creations</span>
+                  <CheckIcon className="text-green-400 mr-2" />
+                  <span>250 AI masterpieces monthly</span>
                 </li>
                 <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>Custom style development</span>
+                  <CheckIcon className="text-green-400 mr-2" />
+                  <span>LLM augmented prompts</span>
                 </li>
+
                 <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>8K ultra-HD exports</span>
-                </li>
-                <li className="flex items-center">
-                  <i className="fa-solid fa-check text-indigo-400 mr-2"></i>
-                  <span>24/7 dedicated support</span>
+                  <CheckIcon className="text-green-400 mr-2" />
+                  <span>Priority support</span>
                 </li>
               </ul>
-              <button className="w-full px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500">
+              <button className="w-full px-6 py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500">
                 Scale Your Art
               </button>
             </div>
           </div>
         </div>
       </section>
+      {/* Footer */}
       <footer
         id="footer"
         className="bg-gray-900 text-gray-400 py-12 border-t border-gray-800"
