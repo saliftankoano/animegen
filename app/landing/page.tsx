@@ -1,6 +1,10 @@
 "use client";
 import Image from "next/image";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { CheckIcon, XIcon } from "lucide-react";
+import { FaqItem } from "@/components/landing/FaqItem";
+
 export default function Home() {
   const images = [
     "/colosal.png",
@@ -10,7 +14,13 @@ export default function Home() {
     "/captain.png",
     "/demonslayer.png",
   ];
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
+  const fadeInUp = {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 },
+  };
   return (
     <>
       {/* Navbar */}
@@ -90,7 +100,7 @@ export default function Home() {
         </div>
       </section>
       {/* Gallery */}
-      <section id="gallery" className="py-20 bg-gray-900">
+      <section id="gallery" className="py-20 ">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
@@ -127,7 +137,7 @@ export default function Home() {
         </div>
       </section>
       {/* Pricing */}
-      <section id="pricing" className="py-20 bg-gray-800">
+      <section id="pricing" className="py-6 ">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
@@ -152,7 +162,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-center line-through">
                   <XIcon className="text-red-400 mr-2" />
-                  <span>LLM augmented prompts</span>
+                  <span>AI prompt assistant</span>
                 </li>
 
                 <li className="flex items-center line-through">
@@ -177,7 +187,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="text-green-400 mr-2" />
-                  <span>LLM augmented prompts</span>
+                  <span>AI prompt assistant</span>
                 </li>
 
                 <li className="flex items-center">
@@ -202,7 +212,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="text-green-400 mr-2" />
-                  <span>LLM augmented prompts</span>
+                  <span>AI prompt assistant</span>
                 </li>
 
                 <li className="flex items-center">
@@ -214,6 +224,47 @@ export default function Home() {
                 Scale Your Art
               </button>
             </div>
+          </div>
+        </div>
+      </section>
+      {/* FAQ */}
+      <section className="py-24 bg-background">
+        <div className="container mx-auto px-4">
+          <motion.h2
+            className="text-4xl font-bold text-center mb-16 text-indigo-400"
+            {...fadeInUp}
+          >
+            Frequently Asked Questions
+          </motion.h2>
+          <div className="max-w-3xl mx-auto space-y-6">
+            <FaqItem
+              question="Is AnimeGen free to use?"
+              answer="Yes, AnimeGen is currently free for all users. We plan to introduce premium features in the future, but a free tier will always be available."
+              index={0}
+              expandedFaq={expandedFaq}
+              setExpandedFaq={setExpandedFaq}
+            />
+            <FaqItem
+              question="What are the future plans for AnimeGen?"
+              answer="We're constantly working on improving AnimeGen. Future plans include AI assited prompt generation, collaborative creation, and various styles of images."
+              index={1}
+              expandedFaq={expandedFaq}
+              setExpandedFaq={setExpandedFaq}
+            />
+            <FaqItem
+              question="How can I reach out?"
+              answer="You can reach out to me on LinkedIn (see link in the footer)"
+              index={2}
+              expandedFaq={expandedFaq}
+              setExpandedFaq={setExpandedFaq}
+            />
+            <FaqItem
+              question="I would like to contribute to AnimeGen, how can I do that?"
+              answer="Send me a DM on LinkedIn (see footer)"
+              index={3}
+              expandedFaq={expandedFaq}
+              setExpandedFaq={setExpandedFaq}
+            />
           </div>
         </div>
       </section>
