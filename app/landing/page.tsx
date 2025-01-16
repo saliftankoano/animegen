@@ -67,6 +67,7 @@ export default function Home() {
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1 }}
+          viewport={{ once: true }}
         >
           <div className="carousel relative h-full">
             <Image
@@ -86,11 +87,13 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
+          viewport={{ once: true }}
         >
           <div className="max-w-2xl">
             <motion.h1
               className="text-5xl md:text-6xl font-bold text-white mb-6"
               {...fadeInUp}
+              viewport={{ once: true }}
             >
               Create Stunning Anime Art with AI
             </motion.h1>
@@ -119,6 +122,7 @@ export default function Home() {
             <motion.h2
               className="text-4xl font-bold text-white mb-4"
               {...fadeInUp}
+              viewport={{ once: true }}
             >
               Imagination Made Real
             </motion.h2>
@@ -156,6 +160,7 @@ export default function Home() {
             <motion.button
               className="text-white text-lg px-8 py-4 bg-indigo-600  rounded-lg hover:bg-indigo-500 inline-flex items-center"
               {...fadeInUp}
+              viewport={{ once: true }}
             >
               See More
               <ArrowRightIcon className="ml-2" />
@@ -167,13 +172,21 @@ export default function Home() {
       <section id="pricing" className="py-6 ">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">
+            <motion.h2
+              className="text-4xl font-bold text-white mb-4"
+              {...fadeInUp}
+              viewport={{ once: true }}
+            >
               Choose Your Creative Journey
-            </h2>
-            <p className="text-xl text-gray-300">
+            </motion.h2>
+            <motion.p
+              className="text-xl text-gray-300"
+              {...fadeInUp}
+              viewport={{ once: true }}
+            >
               Unlock the full potential of your imagination with our flexible
               plans
-            </p>
+            </motion.p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {/* Free */}
@@ -260,6 +273,7 @@ export default function Home() {
           <motion.h2
             className="text-4xl font-bold text-center mb-16 text-indigo-400"
             {...fadeInUp}
+            viewport={{ once: true }}
           >
             Frequently Asked Questions
           </motion.h2>
