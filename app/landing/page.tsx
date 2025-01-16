@@ -61,22 +61,31 @@ export default function Home() {
       </header>
       {/* Hero */}
       <section id="hero" className="h-[800px] relative overflow-hidden">
-        <div className="absolute inset-0 transition-opacity duration-1000 bg-gradient-to-r from-gray-900/90 to-gray-900/10">
+        <motion.div
+          className="absolute inset-0 transition-opacity duration-1000 bg-gradient-to-r from-gray-900/90 to-gray-900/10"
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.5 }}
+        >
           <div className="carousel relative h-full">
             <Image
               className={`w-full h-full object-cover`}
               style={{ objectPosition: "10% 45%" }}
               src={"/zenitsu.png"}
-              alt="anime futuristic city at night with neon lights and flying vehicles, cyberpunk style"
+              alt="zenitsu from demon slayer"
               width={1920}
               height={300}
               priority
-              unoptimized={true}
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/10"></div>
-        </div>
-        <div className="container mx-auto px-4 relative h-full flex pt-[12%]">
+        </motion.div>
+        <motion.div
+          className="container mx-auto px-4 relative h-full flex pt-[12%]"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        >
           <div className="max-w-2xl">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
               Create Stunning Anime Art with AI
@@ -97,7 +106,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
       {/* Gallery */}
       <section id="gallery" className="py-20 ">
