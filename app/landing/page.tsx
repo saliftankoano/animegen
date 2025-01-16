@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CheckIcon, XIcon } from "lucide-react";
+import { ArrowRightIcon, CheckIcon, XIcon } from "lucide-react";
 import { FaqItem } from "@/components/landing/FaqItem";
 
 export default function Home() {
@@ -18,8 +18,9 @@ export default function Home() {
 
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
+    whileInView: { opacity: 1, y: 0 },
     transition: { duration: 0.6 },
+    viewport: { once: true },
   };
   return (
     <>
@@ -65,7 +66,7 @@ export default function Home() {
           className="absolute inset-0 transition-opacity duration-1000 bg-gradient-to-r from-gray-900/90 to-gray-900/10"
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5 }}
+          transition={{ duration: 1 }}
         >
           <div className="carousel relative h-full">
             <Image
@@ -87,9 +88,12 @@ export default function Home() {
           transition={{ delay: 0.5, duration: 0.8 }}
         >
           <div className="max-w-2xl">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+            <motion.h1
+              className="text-5xl md:text-6xl font-bold text-white mb-6"
+              {...fadeInUp}
+            >
               Create Stunning Anime Art with AI
-            </h1>
+            </motion.h1>
             <p className="text-xl text-gray-300 mb-8">
               Step into a world where your creative visions come to life.
               Transform your ideas into breathtaking anime masterpieces with our
@@ -112,19 +116,30 @@ export default function Home() {
       <section id="gallery" className="py-20 ">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">
+            <motion.h2
+              className="text-4xl font-bold text-white mb-4"
+              {...fadeInUp}
+            >
               Imagination Made Real
-            </h2>
-            <p className="text-xl text-gray-300">
+            </motion.h2>
+            <motion.p
+              className="text-xl text-gray-300"
+              {...fadeInUp}
+              viewport={{ once: true }}
+            >
               Be inspired by the incredible creations from our global community
               of artists
-            </p>
+            </motion.p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {images.map((image, index) => (
-              <div
+              <motion.div
                 key={index}
                 className="group relative overflow-hidden rounded-xl"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.8 }}
+                viewport={{ once: true }}
               >
                 <Image
                   className="rounded-xl w-full h-72 object-cover transform group-hover:scale-105 transition-transform duration-300"
@@ -134,14 +149,17 @@ export default function Home() {
                   height={288}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </div>
+              </motion.div>
             ))}
           </div>
           <div className="w-full text-center mt-8">
-            <button className="text-white text-lg px-8 py-4 bg-indigo-600  rounded-lg hover:bg-indigo-500 inline-flex items-center">
+            <motion.button
+              className="text-white text-lg px-8 py-4 bg-indigo-600  rounded-lg hover:bg-indigo-500 inline-flex items-center"
+              {...fadeInUp}
+            >
               See More
-              <i className="fa-solid fa-arrow-right ml-2"></i>
-            </button>
+              <ArrowRightIcon className="ml-2" />
+            </motion.button>
           </div>
         </div>
       </section>
