@@ -19,9 +19,6 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ImageCardProfile } from "@/components/ImageCardProfile";
 import Image from "next/image";
 import { JoinButton } from "@/components/JoinButton";
-import { GenerationLimits } from "@/components/GenerationLimits";
-import getImageGenerations from "../api/actions/getImageGenerations";
-import getPlan from "../api/actions/getPlan";
 // Add interface for image type
 interface UserImage {
   id: string;
@@ -48,8 +45,6 @@ export default function ProfilePage() {
     url: string;
     prompt: string;
   } | null>(null);
-  const [plan, setPlan] = useState<"Free" | "Pro" | "Premium" | null>(null);
-  const [mo_img_count, setMoImgCount] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchUserImages = async () => {
@@ -76,13 +71,6 @@ export default function ProfilePage() {
 
     fetchUserImages();
   }, [userId, username]);
-  useEffect(() => {
-    if (!user) return;
-    getPlan(user.id).then((plan) => setPlan(plan));
-    getImageGenerations(user.id).then((generations) =>
-      setMoImgCount(generations)
-    );
-  }, [user]);
 
   const handleProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -158,10 +146,7 @@ export default function ProfilePage() {
           </Dialog>
         </CardContent>
       </Card>
-      <GenerationLimits
-        plan={plan as "Free" | "Pro" | "Premium"}
-        usedGenerations={mo_img_count || 5}
-      />
+
       <h2 className="text-2xl font-bold text-primary text-center">
         My Creations
       </h2>
