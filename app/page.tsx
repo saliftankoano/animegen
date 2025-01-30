@@ -7,18 +7,17 @@ import { Galery } from "@/components/landing/Galery";
 
 export default function Home() {
   return (
-    <>
+    <div className="bg-background min-h-screen">
       {/* Header */}
       <Header />
       {/* Hero */}
       <Hero />
       {/* Gallery */}
       <Galery />
-      {/* Pricing */}
       {/* FAQ */}
       <Faq />
       {/* Footer */}
       <Footer />
-    </>
+    </div>
   );
 }

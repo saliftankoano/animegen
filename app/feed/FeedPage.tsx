@@ -8,6 +8,7 @@ import { useUser } from "@clerk/clerk-react";
 import Image from "next/image";
 import { CreateImageCTA } from "@/components/create-image-cta";
 import { useInView } from "react-intersection-observer";
+import { Header } from "@/components/landing/Header";
 
 export interface GeneratedImages {
   id: string;
@@ -131,56 +132,64 @@ export default function FeedPage() {
   };
 
   return (
-    <div className="space-y-8 relative">
-      <div className="flex justify-between items-center">
-        <h1 className="mt-4 text-4xl font-bold text-primary">
-          Wall of fame 🤩
-        </h1>
-
-        {/* <Button variant="outline" onClick={() => router.push("/create")}>
-          Donate
-        </Button> */}
-      </div>
-      <CreateImageCTA />
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="max-w-4xl w-full p-4">
-            <Image
-              src={selectedImage.url}
-              alt={selectedImage.prompt}
-              width={1024}
-              height={1024}
-              className="w-full h-auto rounded-lg"
-              onClick={(e) => e.stopPropagation()}
-              unoptimized={true}
-              loading="lazy"
-            />
+    <>
+      <Header />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8 relative">
+        <div className="flex justify-between items-center">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold tracking-tight text-primary">
+              Community Gallery
+            </h1>
+            <p className="text-muted-foreground">
+              Discover and get inspired by amazing AI-generated artwork from our
+              community
+            </p>
           </div>
         </div>
-      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {imageFeed.map((image, index) => (
+        <CreateImageCTA />
+
+        {selectedImage && (
           <div
-            key={`${image.id}-${index}`}
-            data-id={index}
-            ref={index === imageFeed.length - 1 ? observerRef : null}
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-[100]"
+            onClick={() => setSelectedImage(null)}
+            style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}
           >
-            <ImageCard
-              profile_url={image.profile_url || ""}
-              url={image.url || ""}
-              prompt={image.prompt || ""}
-              username={image.username || ""}
-              like_count={image.like_count || 0}
-              // comment_count={image.comment_count || 0}
-              onImageClick={handleImageClick}
-            />
+            <div className="max-w-4xl w-full p-4">
+              <Image
+                src={selectedImage.url}
+                alt={selectedImage.prompt}
+                width={1024}
+                height={1024}
+                className="w-full h-auto rounded-lg"
+                onClick={(e) => e.stopPropagation()}
+                unoptimized={true}
+                loading="lazy"
+              />
+            </div>
           </div>
-        ))}
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {imageFeed.map((image, index) => (
+            <div
+              key={`${image.id}-${index}`}
+              data-id={index}
+              ref={index === imageFeed.length - 1 ? observerRef : null}
+              className="transform transition-transform hover:scale-[1.02]"
+            >
+              <ImageCard
+                profile_url={image.profile_url || ""}
+                url={image.url || ""}
+                prompt={image.prompt || ""}
+                username={image.username || ""}
+                like_count={image.like_count || 0}
+                onImageClick={handleImageClick}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
