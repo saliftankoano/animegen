@@ -1,16 +1,25 @@
 "use client";
 import { SignInButton, SignUpButton, SignedIn, useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { ThemeSwitch } from "../ThemeSwitch";
 import ProfileDropdown from "../ProfileDropdown";
+import { usePathname, useRouter } from "next/navigation";
 
 export function Header() {
   const { user } = useUser();
+  const pathname = usePathname();
+  const router = useRouter();
+  const isLandingPage = pathname === "/";
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+  const handleNavigation = (sectionId: string) => {
+    if (isLandingPage) {
+      // If we're on the landing page, scroll to the section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // If we're on another page, navigate to landing page with hash
+      router.push(`/#${sectionId}`);
     }
   };
 
@@ -21,25 +30,26 @@ export function Header() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2">
             <i className="fa-solid fa-wand-magic-sparkles text-indigo-400 text-2xl"></i>
             <span className="text-xl font-bold text-white">AnimeGen</span>
-          </div>
+          </Link>
+
           <nav className="hidden md:flex space-x-8">
             <span
-              onClick={() => scrollToSection("hero")}
+              onClick={() => handleNavigation("hero")}
               className="text-gray-400 hover:text-white cursor-pointer"
             >
               Home
             </span>
             <span
-              onClick={() => scrollToSection("gallery")}
+              onClick={() => handleNavigation("gallery")}
               className="text-gray-400 hover:text-white cursor-pointer"
             >
               Gallery
             </span>
             <span
-              onClick={() => scrollToSection("faq")}
+              onClick={() => handleNavigation("faq")}
               className="text-gray-400 hover:text-white cursor-pointer"
             >
               FAQ
@@ -52,8 +62,8 @@ export function Header() {
               </Link>
             </SignedIn>
           </nav>
+
           <div className="flex items-center space-x-4">
-            <ThemeSwitch />
             {user && <ProfileDropdown />}
             {!user && (
               <>
