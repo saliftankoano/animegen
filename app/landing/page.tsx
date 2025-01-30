@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRightIcon, CheckIcon, XIcon } from "lucide-react";
 import { FaqItem } from "@/components/landing/FaqItem";
+import { SignUpButton, SignInButton } from "@clerk/nextjs";
 
 export default function Home() {
   const images = [
@@ -50,12 +51,16 @@ export default function Home() {
               </span>
             </nav>
             <div className="flex items-center space-x-4">
-              <button className="px-4 py-2 text-gray-400 hover:text-white">
-                Sign In
-              </button>
-              <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500">
-                Start Creating
-              </button>
+              <SignInButton>
+                <button className="px-4 py-2 text-gray-400 hover:text-white">
+                  Sign In
+                </button>
+              </SignInButton>
+              <SignUpButton>
+                <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500">
+                  Start Creating
+                </button>
+              </SignUpButton>
             </div>
           </div>
         </div>
@@ -104,10 +109,12 @@ export default function Home() {
               pure imagination.
             </p>
             <div className="flex space-x-4">
-              <button className="px-8 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 group">
-                Begin Your Journey
-                <i className="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-              </button>
+              <SignUpButton>
+                <button className="px-8 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 group">
+                  Begin Your Journey
+                  <i className="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </button>
+              </SignUpButton>
               <button className="px-8 py-4 bg-white/10 text-white rounded-lg hover:bg-white/20 backdrop-blur-sm">
                 Explore Artworks
               </button>
